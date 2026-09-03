@@ -126,49 +126,8 @@ const componentsContainer =
 const addComponentBtn =
   document.getElementById("addComponentBtn");
 
-const saveShoeBtn =
-  document.getElementById("saveShoeBtn");
-
 const clearFormBtn =
   document.getElementById("clearFormBtn");
-
-const savedShoesContainer =
-  document.getElementById("savedShoesContainer");
-
-
-/* ======================================================
-   APP STATE
-====================================================== */
-
-let editingShoeId = null;
-
-
-/* ======================================================
-   STORAGE
-====================================================== */
-
-const STORAGE_KEY =
-  "soleLabShoes";
-
-
-function getSavedShoes() {
-
-  return JSON.parse(
-    localStorage.getItem(STORAGE_KEY)
-  ) || [];
-
-}
-
-
-function saveShoesToStorage(shoes) {
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(shoes)
-  );
-
-}
-
 
 /* ======================================================
    UMAMI
@@ -1568,10 +1527,6 @@ function deleteShoe(
 
 function resetForm() {
 
-  editingShoeId =
-    null;
-
-
   shoeNameInput.value =
     "";
 
@@ -1590,152 +1545,6 @@ function resetForm() {
 
   createComponentRow();
 
-
-  saveShoeBtn.textContent =
-    "Save Shoe";
-
-}
-
-
-/* ======================================================
-   RENDER SAVED SHOES
-====================================================== */
-
-function renderSavedShoes() {
-
-  const shoes =
-    getSavedShoes();
-
-
-  savedShoesContainer.innerHTML =
-    "";
-
-
-  if (
-    shoes.length === 0
-  ) {
-
-    savedShoesContainer.innerHTML = `
-
-      <div class="empty-state">
-        No shoes saved yet.
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  shoes.forEach(
-    shoe => {
-
-      const card =
-        document.createElement(
-          "article"
-        );
-
-
-      card.className =
-        "saved-shoe-card";
-
-
-      card.innerHTML = `
-
-        <div>
-
-          <span class="saved-version">
-            ${shoe.gameVersion}
-          </span>
-
-
-          <h3>
-            ${shoe.name}
-          </h3>
-
-
-          <p>
-            ${shoe.brand || ""}
-          </p>
-
-
-          <span class="component-count">
-
-            ${shoe.components.length}
-
-            ${
-              shoe.components.length === 1
-                ? "component"
-                : "components"
-            }
-
-          </span>
-
-        </div>
-
-
-        <div class="saved-shoe-actions">
-
-          <button
-            type="button"
-            class="button button-secondary edit-shoe"
-          >
-            Edit
-          </button>
-
-
-          <button
-            type="button"
-            class="button button-danger delete-shoe"
-          >
-            Delete
-          </button>
-
-        </div>
-
-      `;
-
-
-      card
-        .querySelector(
-          ".edit-shoe"
-        )
-        .addEventListener(
-          "click",
-          function () {
-
-            editShoe(
-              shoe.id
-            );
-
-          }
-        );
-
-
-      card
-        .querySelector(
-          ".delete-shoe"
-        )
-        .addEventListener(
-          "click",
-          function () {
-
-            deleteShoe(
-              shoe.id
-            );
-
-          }
-        );
-
-
-      savedShoesContainer.appendChild(
-        card
-      );
-
-    }
-  );
-
 }
 
 
@@ -1750,12 +1559,6 @@ addComponentBtn.addEventListener(
     createComponentRow();
 
   }
-);
-
-
-saveShoeBtn.addEventListener(
-  "click",
-  saveShoe
 );
 
 
@@ -2446,5 +2249,3 @@ downloadRecipeBtn.addEventListener(
 populateBrandOptions();
 
 resetForm();
-
-renderSavedShoes();
