@@ -797,6 +797,32 @@ function wireComponentCard(
     );
 
 
+  const rgbInputs =
+    componentCard.querySelectorAll(
+      ".rgb-value"
+    );
+
+
+  /* RGB LIMITS */
+
+  rgbInputs.forEach(
+    input => {
+
+      input.addEventListener(
+        "input",
+        function () {
+
+          clampRGBInput(
+            input
+          );
+
+        }
+      );
+
+    }
+  );
+
+
   /* REMOVE COMPONENT */
 
   removeBtn.addEventListener(
@@ -950,6 +976,40 @@ function getRGBValues(
       )
 
   };
+
+}
+
+
+/* ======================================================
+   RGB LIMITS
+====================================================== */
+
+function clampRGBInput(
+  input
+) {
+
+  let value =
+    Number(
+      input.value
+    );
+
+
+  if (value < 0) {
+
+    value = 0;
+
+  }
+
+
+  if (value > 255) {
+
+    value = 255;
+
+  }
+
+
+  input.value =
+    value;
 
 }
 
