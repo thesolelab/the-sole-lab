@@ -1,18 +1,42 @@
 @import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&display=swap");
 
-:root {
-  --bg-main: #0e1117;
-  --bg-panel: #161b22;
-  --border-primary: #2a3441;
-
-  --text-primary: #f5f7fa;
-  --text-secondary: #9ba6b2;
-
-  --sole-accent: #b9ef32;
-}
 
 /* ======================================================
    THE SOLE LAB
+====================================================== */
+
+:root {
+
+  /* Backgrounds */
+  --bg-main: #0e1117;
+  --bg-panel: #161b22;
+  --bg-panel-secondary: #1f2630;
+  --bg-input: #10151c;
+
+  /* Borders */
+  --border-primary: #2a3441;
+  --border-hover: #3a4758;
+
+  /* Text */
+  --text-primary: #f5f7fa;
+  --text-secondary: #9ba6b2;
+  --text-muted: #6f7b88;
+
+  /* Sole Lab Brand */
+  --sole-accent: #8ac73f;
+  --sole-accent-hover: #78b333;
+
+  /* Status */
+  --danger: #ff5a67;
+
+  /* Layout */
+  --content-width: 1400px;
+  --panel-radius: 12px;
+}
+
+
+/* ======================================================
+   RESET
 ====================================================== */
 
 * {
@@ -20,7 +44,7 @@
 }
 
 html {
-  font-family: Arial, Helvetica, sans-serif;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -30,7 +54,7 @@ body {
   background:
     radial-gradient(
       circle at top left,
-      rgba(185, 239, 50, 0.08),
+      rgba(138, 199, 63, 0.08),
       transparent 28%
     ),
     var(--bg-main);
@@ -57,28 +81,57 @@ select {
   font: inherit;
 }
 
+button {
+  cursor: pointer;
+}
+
+
 /* ======================================================
-   SOLE LAB HEADER
+   SHARED CONTAINER
+====================================================== */
+
+.container {
+  width: min(
+    calc(100% - 40px),
+    var(--content-width)
+  );
+
+  margin: 0 auto;
+}
+
+
+/* ======================================================
+   APP HEADER
 ====================================================== */
 
 .app-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-
   border-bottom: 1px solid var(--border-primary);
 
   background: rgba(14, 17, 23, 0.94);
 
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
   backdrop-filter: blur(12px);
 }
 
-.header-container {
-  width: min(1200px, calc(100% - 40px));
+.app-header .container {
   min-height: 82px;
 
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
+  gap: 24px;
+}
+
+
+/* ======================================================
+   SOLE LAB BRAND WORDMARK
+====================================================== */
+
+.brand {
   display: flex;
   align-items: center;
 }
@@ -86,11 +139,47 @@ select {
 .brand-lockup {
   display: flex;
   align-items: center;
+
+  width: auto;
+
+  gap: 14px;
 }
+
+.brand-icon {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 50px;
+
+  overflow: visible;
+}
+
+.brand-icon img {
+  display: block;
+
+  width: 46px;
+  height: 46px;
+
+  min-width: 46px;
+  min-height: 46px;
+
+  object-fit: contain;
+}
+
+
+/* ======================================================
+   WORDMARK STRUCTURE
+====================================================== */
 
 .brand-wordmark {
   display: flex;
   flex-direction: column;
+
+  flex: 1 1 auto;
 
   min-width: 220px;
 }
@@ -100,6 +189,8 @@ select {
   align-items: center;
 
   gap: 8px;
+
+  width: 100%;
 
   margin-bottom: -2px;
 }
@@ -117,10 +208,13 @@ select {
   letter-spacing: 0.34em;
 
   line-height: 1;
+
+  white-space: nowrap;
 }
 
 .brand-top-rule {
-  width: 105px;
+  flex: 0 0 105px;
+
   height: 1px;
 
   background:
@@ -130,6 +224,11 @@ select {
       rgba(174, 183, 194, 0.08)
     );
 }
+
+
+/* ======================================================
+   MAIN BRAND TITLE
+====================================================== */
 
 .brand-title {
   display: flex;
@@ -151,13 +250,22 @@ select {
 
   text-transform: uppercase;
 
+  white-space: nowrap;
+
+  padding-right: 8px;
+
+  overflow: visible;
+
   filter:
     drop-shadow(
       0 2px 1px rgba(0, 0, 0, 0.35)
     );
 }
 
-.brand-sole {
+
+/* SOLE */
+
+.brand-player {
   display: inline-block;
 
   padding-right: 4px;
@@ -176,7 +284,13 @@ select {
   -webkit-text-fill-color: transparent;
 
   color: transparent;
+
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08);
 }
+
+
+/* LAB */
 
 .brand-lab {
   display: inline-block;
@@ -186,9 +300,9 @@ select {
   background:
     linear-gradient(
       to bottom,
-      #dfff4f 0%,
-      #b9ef32 50%,
-      #86c91f 100%
+      #a9df62 0%,
+      #8ac73f 50%,
+      #659b27 100%
     );
 
   -webkit-background-clip: text;
@@ -197,7 +311,15 @@ select {
   -webkit-text-fill-color: transparent;
 
   color: transparent;
+
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05);
 }
+
+
+/* ======================================================
+   BOTTOM WORDMARK RULE
+====================================================== */
 
 .brand-bottom-rule {
   width: 145px;
@@ -210,11 +332,16 @@ select {
       to right,
       #aeb7c2 0%,
       #c6cbd0 45%,
-      #b9ef32 100%
+      var(--sole-accent) 100%
     );
 
   opacity: 0.9;
 }
+
+
+/* ======================================================
+   BRAND SUBTITLE
+====================================================== */
 
 .brand-subtitle {
   margin: 5px 0 0;
@@ -227,52 +354,24 @@ select {
   letter-spacing: 0.035em;
 
   line-height: 1.2;
+
+  white-space: nowrap;
 }
 
+
 /* ======================================================
-   LAYOUT
+   MAIN LAYOUT
 ====================================================== */
 
 .app-shell {
-  width: min(1200px, calc(100% - 40px));
+  width: min(
+    calc(100% - 40px),
+    1200px
+  );
+
   margin: 0 auto;
+
   padding: 30px 0 80px;
-}
-
-
-/* ======================================================
-   HEADER
-====================================================== */
-
-.site-header {
-  margin-bottom: 32px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.brand-the {
-  color: #ffffff;
-}
-
-.brand-sole {
-  color: #ffffff;
-}
-
-.brand-lab {
-  color: #8ac73f;
-}
-
-.site-subtitle {
-  margin: 8px 0 0;
-  color: #8b949e;
 }
 
 
@@ -282,13 +381,28 @@ select {
 
 .panel {
   margin-bottom: 24px;
+
   padding: 24px;
 
-  background: #161b22;
+  border: 1px solid var(--border-primary);
+  border-radius: var(--panel-radius);
 
-  border: 1px solid #30363d;
-  border-radius: 12px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.015),
+      transparent
+    ),
+    var(--bg-panel);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.18);
 }
+
+
+/* ======================================================
+   SECTION HEADINGS
+====================================================== */
 
 .section-heading {
   margin-bottom: 22px;
@@ -299,15 +413,29 @@ select {
   margin: 0 0 6px;
 }
 
+.section-heading h1 {
+  font-size: 1.25rem;
+}
+
+.section-heading h2 {
+  font-size: 1.15rem;
+}
+
 .section-heading p {
   margin: 0;
-  color: #8b949e;
+
+  max-width: 760px;
+
+  color: var(--text-secondary);
+
+  font-size: 0.9rem;
 }
 
 .section-heading-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   gap: 20px;
 }
 
@@ -318,6 +446,7 @@ select {
 
 .shoe-info-grid {
   display: grid;
+
   grid-template-columns:
     minmax(0, 2fr)
     minmax(0, 1fr)
@@ -329,48 +458,73 @@ select {
 .field-group {
   display: flex;
   flex-direction: column;
+
+  min-width: 0;
+
   gap: 7px;
 }
 
 .field-group label {
-  font-size: 13px;
-  font-weight: 700;
-  color: #c9d1d9;
+  color: var(--text-secondary);
+
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .field-group input,
 .field-group select {
   width: 100%;
-  min-height: 46px;
+  min-height: 44px;
 
-  padding: 11px 13px;
+  padding: 10px 12px;
 
-  background: #0d1117;
-  color: #ffffff;
-
-  border: 1px solid #30363d;
-  border-radius: 7px;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
 
   outline: none;
+
+  background: var(--bg-input);
+  color: var(--text-primary);
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.field-group input:hover,
+.field-group select:hover {
+  border-color: var(--border-hover);
 }
 
 .field-group input:focus,
 .field-group select:focus {
-  border-color: #8ac73f;
+  border-color: var(--sole-accent);
+
+  box-shadow:
+    0 0 0 3px rgba(138, 199, 63, 0.15);
+
+  background: #111821;
 }
 
-.compact-select {
-  width: 100%;
-  max-width: 100%;
+.field-group input::placeholder {
+  color: var(--text-muted);
 }
+
+
+/* ======================================================
+   DROPDOWNS
+====================================================== */
 
 #brand,
 #gameVersion,
 .component-material {
   width: 220px !important;
   max-width: 100%;
+
   padding-right: 36px;
 }
+
 
 /* ======================================================
    COMPONENT CARD
@@ -378,11 +532,12 @@ select {
 
 .component-card {
   margin-top: 20px;
+
   padding: 22px;
 
-  background: #0d1117;
+  background: var(--bg-input);
 
-  border: 1px solid #30363d;
+  border: 1px solid var(--border-primary);
   border-radius: 12px;
 }
 
@@ -399,6 +554,7 @@ select {
 
 .component-card-header h3 {
   margin: 0;
+
   font-size: 17px;
 }
 
@@ -406,6 +562,7 @@ select {
   padding: 7px 10px;
 
   background: transparent;
+
   color: #ff7b72;
 
   border: 0;
@@ -420,8 +577,12 @@ select {
 
 .component-main-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
   gap: 20px;
+
   align-items: start;
 }
 
@@ -430,7 +591,6 @@ select {
 }
 
 .component-main-grid input,
-.component-main-grid select,
 .component-main-grid button {
   width: 100% !important;
   max-width: none;
@@ -448,6 +608,7 @@ select {
 .pattern-picker-trigger {
   display: flex;
   align-items: center;
+
   gap: 12px;
 
   width: 100%;
@@ -455,18 +616,19 @@ select {
 
   padding: 10px 12px;
 
-  background: #0d1117;
-  color: #ffffff;
+  background: var(--bg-input);
+  color: var(--text-primary);
 
-  border: 1px solid #30363d;
-  border-radius: 7px;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
 
   cursor: pointer;
+
   text-align: left;
 }
 
 .pattern-picker-trigger:hover {
-  border-color: #4b5563;
+  border-color: var(--border-hover);
 }
 
 .pattern-trigger-preview {
@@ -481,18 +643,21 @@ select {
 .pattern-trigger-copy {
   display: flex;
   flex-direction: column;
+
   gap: 3px;
 }
 
 .pattern-trigger-title {
   font-size: 14px;
   font-weight: 700;
-  color: #f5f5f5;
+
+  color: var(--text-primary);
 }
 
 .pattern-trigger-subtitle {
   font-size: 12px;
-  color: #8b949e;
+
+  color: var(--text-secondary);
 }
 
 
@@ -504,11 +669,12 @@ select {
   display: none;
 
   margin-top: 10px;
+
   padding: 18px;
 
-  background: #161b22;
+  background: var(--bg-panel);
 
-  border: 1px solid #30363d;
+  border: 1px solid var(--border-primary);
   border-radius: 10px;
 }
 
@@ -523,13 +689,13 @@ select {
 .pattern-page-title {
   margin-bottom: 10px;
 
+  color: var(--text-secondary);
+
   font-size: 12px;
   font-weight: 800;
 
   text-transform: uppercase;
   letter-spacing: 0.5px;
-
-  color: #8b949e;
 }
 
 
@@ -539,7 +705,10 @@ select {
 
 .pattern-grid {
   display: grid;
-  grid-template-columns: repeat(4, 68px);
+
+  grid-template-columns:
+    repeat(4, 68px);
+
   gap: 12px;
 }
 
@@ -562,15 +731,14 @@ select {
 }
 
 .pattern-option:hover {
-  border-color: #4b5563;
+  border-color: var(--border-hover);
 }
 
 .pattern-option.is-selected {
-  border-color: #8ac73f;
+  border-color: var(--sole-accent);
 
   box-shadow:
-    0 0 0 1px
-    rgba(138, 199, 63, 0.25);
+    0 0 0 1px rgba(138, 199, 63, 0.25);
 }
 
 .pattern-swatch {
@@ -597,13 +765,13 @@ select {
 .component-section-title {
   margin-bottom: 12px;
 
+  color: var(--text-secondary);
+
   font-size: 13px;
   font-weight: 800;
 
   text-transform: uppercase;
   letter-spacing: 0.5px;
-
-  color: #8b949e;
 }
 
 
@@ -613,26 +781,29 @@ select {
 
 .color-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
   gap: 16px;
 }
 
 .color-card {
   padding: 16px;
 
-  background: #161b22;
+  background: var(--bg-panel);
 
-  border: 1px solid #30363d;
+  border: 1px solid var(--border-primary);
   border-radius: 9px;
 }
 
 .color-card-title {
   margin-bottom: 12px;
 
+  color: var(--text-primary);
+
   font-size: 14px;
   font-weight: 800;
-
-  color: #f0f3f6;
 }
 
 
@@ -643,20 +814,27 @@ select {
 .rgb-stack {
   display: flex;
   flex-direction: column;
+
   gap: 8px;
 }
 
 .rgb-row {
   display: grid;
-  grid-template-columns: 32px minmax(0, 1fr);
+
+  grid-template-columns:
+    32px
+    minmax(0, 1fr);
+
   align-items: center;
+
   gap: 10px;
 }
 
 .rgb-label {
+  color: var(--text-primary);
+
   font-size: 17px;
   font-weight: 800;
-  color: #f5f5f5;
 }
 
 .rgb-value {
@@ -678,7 +856,10 @@ select {
 }
 
 .rgb-value:focus {
-  border-color: #8ac73f !important;
+  border-color: var(--sole-accent) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(138, 199, 63, 0.15);
 }
 
 
@@ -688,15 +869,19 @@ select {
 
 .position-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 280px));
+
+  grid-template-columns:
+    repeat(2, minmax(0, 280px));
+
   gap: 18px;
 }
 
 .field-range {
   margin-top: 1px;
 
+  color: var(--text-muted);
+
   font-size: 11px;
-  color: #6e7681;
 }
 
 
@@ -714,37 +899,66 @@ select {
 ====================================================== */
 
 .button {
-  padding: 11px 17px;
+  min-height: 46px;
 
-  border: 0;
-  border-radius: 7px;
+  padding: 0 20px;
+
+  border-radius: 8px;
 
   font-weight: 700;
 
-  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
 }
 
 .button-primary {
-  background: #8ac73f;
-  color: #111111;
+  border: 1px solid var(--sole-accent);
+
+  background: var(--sole-accent);
+  color: #10150c;
+
+  box-shadow:
+    0 8px 20px rgba(138, 199, 63, 0.16);
+}
+
+.button-primary:hover {
+  background: var(--sole-accent-hover);
+
+  border-color: var(--sole-accent-hover);
+
+  transform: translateY(-1px);
 }
 
 .button-secondary {
-  background: #21262d;
-  color: #ffffff;
+  border: 1px solid var(--border-primary);
 
-  border: 1px solid #30363d;
+  background: transparent;
+
+  color: var(--text-secondary);
+}
+
+.button-secondary:hover {
+  border-color: var(--border-hover);
+
+  background: var(--bg-panel-secondary);
+
+  color: var(--text-primary);
 }
 
 .button-danger {
-  background: #3a1719;
-  color: #ff7b72;
-
   border: 1px solid #6e292e;
+
+  background: #3a1719;
+
+  color: #ff7b72;
 }
 
 .action-bar {
   display: flex;
+  align-items: center;
+
   gap: 12px;
 
   margin-bottom: 24px;
@@ -757,7 +971,10 @@ select {
 
 .saved-shoes-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
   gap: 16px;
 }
 
@@ -770,9 +987,9 @@ select {
 
   padding: 20px;
 
-  background: #0d1117;
+  background: var(--bg-input);
 
-  border: 1px solid #30363d;
+  border: 1px solid var(--border-primary);
   border-radius: 10px;
 }
 
@@ -782,7 +999,8 @@ select {
 
 .saved-shoe-card p {
   margin: 0 0 12px;
-  color: #8b949e;
+
+  color: var(--text-secondary);
 }
 
 .saved-version {
@@ -790,8 +1008,9 @@ select {
 
   padding: 5px 8px;
 
-  background: #1f2b19;
-  color: #8ac73f;
+  background: rgba(138, 199, 63, 0.1);
+
+  color: var(--sole-accent);
 
   border-radius: 999px;
 
@@ -800,12 +1019,14 @@ select {
 }
 
 .component-count {
+  color: var(--text-secondary);
+
   font-size: 13px;
-  color: #8b949e;
 }
 
 .saved-shoe-actions {
   display: flex;
+
   gap: 8px;
 
   margin-top: 20px;
@@ -816,15 +1037,32 @@ select {
 
   text-align: center;
 
-  color: #8b949e;
+  color: var(--text-secondary);
 
-  border: 1px dashed #30363d;
+  border: 1px dashed var(--border-primary);
   border-radius: 8px;
 }
 
 
 /* ======================================================
-   RESPONSIVE
+   NUMBER INPUT CLEANUP
+====================================================== */
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+
+  -webkit-appearance: none;
+}
+
+
+/* ======================================================
+   TABLET
 ====================================================== */
 
 @media (max-width: 950px) {
@@ -845,16 +1083,135 @@ select {
 
   .section-heading-row {
     align-items: flex-start;
+
     flex-direction: column;
   }
 
 }
 
 
+/* ======================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 700px) {
+
+  .container {
+    width: min(
+      calc(100% - 24px),
+      var(--content-width)
+    );
+  }
+
+
+  /* Mobile brand lockup */
+
+  .brand {
+    width: 100%;
+
+    min-width: 0;
+  }
+
+  .brand-lockup {
+    width: 100%;
+
+    gap: 10px;
+  }
+
+  .brand-wordmark {
+    min-width: 0;
+  }
+
+  .brand-icon {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+  }
+
+  .brand-icon img {
+    width: 40px;
+    height: 40px;
+
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .brand-title {
+    font-size: 1.65rem;
+
+    padding-right: 6px;
+
+    overflow: visible;
+  }
+
+  .brand-the {
+    font-size: 0.62rem;
+  }
+
+  .brand-top-rule {
+    flex: 0 0 68px;
+  }
+
+  .brand-bottom-rule {
+    width: 100px;
+  }
+
+  .brand-subtitle {
+    font-size: 0.62rem;
+
+    white-space: nowrap;
+  }
+
+  .app-header .container {
+    min-height: 82px;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    align-items: center;
+  }
+
+
+  /* Main layout */
+
+  .app-shell {
+    width: min(
+      calc(100% - 24px),
+      1200px
+    );
+
+    padding-top: 18px;
+  }
+
+  .panel {
+    padding: 18px;
+
+    margin-bottom: 16px;
+  }
+
+  .action-bar {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+====================================================== */
+
 @media (max-width: 520px) {
 
   .pattern-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns:
+      repeat(4, 1fr);
   }
 
   .pattern-option {
