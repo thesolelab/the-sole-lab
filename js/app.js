@@ -838,7 +838,7 @@ rotationInput.addEventListener(
   /* ROTATION LIMITS */
 
   rotationInput.addEventListener(
-    "input",
+    "change",
     function () {
 
       clampRotationInput(
