@@ -79,146 +79,24 @@ const MATERIALS_2K27 = [
 
 
 /* ======================================================
-   NBA 2K27 PATTERN IMAGES
+   NBA 2K27 PATTERNS
 ====================================================== */
 
-const PATTERN_PAGE_1_IMAGE =
-  "assets/patterns/patterns-page-1.jpg";
+const PATTERNS_2K27 = Array.from(
+  { length: 29 },
+  (_, index) => {
 
-const PATTERN_PAGE_2_IMAGE =
-  "assets/patterns/patterns-page-2.jpg";
+    const number =
+      String(index + 1).padStart(2, "0");
 
-
-/* ======================================================
-   PATTERN DATA
-====================================================== */
-
-function createPatternList() {
-
-  const patterns = [];
-
-  let patternNumber = 1;
-
-
-  /* PAGE 1
-     5 rows x 4 columns = 20 swatches
-  */
-
-  for (let row = 0; row < 5; row++) {
-
-    for (let col = 0; col < 4; col++) {
-
-      patterns.push({
-
-        id:
-          `pattern-${String(patternNumber).padStart(2, "0")}`,
-
-        page:
-          1,
-
-        row:
-          row,
-
-        col:
-          col,
-
-        totalRows:
-          5,
-
-        totalCols:
-          4,
-
-        image:
-          PATTERN_PAGE_1_IMAGE
-
-      });
-
-
-      patternNumber++;
-
-    }
+    return {
+      id: `pattern-${number}`,
+      image: `assets/patterns/pattern-${number}.jpg`,
+      page: index < 20 ? 1 : 2
+    };
 
   }
-
-
-  /* PAGE 2
-     First 2 rows = 8 swatches
-  */
-
-  for (let row = 0; row < 2; row++) {
-
-    for (let col = 0; col < 4; col++) {
-
-      patterns.push({
-
-        id:
-          `pattern-${String(patternNumber).padStart(2, "0")}`,
-
-        page:
-          2,
-
-        row:
-          row,
-
-        col:
-          col,
-
-        totalRows:
-          3,
-
-        totalCols:
-          4,
-
-        image:
-          PATTERN_PAGE_2_IMAGE
-
-      });
-
-
-      patternNumber++;
-
-    }
-
-  }
-
-
-  /* PAGE 2
-     Final swatch on row 3
-  */
-
-  patterns.push({
-
-    id:
-      `pattern-${String(patternNumber).padStart(2, "0")}`,
-
-    page:
-      2,
-
-    row:
-      2,
-
-    col:
-      0,
-
-    totalRows:
-      3,
-
-    totalCols:
-      4,
-
-    image:
-      PATTERN_PAGE_2_IMAGE
-
-  });
-
-
-  return patterns;
-
-}
-
-
-const PATTERNS_2K27 =
-  createPatternList();
+);
 
 
 /* ======================================================
@@ -410,41 +288,18 @@ function getPatternsByPage(
 
 
 /* ======================================================
-   PATTERN SWATCH IMAGE POSITION
+   PATTERN SWATCH IMAGE
 ====================================================== */
 
 function getSwatchStyle(
   pattern
 ) {
 
-  const xPosition =
-    pattern.totalCols === 1
-      ? 0
-      : (
-          pattern.col /
-          (pattern.totalCols - 1)
-        ) * 100;
-
-
-  const yPosition =
-    pattern.totalRows === 1
-      ? 0
-      : (
-          pattern.row /
-          (pattern.totalRows - 1)
-        ) * 100;
-
-
   return [
-
     `background-image: url('${pattern.image}')`,
-
-    `background-size: ${pattern.totalCols * 100}% ${pattern.totalRows * 100}%`,
-
-    `background-position: ${xPosition}% ${yPosition}%`,
-
+    "background-size: cover",
+    "background-position: center",
     "background-repeat: no-repeat"
-
   ].join("; ");
 
 }
