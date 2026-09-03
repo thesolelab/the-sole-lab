@@ -5,8 +5,30 @@
 
 
 /* ======================================================
-   2K27 MATERIALS
+   NBA 2K27 DATA
 ====================================================== */
+
+const BRANDS_2K27 = [
+  "Nike",
+  "Jordan",
+  "Converse",
+  "adidas",
+  "Puma",
+  "New Balance",
+  "Reebok",
+  "Under Armour",
+  "Anta",
+  "Li-Ning",
+  "AND 1",
+  "Peak",
+  "Rigorer",
+  "Qiaodan",
+  "361",
+  "Skechers",
+  "741",
+  "2K Brand"
+];
+
 
 const MATERIALS_2K27 = [
   "Default",
@@ -55,38 +77,19 @@ const MATERIALS_2K27 = [
   "Twill Weave"
 ];
 
-/* ======================================================
-   2K27 BRANDS
-====================================================== */
-const BRANDS_2K27 = [
-  "Nike",
-  "Jordan",
-  "Converse",
-  "adidas",
-  "Puma",
-  "New Balance",
-  "Reebok",
-  "Under Armour",
-  "Anta",
-  "Li-Ning",
-  "AND 1",
-  "Peak",
-  "Rigorer",
-  "Qiaodan",
-  "361",
-  "Skechers",
-  "741",
-  "2K Brand"
-];
 
 /* ======================================================
    DOM ELEMENTS
 ====================================================== */
 
-const shoeNameInput = document.getElementById("shoeName");
-const brandInput = document.getElementById("brand");
-const modelInput = document.getElementById("model");
-const gameVersionSelect = document.getElementById("gameVersion");
+const shoeNameInput =
+  document.getElementById("shoeName");
+
+const brandSelect =
+  document.getElementById("brand");
+
+const gameVersionSelect =
+  document.getElementById("gameVersion");
 
 const componentsContainer =
   document.getElementById("componentsContainer");
@@ -110,12 +113,15 @@ const savedShoesContainer =
 
 let editingShoeId = null;
 
+let componentNumber = 0;
+
 
 /* ======================================================
    STORAGE
 ====================================================== */
 
-const STORAGE_KEY = "soleLabShoes";
+const STORAGE_KEY =
+  "soleLabShoes";
 
 
 function getSavedShoes() {
@@ -138,10 +144,59 @@ function saveShoesToStorage(shoes) {
 
 
 /* ======================================================
+   UMAMI
+====================================================== */
+
+function trackEvent(eventName, eventData = {}) {
+
+  if (window.umami) {
+
+    umami.track(
+      eventName,
+      eventData
+    );
+
+  }
+
+}
+
+
+/* ======================================================
+   BRAND OPTIONS
+====================================================== */
+
+function populateBrandOptions() {
+
+  brandSelect.innerHTML = "";
+
+
+  BRANDS_2K27.forEach(brand => {
+
+    const option =
+      document.createElement("option");
+
+    option.value =
+      brand;
+
+    option.textContent =
+      brand;
+
+    brandSelect.appendChild(
+      option
+    );
+
+  });
+
+}
+
+
+/* ======================================================
    MATERIAL OPTIONS
 ====================================================== */
 
-function getMaterialOptions(selectedMaterial = "Default") {
+function getMaterialOptions(
+  selectedMaterial = "Default"
+) {
 
   return MATERIALS_2K27
     .map(material => {
@@ -167,13 +222,100 @@ function getMaterialOptions(selectedMaterial = "Default") {
 
 
 /* ======================================================
+   RGB FIELD
+====================================================== */
+
+function createRGBGroup(
+  colorNumber,
+  color = {}
+) {
+
+  return `
+
+    <div class="color-card">
+
+      <div class="color-card-title">
+        Color ${colorNumber}
+      </div>
+
+
+      <div class="rgb-stack">
+
+
+        <div class="rgb-row">
+
+          <span class="rgb-label">
+            R:
+          </span>
+
+          <input
+            type="number"
+            class="color-${colorNumber}-red rgb-value"
+            min="0"
+            max="255"
+            value="${color.red ?? 0}"
+          />
+
+        </div>
+
+
+        <div class="rgb-row">
+
+          <span class="rgb-label">
+            G:
+          </span>
+
+          <input
+            type="number"
+            class="color-${colorNumber}-green rgb-value"
+            min="0"
+            max="255"
+            value="${color.green ?? 0}"
+          />
+
+        </div>
+
+
+        <div class="rgb-row">
+
+          <span class="rgb-label">
+            B:
+          </span>
+
+          <input
+            type="number"
+            class="color-${colorNumber}-blue rgb-value"
+            min="0"
+            max="255"
+            value="${color.blue ?? 0}"
+          />
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ======================================================
    COMPONENT CREATION
 ====================================================== */
 
-function createComponentRow(component = {}) {
+function createComponentRow(
+  component = {}
+) {
+
+  componentNumber++;
+
 
   const componentCard =
     document.createElement("div");
+
 
   componentCard.className =
     "component-card";
@@ -183,7 +325,10 @@ function createComponentRow(component = {}) {
 
     <div class="component-card-header">
 
-      <h3>Shoe Component</h3>
+      <h3>
+        Shoe Component
+      </h3>
+
 
       <button
         type="button"
@@ -195,7 +340,8 @@ function createComponentRow(component = {}) {
     </div>
 
 
-    <div class="component-grid">
+    <div class="component-main-grid">
+
 
       <div class="field-group">
 
@@ -220,11 +366,13 @@ function createComponentRow(component = {}) {
         </label>
 
         <select
-          class="component-material"
+          class="component-material compact-select"
         >
+
           ${getMaterialOptions(
             component.material || "Default"
           )}
+
         </select>
 
       </div>
@@ -246,70 +394,109 @@ function createComponentRow(component = {}) {
       </div>
 
 
-      <div class="field-group color-field-group">
-
-  <label>
-    RGB Color
-  </label>
-
-  <div class="rgb-stack">
-
-    <div class="rgb-row">
-      <span class="rgb-label">R:</span>
-
-      <input
-        type="number"
-        class="component-red rgb-value"
-        min="0"
-        max="255"
-        value="${component.red ?? 0}"
-      />
     </div>
 
 
-    <div class="rgb-row">
-      <span class="rgb-label">G:</span>
+    <div class="component-section">
 
-      <input
-        type="number"
-        class="component-green rgb-value"
-        min="0"
-        max="255"
-        value="${component.green ?? 0}"
-      />
-    </div>
+      <div class="component-section-title">
+        Pattern Colors
+      </div>
 
 
-    <div class="rgb-row">
-      <span class="rgb-label">B:</span>
+      <div class="color-grid">
 
-      <input
-        type="number"
-        class="component-blue rgb-value"
-        min="0"
-        max="255"
-        value="${component.blue ?? 0}"
-      />
-    </div>
+        ${createRGBGroup(
+          1,
+          component.color1
+        )}
 
-  </div>
+        ${createRGBGroup(
+          2,
+          component.color2
+        )}
 
-</div>
-
-      <div class="field-group field-full">
-
-        <label>
-          Notes
-        </label>
-
-        <input
-          type="text"
-          class="component-notes"
-          placeholder="Optional notes"
-          value="${component.notes || ""}"
-        />
+        ${createRGBGroup(
+          3,
+          component.color3
+        )}
 
       </div>
+
+    </div>
+
+
+    <div class="component-section">
+
+      <div class="component-section-title">
+        Pattern Position
+      </div>
+
+
+      <div class="position-grid">
+
+
+        <div class="field-group">
+
+          <label>
+            X — Scale
+          </label>
+
+          <input
+            type="number"
+            class="component-x"
+            min="0.50"
+            max="12.00"
+            step="0.01"
+            value="${component.x ?? "1.00"}"
+          />
+
+          <span class="field-range">
+            0.50 – 12.00
+          </span>
+
+        </div>
+
+
+        <div class="field-group">
+
+          <label>
+            Y — Rotation
+          </label>
+
+          <input
+            type="number"
+            class="component-y"
+            min="0.00"
+            max="6.28"
+            step="0.01"
+            value="${component.y ?? "0.00"}"
+          />
+
+          <span class="field-range">
+            0.00 – 6.28
+          </span>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <div class="field-group component-notes-field">
+
+      <label>
+        Notes
+      </label>
+
+      <input
+        type="text"
+        class="component-notes"
+        placeholder="Optional notes"
+        value="${component.notes || ""}"
+      />
 
     </div>
 
@@ -328,6 +515,10 @@ function createComponentRow(component = {}) {
 
       componentCard.remove();
 
+      trackEvent(
+        "solelab_remove_component"
+      );
+
     }
   );
 
@@ -335,6 +526,43 @@ function createComponentRow(component = {}) {
   componentsContainer.appendChild(
     componentCard
   );
+
+}
+
+
+/* ======================================================
+   RGB VALUES
+====================================================== */
+
+function getRGBValues(
+  card,
+  colorNumber
+) {
+
+  return {
+
+    red:
+      Number(
+        card.querySelector(
+          `.color-${colorNumber}-red`
+        ).value
+      ),
+
+    green:
+      Number(
+        card.querySelector(
+          `.color-${colorNumber}-green`
+        ).value
+      ),
+
+    blue:
+      Number(
+        card.querySelector(
+          `.color-${colorNumber}-blue`
+        ).value
+      )
+
+  };
 
 }
 
@@ -351,7 +579,8 @@ function getComponentValues() {
     );
 
 
-  return Array.from(componentCards)
+  return Array
+    .from(componentCards)
     .map(card => {
 
       return {
@@ -371,20 +600,37 @@ function getComponentValues() {
             ".component-pattern"
           ).value.trim(),
 
-        red:
-          card.querySelector(
-            ".component-red"
-          ).value,
+        color1:
+          getRGBValues(
+            card,
+            1
+          ),
 
-        green:
-          card.querySelector(
-            ".component-green"
-          ).value,
+        color2:
+          getRGBValues(
+            card,
+            2
+          ),
 
-        blue:
-          card.querySelector(
-            ".component-blue"
-          ).value,
+        color3:
+          getRGBValues(
+            card,
+            3
+          ),
+
+        x:
+          Number(
+            card.querySelector(
+              ".component-x"
+            ).value
+          ),
+
+        y:
+          Number(
+            card.querySelector(
+              ".component-y"
+            ).value
+          ),
 
         notes:
           card.querySelector(
@@ -394,7 +640,96 @@ function getComponentValues() {
       };
 
     })
-    .filter(component => component.name);
+    .filter(
+      component =>
+        component.name
+    );
+
+}
+
+
+/* ======================================================
+   VALIDATE COMPONENTS
+====================================================== */
+
+function validateComponents(
+  components
+) {
+
+  for (
+    const component
+    of components
+  ) {
+
+    if (
+      component.x < 0.50 ||
+      component.x > 12.00
+    ) {
+
+      alert(
+        `${component.name}: X / Scale must be between 0.50 and 12.00.`
+      );
+
+      return false;
+
+    }
+
+
+    if (
+      component.y < 0 ||
+      component.y > 6.28
+    ) {
+
+      alert(
+        `${component.name}: Y / Rotation must be between 0.00 and 6.28.`
+      );
+
+      return false;
+
+    }
+
+
+    const colors = [
+      component.color1,
+      component.color2,
+      component.color3
+    ];
+
+
+    for (
+      const color
+      of colors
+    ) {
+
+      const values = [
+        color.red,
+        color.green,
+        color.blue
+      ];
+
+
+      if (
+        values.some(
+          value =>
+            value < 0 ||
+            value > 255
+        )
+      ) {
+
+        alert(
+          `${component.name}: RGB values must be between 0 and 255.`
+        );
+
+        return false;
+
+      }
+
+    }
+
+  }
+
+
+  return true;
 
 }
 
@@ -424,7 +759,9 @@ function saveShoe() {
     getComponentValues();
 
 
-  if (components.length === 0) {
+  if (
+    components.length === 0
+  ) {
 
     alert(
       "Add at least one shoe component."
@@ -435,8 +772,23 @@ function saveShoe() {
   }
 
 
+  if (
+    !validateComponents(
+      components
+    )
+  ) {
+
+    return;
+
+  }
+
+
   const shoes =
     getSavedShoes();
+
+
+  const isEditing =
+    Boolean(editingShoeId);
 
 
   const shoe = {
@@ -449,10 +801,7 @@ function saveShoe() {
       shoeName,
 
     brand:
-      brandInput.value.trim(),
-
-    model:
-      modelInput.value.trim(),
+      brandSelect.value,
 
     gameVersion:
       gameVersionSelect.value,
@@ -471,13 +820,17 @@ function saveShoe() {
     const shoeIndex =
       shoes.findIndex(
         savedShoe =>
-          savedShoe.id === editingShoeId
+          savedShoe.id ===
+          editingShoeId
       );
 
 
-    if (shoeIndex !== -1) {
+    if (
+      shoeIndex !== -1
+    ) {
 
-      shoes[shoeIndex] = shoe;
+      shoes[shoeIndex] =
+        shoe;
 
     }
 
@@ -485,17 +838,35 @@ function saveShoe() {
 
   else {
 
-    shoes.push(shoe);
+    shoes.push(
+      shoe
+    );
 
   }
 
 
-  saveShoesToStorage(shoes);
+  saveShoesToStorage(
+    shoes
+  );
 
-   if (window.umami) {
-     umami.track("solelab_save_shoe");
-   }
-   
+
+  trackEvent(
+    isEditing
+      ? "solelab_update_shoe"
+      : "solelab_save_shoe",
+    {
+      brand:
+        shoe.brand,
+
+      gameVersion:
+        shoe.gameVersion,
+
+      componentCount:
+        shoe.components.length
+    }
+  );
+
+
   resetForm();
 
   renderSavedShoes();
@@ -504,10 +875,12 @@ function saveShoe() {
 
 
 /* ======================================================
-   LOAD SHOE FOR EDITING
+   EDIT SHOE
 ====================================================== */
 
-function editShoe(shoeId) {
+function editShoe(
+  shoeId
+) {
 
   const shoes =
     getSavedShoes();
@@ -534,14 +907,15 @@ function editShoe(shoeId) {
   shoeNameInput.value =
     shoe.name || "";
 
-  brandInput.value =
-    shoe.brand || "";
 
-  modelInput.value =
-    shoe.model || "";
+  brandSelect.value =
+    shoe.brand ||
+    BRANDS_2K27[0];
+
 
   gameVersionSelect.value =
-    shoe.gameVersion || "NBA 2K27";
+    shoe.gameVersion ||
+    "NBA 2K27";
 
 
   componentsContainer.innerHTML =
@@ -563,6 +937,11 @@ function editShoe(shoeId) {
     "Update Shoe";
 
 
+  trackEvent(
+    "solelab_edit_shoe"
+  );
+
+
   window.scrollTo({
     top: 0,
     behavior: "smooth"
@@ -575,7 +954,9 @@ function editShoe(shoeId) {
    DELETE SHOE
 ====================================================== */
 
-function deleteShoe(shoeId) {
+function deleteShoe(
+  shoeId
+) {
 
   const shoes =
     getSavedShoes();
@@ -593,6 +974,11 @@ function deleteShoe(shoeId) {
   );
 
 
+  trackEvent(
+    "solelab_delete_shoe"
+  );
+
+
   renderSavedShoes();
 
 }
@@ -604,11 +990,17 @@ function deleteShoe(shoeId) {
 
 function resetForm() {
 
-  editingShoeId = null;
+  editingShoeId =
+    null;
 
-  shoeNameInput.value = "";
-  brandInput.value = "";
-  modelInput.value = "";
+
+  shoeNameInput.value =
+    "";
+
+
+  brandSelect.value =
+    BRANDS_2K27[0];
+
 
   gameVersionSelect.value =
     "NBA 2K27";
@@ -641,7 +1033,9 @@ function renderSavedShoes() {
     "";
 
 
-  if (shoes.length === 0) {
+  if (
+    shoes.length === 0
+  ) {
 
     savedShoesContainer.innerHTML = `
 
@@ -656,99 +1050,116 @@ function renderSavedShoes() {
   }
 
 
-  shoes.forEach(shoe => {
+  shoes.forEach(
+    shoe => {
 
-    const card =
-      document.createElement("article");
-
-
-    card.className =
-      "saved-shoe-card";
-
-
-    card.innerHTML = `
-
-      <div>
-
-        <span class="saved-version">
-          ${shoe.gameVersion}
-        </span>
-
-        <h3>
-          ${shoe.name}
-        </h3>
-
-        <p>
-          ${shoe.brand || ""}
-          ${shoe.model || ""}
-        </p>
-
-        <span class="component-count">
-          ${shoe.components.length}
-          ${
-            shoe.components.length === 1
-              ? "component"
-              : "components"
-          }
-        </span>
-
-      </div>
+      const card =
+        document.createElement(
+          "article"
+        );
 
 
-      <div class="saved-shoe-actions">
-
-        <button
-          type="button"
-          class="button button-secondary edit-shoe"
-        >
-          Edit
-        </button>
-
-        <button
-          type="button"
-          class="button button-danger delete-shoe"
-        >
-          Delete
-        </button>
-
-      </div>
-
-    `;
+      card.className =
+        "saved-shoe-card";
 
 
-    card
-      .querySelector(".edit-shoe")
-      .addEventListener(
-        "click",
-        function () {
+      card.innerHTML = `
 
-          editShoe(
-            shoe.id
-          );
+        <div>
 
-        }
-      );
+          <span class="saved-version">
+            ${shoe.gameVersion}
+          </span>
 
 
-    card
-      .querySelector(".delete-shoe")
-      .addEventListener(
-        "click",
-        function () {
-
-          deleteShoe(
-            shoe.id
-          );
-
-        }
-      );
+          <h3>
+            ${shoe.name}
+          </h3>
 
 
-    savedShoesContainer.appendChild(
+          <p>
+            ${shoe.brand || ""}
+          </p>
+
+
+          <span class="component-count">
+
+            ${shoe.components.length}
+
+            ${
+              shoe.components.length === 1
+                ? "component"
+                : "components"
+            }
+
+          </span>
+
+        </div>
+
+
+        <div class="saved-shoe-actions">
+
+
+          <button
+            type="button"
+            class="button button-secondary edit-shoe"
+          >
+            Edit
+          </button>
+
+
+          <button
+            type="button"
+            class="button button-danger delete-shoe"
+          >
+            Delete
+          </button>
+
+
+        </div>
+
+      `;
+
+
       card
-    );
+        .querySelector(
+          ".edit-shoe"
+        )
+        .addEventListener(
+          "click",
+          function () {
 
-  });
+            editShoe(
+              shoe.id
+            );
+
+          }
+        );
+
+
+      card
+        .querySelector(
+          ".delete-shoe"
+        )
+        .addEventListener(
+          "click",
+          function () {
+
+            deleteShoe(
+              shoe.id
+            );
+
+          }
+        );
+
+
+      savedShoesContainer
+        .appendChild(
+          card
+        );
+
+    }
+  );
 
 }
 
@@ -783,6 +1194,8 @@ clearFormBtn.addEventListener(
    INITIALIZE APP
 ====================================================== */
 
-createComponentRow();
+populateBrandOptions();
+
+resetForm();
 
 renderSavedShoes();
