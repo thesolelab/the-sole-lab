@@ -1,1 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>The Sole Lab</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <main class="app-shell">
+
+    <!-- ======================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-the">THE</span>
+        <span class="brand-sole">SOLE</span>
+        <span class="brand-lab">LAB</span>
+      </div>
+
+      <p class="site-subtitle">
+        NBA 2K Shoe Recipe Tracker
+      </p>
+    </header>
+
+
+    <!-- ======================================================
+         SHOE INFORMATION
+    ====================================================== -->
+
+    <section class="panel">
+      <div class="section-heading">
+        <h1>Create Shoe Recipe</h1>
+        <p>
+          Save the exact values used to recreate your NBA 2K shoes.
+        </p>
+      </div>
+
+      <div class="form-grid">
+
+        <div class="field-group">
+          <label for="shoeName">Shoe Name</label>
+          <input
+            type="text"
+            id="shoeName"
+            placeholder="Example: GT Cut 4 Wemby"
+          />
+        </div>
+
+        <div class="field-group">
+          <label for="brand">Brand</label>
+          <input
+            type="text"
+            id="brand"
+            placeholder="Example: Nike"
+          />
+        </div>
+
+        <div class="field-group">
+          <label for="model">Model</label>
+          <input
+            type="text"
+            id="model"
+            placeholder="Example: GT Cut 4"
+          />
+        </div>
+
+        <div class="field-group">
+          <label for="gameVersion">Game Version</label>
+          <select id="gameVersion">
+            <option value="NBA 2K27">NBA 2K27</option>
+          </select>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ======================================================
+         SHOE COMPONENTS
+    ====================================================== -->
+
+    <section class="panel">
+
+      <div class="section-heading section-heading-row">
+        <div>
+          <h2>Shoe Components</h2>
+          <p>
+            Add each editable shoe section and record its values.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          id="addComponentBtn"
+          class="button button-secondary"
+        >
+          + Add Component
+        </button>
+      </div>
+
+
+      <div id="componentsContainer"></div>
+
+    </section>
+
+
+    <!-- ======================================================
+         ACTIONS
+    ====================================================== -->
+
+    <section class="action-bar">
+
+      <button
+        type="button"
+        id="saveShoeBtn"
+        class="button button-primary"
+      >
+        Save Shoe
+      </button>
+
+      <button
+        type="button"
+        id="clearFormBtn"
+        class="button button-secondary"
+      >
+        Clear Form
+      </button>
+
+    </section>
+
+
+    <!-- ======================================================
+         SAVED SHOES
+    ====================================================== -->
+
+    <section class="panel">
+
+      <div class="section-heading">
+        <h2>Saved Shoes</h2>
+        <p>
+          Recipes are currently stored in this browser.
+        </p>
+      </div>
+
+      <div
+        id="savedShoesContainer"
+        class="saved-shoes-grid"
+      ></div>
+
+    </section>
+
+  </main>
+
+
+  <script src="js/app.js"></script>
+
+</body>
+</html>
