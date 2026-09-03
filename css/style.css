@@ -267,7 +267,7 @@ select {
 }
 
 .brand-lab {
-  color: #b7ef50;
+  color: #8ac73f;
 }
 
 .site-subtitle {
@@ -356,7 +356,7 @@ select {
 
 .field-group input:focus,
 .field-group select:focus {
-  border-color: #b7ef50;
+  border-color: #8ac73f;
 }
 
 .compact-select {
@@ -566,11 +566,11 @@ select {
 }
 
 .pattern-option.is-selected {
-  border-color: #b7ef50;
+  border-color: #8ac73f;
 
   box-shadow:
     0 0 0 1px
-    rgba(183, 239, 80, 0.25);
+    rgba(138, 199, 63, 0.25);
 }
 
 .pattern-swatch {
@@ -678,7 +678,7 @@ select {
 }
 
 .rgb-value:focus {
-  border-color: #b7ef50 !important;
+  border-color: #8ac73f !important;
 }
 
 
@@ -725,7 +725,7 @@ select {
 }
 
 .button-primary {
-  background: #b7ef50;
+  background: #8ac73f;
   color: #111111;
 }
 
@@ -791,7 +791,7 @@ select {
   padding: 5px 8px;
 
   background: #1f2b19;
-  color: #b7ef50;
+  color: #8ac73f;
 
   border-radius: 999px;
 
