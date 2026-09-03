@@ -802,41 +802,54 @@ function wireComponentCard(
     );
 
 
-  function selectInputValue(input) {
-
-  input.addEventListener(
-    "focus",
-    function () {
-      input.select();
-    }
-  );
-
-  input.addEventListener(
-    "click",
-    function () {
-      input.select();
-    }
-  );
-
-}
-
+ /* CLEAR DEFAULT VALUES ON FOCUS */
 
 rgbInputs.forEach(
   input => {
-    selectInputValue(input);
+
+    input.addEventListener(
+      "focus",
+      function () {
+
+        if (
+          input.value === "0"
+        ) {
+          input.value = "";
+        }
+
+      }
+    );
+
   }
 );
 
 
-selectInputValue(
-  scaleInput
+scaleInput.addEventListener(
+  "focus",
+  function () {
+
+    if (
+      scaleInput.value === "0.50"
+    ) {
+      scaleInput.value = "";
+    }
+
+  }
 );
 
 
-selectInputValue(
-  rotationInput
-);
+rotationInput.addEventListener(
+  "focus",
+  function () {
 
+    if (
+      rotationInput.value === "0.00"
+    ) {
+      rotationInput.value = "";
+    }
+
+  }
+);
 
   /* RGB LIMITS */
 
