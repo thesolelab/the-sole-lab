@@ -189,8 +189,7 @@ function trackEvent(
 
 function populateBrandOptions() {
 
-  brandSelect.innerHTML =
-    "";
+  brandSelect.innerHTML = "";
 
 
   BRANDS_2K27.forEach(
@@ -201,13 +200,11 @@ function populateBrandOptions() {
           "option"
         );
 
-
       option.value =
         brand;
 
       option.textContent =
         brand;
-
 
       brandSelect.appendChild(
         option
@@ -236,16 +233,13 @@ function getMaterialOptions(
             ? "selected"
             : "";
 
-
         return `
-
           <option
             value="${material}"
             ${selected}
           >
             ${material}
           </option>
-
         `;
 
       }
@@ -319,7 +313,6 @@ function createPatternPageMarkup(
       pageNumber
     );
 
-
   return `
 
     <div class="pattern-page-group">
@@ -327,7 +320,6 @@ function createPatternPageMarkup(
       <div class="pattern-page-title">
         Page ${pageNumber}
       </div>
-
 
       <div class="pattern-grid">
 
@@ -339,7 +331,6 @@ function createPatternPageMarkup(
                 pattern.id === selectedPatternId
                   ? "is-selected"
                   : "";
-
 
               return `
 
@@ -385,7 +376,6 @@ function createPatternPickerMarkup(
       selectedPatternId
     );
 
-
   return `
 
     <div class="field-group pattern-field-group">
@@ -394,13 +384,11 @@ function createPatternPickerMarkup(
         Pattern
       </label>
 
-
       <input
         type="hidden"
         class="component-pattern-id"
         value="${selectedPattern.id}"
       />
-
 
       <button
         type="button"
@@ -411,7 +399,6 @@ function createPatternPickerMarkup(
           class="pattern-trigger-preview pattern-swatch"
           style="${getSwatchStyle(selectedPattern)}"
         ></span>
-
 
         <span class="pattern-trigger-copy">
 
@@ -427,14 +414,12 @@ function createPatternPickerMarkup(
 
       </button>
 
-
       <div class="pattern-picker">
 
         ${createPatternPageMarkup(
           1,
           selectedPattern.id
         )}
-
 
         ${createPatternPageMarkup(
           2,
@@ -498,9 +483,7 @@ function createRGBGroup(
         Color ${colorNumber}
       </div>
 
-
       <div class="rgb-stack">
-
 
         <div class="rgb-row">
 
@@ -513,11 +496,11 @@ function createRGBGroup(
             class="color-${colorNumber}-red rgb-value"
             min="0"
             max="255"
+            step="1"
             value="${color.red ?? 0}"
           />
 
         </div>
-
 
         <div class="rgb-row">
 
@@ -530,11 +513,11 @@ function createRGBGroup(
             class="color-${colorNumber}-green rgb-value"
             min="0"
             max="255"
+            step="1"
             value="${color.green ?? 0}"
           />
 
         </div>
-
 
         <div class="rgb-row">
 
@@ -547,11 +530,11 @@ function createRGBGroup(
             class="color-${colorNumber}-blue rgb-value"
             min="0"
             max="255"
+            step="1"
             value="${color.blue ?? 0}"
           />
 
         </div>
-
 
       </div>
 
@@ -575,7 +558,6 @@ function createComponentRow(
       "div"
     );
 
-
   componentCard.className =
     "component-card";
 
@@ -588,7 +570,6 @@ function createComponentRow(
         Shoe Component
       </h3>
 
-
       <button
         type="button"
         class="remove-component-btn"
@@ -600,7 +581,6 @@ function createComponentRow(
 
 
     <div class="component-main-grid">
-
 
       <div class="field-group">
 
@@ -643,7 +623,6 @@ function createComponentRow(
         "pattern-01"
       )}
 
-
     </div>
 
 
@@ -652,7 +631,6 @@ function createComponentRow(
       <div class="component-section-title">
         Pattern Colors
       </div>
-
 
       <div class="color-grid">
 
@@ -682,9 +660,7 @@ function createComponentRow(
         Pattern Position
       </div>
 
-
       <div class="position-grid">
-
 
         <div class="field-group">
 
@@ -695,9 +671,15 @@ function createComponentRow(
           <input
             type="number"
             class="component-x"
+            min="0.50"
+            max="12.00"
             step="0.01"
             value="${component.x ?? "0.00"}"
           />
+
+          <span class="field-range">
+            0.50 – 12.00
+          </span>
 
         </div>
 
@@ -722,7 +704,6 @@ function createComponentRow(
           </span>
 
         </div>
-
 
       </div>
 
@@ -772,34 +753,39 @@ function wireComponentCard(
       ".remove-component-btn"
     );
 
-
   const patternTrigger =
     componentCard.querySelector(
       ".pattern-picker-trigger"
     );
-
 
   const hiddenPatternInput =
     componentCard.querySelector(
       ".component-pattern-id"
     );
 
-
   const previewSwatch =
     componentCard.querySelector(
       ".pattern-trigger-preview"
     );
-
 
   const patternOptions =
     componentCard.querySelectorAll(
       ".pattern-option"
     );
 
-
   const rgbInputs =
     componentCard.querySelectorAll(
       ".rgb-value"
+    );
+
+  const scaleInput =
+    componentCard.querySelector(
+      ".component-x"
+    );
+
+  const rotationInput =
+    componentCard.querySelector(
+      ".component-y"
     );
 
 
@@ -823,6 +809,34 @@ function wireComponentCard(
   );
 
 
+  /* SCALE LIMITS */
+
+  scaleInput.addEventListener(
+    "change",
+    function () {
+
+      clampScaleInput(
+        scaleInput
+      );
+
+    }
+  );
+
+
+  /* ROTATION LIMITS */
+
+  rotationInput.addEventListener(
+    "input",
+    function () {
+
+      clampRotationInput(
+        rotationInput
+      );
+
+    }
+  );
+
+
   /* REMOVE COMPONENT */
 
   removeBtn.addEventListener(
@@ -830,7 +844,6 @@ function wireComponentCard(
     function () {
 
       componentCard.remove();
-
 
       trackEvent(
         "solelab_remove_component"
@@ -851,17 +864,14 @@ function wireComponentCard(
           "pattern-picker-open"
         );
 
-
       closeAllPatternPickers(
         componentCard
       );
-
 
       componentCard.classList.toggle(
         "pattern-picker-open",
         !isOpen
       );
-
 
       trackEvent(
         "solelab_open_pattern_picker"
@@ -883,16 +893,13 @@ function wireComponentCard(
           const patternId =
             option.dataset.patternId;
 
-
           const selectedPattern =
             getPatternById(
               patternId
             );
 
-
           hiddenPatternInput.value =
             selectedPattern.id;
-
 
           previewSwatch.setAttribute(
             "style",
@@ -900,7 +907,6 @@ function wireComponentCard(
               selectedPattern
             )
           );
-
 
           patternOptions.forEach(
             item => {
@@ -912,16 +918,13 @@ function wireComponentCard(
             }
           );
 
-
           option.classList.add(
             "is-selected"
           );
 
-
           componentCard.classList.remove(
             "pattern-picker-open"
           );
-
 
           trackEvent(
             "solelab_select_pattern",
@@ -939,6 +942,96 @@ function wireComponentCard(
 
     }
   );
+
+}
+
+
+/* ======================================================
+   RGB LIMITS
+====================================================== */
+
+function clampRGBInput(
+  input
+) {
+
+  let value =
+    Number(
+      input.value
+    );
+
+
+  if (value < 0) {
+    value = 0;
+  }
+
+
+  if (value > 255) {
+    value = 255;
+  }
+
+
+  input.value =
+    value;
+
+}
+
+
+/* ======================================================
+   SCALE LIMITS
+====================================================== */
+
+function clampScaleInput(
+  input
+) {
+
+  let value =
+    Number(
+      input.value
+    );
+
+
+  if (value < 0.50) {
+    value = 0.50;
+  }
+
+
+  if (value > 12.00) {
+    value = 12.00;
+  }
+
+
+  input.value =
+    value.toFixed(2);
+
+}
+
+
+/* ======================================================
+   ROTATION LIMITS
+====================================================== */
+
+function clampRotationInput(
+  input
+) {
+
+  let value =
+    Number(
+      input.value
+    );
+
+
+  if (value < 0) {
+    value = 0;
+  }
+
+
+  if (value > 6.28) {
+    value = 6.28;
+  }
+
+
+  input.value =
+    value.toFixed(2);
 
 }
 
@@ -976,40 +1069,6 @@ function getRGBValues(
       )
 
   };
-
-}
-
-
-/* ======================================================
-   RGB LIMITS
-====================================================== */
-
-function clampRGBInput(
-  input
-) {
-
-  let value =
-    Number(
-      input.value
-    );
-
-
-  if (value < 0) {
-
-    value = 0;
-
-  }
-
-
-  if (value > 255) {
-
-    value = 255;
-
-  }
-
-
-  input.value =
-    value;
 
 }
 
@@ -1113,6 +1172,20 @@ function validateComponents(
   ) {
 
     if (
+      component.x < 0.50 ||
+      component.x > 12.00
+    ) {
+
+      alert(
+        `${component.name}: X / Scale must be between 0.50 and 12.00.`
+      );
+
+      return false;
+
+    }
+
+
+    if (
       component.y < 0 ||
       component.y > 6.28
     ) {
@@ -1127,11 +1200,9 @@ function validateComponents(
 
 
     const colors = [
-
       component.color1,
       component.color2,
       component.color3
-
     ];
 
 
@@ -1141,11 +1212,9 @@ function validateComponents(
     ) {
 
       const values = [
-
         color.red,
         color.green,
         color.blue
-
       ];
 
 
@@ -1302,7 +1371,6 @@ function saveShoe() {
       : "solelab_save_shoe",
 
     {
-
       brand:
         shoe.brand,
 
@@ -1311,7 +1379,6 @@ function saveShoe() {
 
       componentCount:
         shoe.components.length
-
     }
 
   );
@@ -1345,9 +1412,7 @@ function editShoe(
 
 
   if (!shoe) {
-
     return;
-
   }
 
 
@@ -1394,13 +1459,8 @@ function editShoe(
 
 
   window.scrollTo({
-
-    top:
-      0,
-
-    behavior:
-      "smooth"
-
+    top: 0,
+    behavior: "smooth"
   });
 
 }
@@ -1555,7 +1615,6 @@ function renderSavedShoes() {
 
         <div class="saved-shoe-actions">
 
-
           <button
             type="button"
             class="button button-secondary edit-shoe"
@@ -1570,7 +1629,6 @@ function renderSavedShoes() {
           >
             Delete
           </button>
-
 
         </div>
 
