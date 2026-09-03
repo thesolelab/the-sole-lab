@@ -153,6 +153,10 @@ select {
   outline: none;
 }
 
+.component-material {
+  max-width: 360px;
+}
+
 .field-group input:focus,
 .field-group select:focus {
   border-color: #b7ef50;
