@@ -318,8 +318,15 @@ button {
 
 
 /* ======================================================
-   MAIN LAYOUT
+   MAIN PAGE AREA
 ====================================================== */
+
+.app-main {
+  width: 100%;
+
+  padding-top: 30px;
+  padding-bottom: 40px;
+}
 
 .app-shell {
   width: min(
@@ -328,9 +335,6 @@ button {
   );
 
   margin: 0 auto;
-
-  padding-top: 30px;
-  padding-bottom: 40px;
 }
 
 /* ======================================================
