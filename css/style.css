@@ -145,32 +145,6 @@ button {
   gap: 14px;
 }
 
-.brand-icon {
-  width: 50px;
-  height: 50px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  flex: 0 0 50px;
-
-  overflow: visible;
-}
-
-.brand-icon img {
-  display: block;
-
-  width: 46px;
-  height: 46px;
-
-  min-width: 46px;
-  min-height: 46px;
-
-  object-fit: contain;
-}
-
-
 /* ======================================================
    WORDMARK STRUCTURE
 ====================================================== */
@@ -1120,21 +1094,6 @@ input[type="number"]::-webkit-outer-spin-button {
 
   .brand-wordmark {
     min-width: 0;
-  }
-
-  .brand-icon {
-    width: 42px;
-    height: 42px;
-
-    flex: 0 0 42px;
-  }
-
-  .brand-icon img {
-    width: 40px;
-    height: 40px;
-
-    min-width: 40px;
-    min-height: 40px;
   }
 
   .brand-title {
