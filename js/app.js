@@ -802,24 +802,40 @@ function wireComponentCard(
     );
 
 
-  scaleInput.addEventListener(
+  function selectInputValue(input) {
+
+  input.addEventListener(
     "focus",
     function () {
-
-      scaleInput.select();
-
+      input.select();
     }
   );
 
-
-  rotationInput.addEventListener(
-    "focus",
+  input.addEventListener(
+    "click",
     function () {
-
-      rotationInput.select();
-
+      input.select();
     }
   );
+
+}
+
+
+rgbInputs.forEach(
+  input => {
+    selectInputValue(input);
+  }
+);
+
+
+selectInputValue(
+  scaleInput
+);
+
+
+selectInputValue(
+  rotationInput
+);
 
 
   /* RGB LIMITS */
