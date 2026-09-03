@@ -501,6 +501,7 @@ function createRGBGroup(
 
           <input
             type="number"
+            inputmode="numeric"
             class="color-${colorNumber}-red rgb-value"
             min="0"
             max="255"
@@ -518,6 +519,7 @@ function createRGBGroup(
 
           <input
             type="number"
+            inputmode="numeric"
             class="color-${colorNumber}-green rgb-value"
             min="0"
             max="255"
@@ -535,6 +537,7 @@ function createRGBGroup(
 
           <input
             type="number"
+            inputmode="numeric"
             class="color-${colorNumber}-blue rgb-value"
             min="0"
             max="255"
@@ -678,6 +681,7 @@ function createComponentRow(
 
           <input
             type="number"
+            inputmode="decimal"
             class="component-x"
             min="0.50"
             max="12.00"
@@ -700,6 +704,7 @@ function createComponentRow(
 
           <input
             type="number"
+            inputmode="decimal"
             class="component-y"
             min="0.00"
             max="6.28"
