@@ -225,63 +225,53 @@ function createComponentRow(component = {}) {
 
       <div class="field-group color-field-group">
 
-        <label>
-          RGB Color
-        </label>
+  <label>
+    RGB Color
+  </label>
 
-        <div class="rgb-inputs">
+  <div class="rgb-stack">
 
-          <div class="rgb-field">
+    <div class="rgb-row">
+      <span class="rgb-label">R:</span>
 
-            <span>R</span>
-
-            <input
-              type="number"
-              class="component-red"
-              min="0"
-              max="255"
-              placeholder="0"
-              value="${component.red ?? ""}"
-            />
-
-          </div>
+      <input
+        type="number"
+        class="component-red rgb-value"
+        min="0"
+        max="255"
+        value="${component.red ?? 0}"
+      />
+    </div>
 
 
-          <div class="rgb-field">
+    <div class="rgb-row">
+      <span class="rgb-label">G:</span>
 
-            <span>G</span>
-
-            <input
-              type="number"
-              class="component-green"
-              min="0"
-              max="255"
-              placeholder="0"
-              value="${component.green ?? ""}"
-            />
-
-          </div>
+      <input
+        type="number"
+        class="component-green rgb-value"
+        min="0"
+        max="255"
+        value="${component.green ?? 0}"
+      />
+    </div>
 
 
-          <div class="rgb-field">
+    <div class="rgb-row">
+      <span class="rgb-label">B:</span>
 
-            <span>B</span>
+      <input
+        type="number"
+        class="component-blue rgb-value"
+        min="0"
+        max="255"
+        value="${component.blue ?? 0}"
+      />
+    </div>
 
-            <input
-              type="number"
-              class="component-blue"
-              min="0"
-              max="255"
-              placeholder="0"
-              value="${component.blue ?? ""}"
-            />
+  </div>
 
-          </div>
-
-        </div>
-
-      </div>
-
+</div>
 
       <div class="field-group field-full">
 
