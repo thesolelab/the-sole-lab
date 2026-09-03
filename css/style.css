@@ -1,1 +1,333 @@
+/* ======================================================
+   THE SOLE LAB
+====================================================== */
 
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #0d1117;
+  color: #f5f5f5;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+
+/* ======================================================
+   LAYOUT
+====================================================== */
+
+.app-shell {
+  width: min(1200px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0 80px;
+}
+
+
+/* ======================================================
+   HEADER
+====================================================== */
+
+.site-header {
+  margin-bottom: 32px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.brand-the {
+  color: #ffffff;
+}
+
+.brand-sole {
+  color: #c7c7c7;
+}
+
+.brand-lab {
+  color: #b7ef50;
+}
+
+.site-subtitle {
+  margin: 8px 0 0;
+  color: #8b949e;
+}
+
+
+/* ======================================================
+   PANELS
+====================================================== */
+
+.panel {
+  margin-bottom: 24px;
+  padding: 24px;
+
+  background: #161b22;
+
+  border: 1px solid #30363d;
+  border-radius: 12px;
+}
+
+.section-heading {
+  margin-bottom: 22px;
+}
+
+.section-heading h1,
+.section-heading h2 {
+  margin: 0 0 6px;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #8b949e;
+}
+
+.section-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+
+/* ======================================================
+   FORMS
+====================================================== */
+
+.form-grid,
+.component-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field-full {
+  grid-column: 1 / -1;
+}
+
+.field-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #c9d1d9;
+}
+
+.field-group input,
+.field-group select {
+  width: 100%;
+
+  padding: 12px 13px;
+
+  background: #0d1117;
+  color: #ffffff;
+
+  border: 1px solid #30363d;
+  border-radius: 7px;
+
+  outline: none;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+  border-color: #b7ef50;
+}
+
+
+/* ======================================================
+   COMPONENTS
+====================================================== */
+
+.component-card {
+  margin-top: 18px;
+  padding: 20px;
+
+  background: #0d1117;
+
+  border: 1px solid #30363d;
+  border-radius: 10px;
+}
+
+.component-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 18px;
+}
+
+.component-card-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.remove-component-btn {
+  padding: 7px 10px;
+
+  background: transparent;
+  color: #ff7b72;
+
+  border: 0;
+
+  cursor: pointer;
+}
+
+
+/* ======================================================
+   BUTTONS
+====================================================== */
+
+.button {
+  padding: 11px 17px;
+
+  border: 0;
+  border-radius: 7px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.button-primary {
+  background: #b7ef50;
+  color: #111111;
+}
+
+.button-secondary {
+  background: #21262d;
+  color: #ffffff;
+
+  border: 1px solid #30363d;
+}
+
+.button-danger {
+  background: #3a1719;
+  color: #ff7b72;
+
+  border: 1px solid #6e292e;
+}
+
+.action-bar {
+  display: flex;
+  gap: 12px;
+
+  margin-bottom: 24px;
+}
+
+
+/* ======================================================
+   SAVED SHOES
+====================================================== */
+
+.saved-shoes-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.saved-shoe-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  min-height: 190px;
+
+  padding: 20px;
+
+  background: #0d1117;
+
+  border: 1px solid #30363d;
+  border-radius: 10px;
+}
+
+.saved-shoe-card h3 {
+  margin: 10px 0 6px;
+}
+
+.saved-shoe-card p {
+  margin: 0 0 12px;
+  color: #8b949e;
+}
+
+.saved-version {
+  display: inline-block;
+
+  padding: 5px 8px;
+
+  background: #1f2b19;
+  color: #b7ef50;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.component-count {
+  font-size: 13px;
+  color: #8b949e;
+}
+
+.saved-shoe-actions {
+  display: flex;
+  gap: 8px;
+
+  margin-top: 20px;
+}
+
+.empty-state {
+  padding: 30px;
+
+  text-align: center;
+  color: #8b949e;
+
+  border: 1px dashed #30363d;
+  border-radius: 8px;
+}
+
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media (max-width: 700px) {
+
+  .form-grid,
+  .component-grid,
+  .saved-shoes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+}
