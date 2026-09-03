@@ -154,7 +154,8 @@ select {
 }
 
 .component-material {
-  max-width: 360px;
+  width: 320px !important;
+  max-width: 100%;
 }
 
 .field-group input:focus,
