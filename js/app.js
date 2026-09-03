@@ -1734,6 +1734,525 @@ document.addEventListener(
   }
 );
 
+/* ======================================================
+   JPEG EXPORT
+====================================================== */
+
+function loadImage(src) {
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const image =
+        new Image();
+
+      image.onload =
+        () => resolve(image);
+
+      image.onerror =
+        reject;
+
+      image.src =
+        src;
+
+    }
+  );
+
+}
+
+
+function slugifyFileName(text) {
+
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+}
+
+
+function drawRoundedRect(
+  ctx,
+  x,
+  y,
+  width,
+  height,
+  radius
+) {
+
+  ctx.beginPath();
+
+  ctx.roundRect(
+    x,
+    y,
+    width,
+    height,
+    radius
+  );
+
+  ctx.fill();
+
+}
+
+
+function drawRGBColumn(
+  ctx,
+  title,
+  color,
+  x,
+  y
+) {
+
+  ctx.fillStyle =
+    "#9ba6b2";
+
+  ctx.font =
+    "700 22px Arial";
+
+  ctx.fillText(
+    title,
+    x,
+    y
+  );
+
+
+  ctx.fillStyle =
+    "#ffffff";
+
+  ctx.font =
+    "700 26px Arial";
+
+  ctx.fillText(
+    `R  ${color.red}`,
+    x,
+    y + 42
+  );
+
+  ctx.fillText(
+    `G  ${color.green}`,
+    x,
+    y + 80
+  );
+
+  ctx.fillText(
+    `B  ${color.blue}`,
+    x,
+    y + 118
+  );
+
+}
+
+
+async function downloadRecipeJPEG() {
+
+  const shoeName =
+    shoeNameInput.value.trim();
+
+
+  if (!shoeName) {
+
+    alert(
+      "Enter a shoe name before downloading."
+    );
+
+    return;
+
+  }
+
+
+  const components =
+    getComponentValues();
+
+
+  if (
+    components.length === 0
+  ) {
+
+    alert(
+      "Add at least one shoe component before downloading."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !validateComponents(
+      components
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  const canvasWidth =
+    1400;
+
+  const headerHeight =
+    300;
+
+  const componentHeight =
+    390;
+
+  const footerHeight =
+    100;
+
+  const canvasHeight =
+    headerHeight +
+    (
+      components.length *
+      componentHeight
+    ) +
+    footerHeight;
+
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+  canvas.width =
+    canvasWidth;
+
+  canvas.height =
+    canvasHeight;
+
+
+  const ctx =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  /* BACKGROUND */
+
+  ctx.fillStyle =
+    "#0e1117";
+
+  ctx.fillRect(
+    0,
+    0,
+    canvasWidth,
+    canvasHeight
+  );
+
+
+  /* HEADER */
+
+  ctx.fillStyle =
+    "#ffffff";
+
+  ctx.font =
+    "800 34px Arial";
+
+  ctx.fillText(
+    "THE SOLE",
+    80,
+    80
+  );
+
+
+  ctx.fillStyle =
+    "#b7ef50";
+
+  ctx.fillText(
+    "LAB",
+    270,
+    80
+  );
+
+
+  ctx.fillStyle =
+    "#ffffff";
+
+  ctx.font =
+    "800 52px Arial";
+
+  ctx.fillText(
+    shoeName,
+    80,
+    155
+  );
+
+
+  ctx.fillStyle =
+    "#9ba6b2";
+
+  ctx.font =
+    "600 26px Arial";
+
+  ctx.fillText(
+    `${brandSelect.value}  •  ${gameVersionSelect.value}`,
+    80,
+    205
+  );
+
+
+  ctx.fillStyle =
+    "#2a3441";
+
+  ctx.fillRect(
+    80,
+    245,
+    1240,
+    2
+  );
+
+
+  /* COMPONENTS */
+
+  for (
+    let index = 0;
+    index < components.length;
+    index++
+  ) {
+
+    const component =
+      components[index];
+
+    const startY =
+      headerHeight +
+      (
+        index *
+        componentHeight
+      );
+
+
+    /* COMPONENT CARD */
+
+    ctx.fillStyle =
+      "#161b22";
+
+    drawRoundedRect(
+      ctx,
+      80,
+      startY,
+      1240,
+      340,
+      18
+    );
+
+
+    /* COMPONENT NAME */
+
+    ctx.fillStyle =
+      "#ffffff";
+
+    ctx.font =
+      "800 32px Arial";
+
+    ctx.fillText(
+      component.name,
+      120,
+      startY + 55
+    );
+
+
+    /* MATERIAL */
+
+    ctx.fillStyle =
+      "#9ba6b2";
+
+    ctx.font =
+      "600 21px Arial";
+
+    ctx.fillText(
+      `Material: ${component.material}`,
+      120,
+      startY + 95
+    );
+
+
+    /* PATTERN SWATCH */
+
+    const pattern =
+      getPatternById(
+        component.patternId
+      );
+
+
+    try {
+
+      const patternImage =
+        await loadImage(
+          pattern.image
+        );
+
+
+      ctx.drawImage(
+        patternImage,
+        1060,
+        startY + 35,
+        200,
+        200
+      );
+
+    }
+
+    catch (error) {
+
+      console.warn(
+        "Pattern image could not be loaded.",
+        error
+      );
+
+    }
+
+
+    /* COLORS */
+
+    drawRGBColumn(
+      ctx,
+      "COLOR 1",
+      component.color1,
+      120,
+      startY + 155
+    );
+
+
+    drawRGBColumn(
+      ctx,
+      "COLOR 2",
+      component.color2,
+      370,
+      startY + 155
+    );
+
+
+    drawRGBColumn(
+      ctx,
+      "COLOR 3",
+      component.color3,
+      620,
+      startY + 155
+    );
+
+
+    /* SCALE / ROTATION */
+
+    ctx.fillStyle =
+      "#9ba6b2";
+
+    ctx.font =
+      "700 20px Arial";
+
+    ctx.fillText(
+      "X — SCALE",
+      860,
+      startY + 275
+    );
+
+
+    ctx.fillText(
+      "Y — ROTATION",
+      1060,
+      startY + 275
+    );
+
+
+    ctx.fillStyle =
+      "#ffffff";
+
+    ctx.font =
+      "800 28px Arial";
+
+    ctx.fillText(
+      Number(
+        component.x
+      ).toFixed(2),
+      860,
+      startY + 315
+    );
+
+
+    ctx.fillText(
+      Number(
+        component.y
+      ).toFixed(2),
+      1060,
+      startY + 315
+    );
+
+  }
+
+
+  /* FOOTER */
+
+  ctx.fillStyle =
+    "#6e7681";
+
+  ctx.font =
+    "600 18px Arial";
+
+  ctx.fillText(
+    "Created with The Sole Lab",
+    80,
+    canvasHeight - 45
+  );
+
+
+  /* DOWNLOAD */
+
+  const fileName =
+    slugifyFileName(
+      shoeName
+    );
+
+
+  const link =
+    document.createElement(
+      "a"
+    );
+
+
+  link.download =
+    `${fileName}-2k27.jpg`;
+
+
+  link.href =
+    canvas.toDataURL(
+      "image/jpeg",
+      0.92
+    );
+
+
+  link.click();
+
+
+  trackEvent(
+    "solelab_download_jpeg",
+    {
+      brand:
+        brandSelect.value,
+
+      componentCount:
+        components.length
+    }
+  );
+
+}
+
+
+/* ======================================================
+   JPEG DOWNLOAD BUTTON
+====================================================== */
+
+const downloadRecipeBtn =
+  document.getElementById(
+    "downloadRecipeBtn"
+  );
+
+
+downloadRecipeBtn.addEventListener(
+  "click",
+  downloadRecipeJPEG
+);
+
 
 /* ======================================================
    INITIALIZE APP
