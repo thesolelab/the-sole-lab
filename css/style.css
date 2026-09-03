@@ -105,30 +105,36 @@ button {
 ====================================================== */
 
 .app-header {
-  border-bottom: 1px solid var(--border-primary);
-
-  background: rgba(14, 17, 23, 0.94);
-
   position: sticky;
   top: 0;
   z-index: 100;
+
+  width: 100%;
+
+  border-bottom: 1px solid var(--border-primary);
+
+  background: rgba(14, 17, 23, 0.94);
 
   backdrop-filter: blur(12px);
 }
 
 .app-header .container {
-  min-height: 82px;
+  width: min(
+    calc(100% - 40px),
+    1200px
+  );
+
+  min-height: 66px;
+
+  margin: 0 auto;
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
-
-  gap: 24px;
 }
 
 
 /* ======================================================
-   SOLE LAB BRAND WORDMARK
+   SOLE LAB BRAND
 ====================================================== */
 
 .brand {
@@ -139,34 +145,27 @@ button {
 .brand-lockup {
   display: flex;
   align-items: center;
-
-  width: auto;
-
-  gap: 14px;
 }
-
-/* ======================================================
-   WORDMARK STRUCTURE
-====================================================== */
 
 .brand-wordmark {
   display: flex;
   flex-direction: column;
 
-  flex: 1 1 auto;
-
-  min-width: 220px;
+  width: max-content;
 }
+
+
+/* ======================================================
+   EYEBROW
+====================================================== */
 
 .brand-eyebrow {
   display: flex;
   align-items: center;
 
-  gap: 8px;
+  gap: 7px;
 
-  width: 100%;
-
-  margin-bottom: -2px;
+  margin-bottom: -1px;
 }
 
 .brand-the {
@@ -176,10 +175,10 @@ button {
     "Barlow Condensed",
     sans-serif;
 
-  font-size: 0.72rem;
+  font-size: 0.55rem;
   font-weight: 700;
 
-  letter-spacing: 0.34em;
+  letter-spacing: 0.32em;
 
   line-height: 1;
 
@@ -187,8 +186,7 @@ button {
 }
 
 .brand-top-rule {
-  flex: 0 0 105px;
-
+  width: 78px;
   height: 1px;
 
   background:
@@ -201,34 +199,30 @@ button {
 
 
 /* ======================================================
-   MAIN BRAND TITLE
+   BRAND TITLE
 ====================================================== */
 
 .brand-title {
   display: flex;
   align-items: baseline;
 
-  gap: 7px;
+  gap: 5px;
 
   font-family:
     "Barlow Condensed",
     sans-serif;
 
-  font-size: 2.15rem;
+  font-size: 1.65rem;
   font-style: italic;
   font-weight: 800;
 
-  line-height: 0.98;
+  line-height: 0.95;
 
   letter-spacing: -0.035em;
 
   text-transform: uppercase;
 
   white-space: nowrap;
-
-  padding-right: 8px;
-
-  overflow: visible;
 
   filter:
     drop-shadow(
@@ -241,8 +235,6 @@ button {
 
 .brand-player {
   display: inline-block;
-
-  padding-right: 4px;
 
   background:
     linear-gradient(
@@ -258,9 +250,6 @@ button {
   -webkit-text-fill-color: transparent;
 
   color: transparent;
-
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 
@@ -269,7 +258,7 @@ button {
 .brand-lab {
   display: inline-block;
 
-  padding-right: 8px;
+  padding-right: 4px;
 
   background:
     linear-gradient(
@@ -285,28 +274,25 @@ button {
   -webkit-text-fill-color: transparent;
 
   color: transparent;
-
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 
 /* ======================================================
-   BOTTOM WORDMARK RULE
+   BOTTOM RULE
 ====================================================== */
 
 .brand-bottom-rule {
-  width: 145px;
+  width: 105px;
   height: 2px;
 
-  margin-top: 4px;
+  margin-top: 3px;
 
   background:
     linear-gradient(
       to right,
       #aeb7c2 0%,
       #c6cbd0 45%,
-      var(--sole-accent) 100%
+      #8ac73f 100%
     );
 
   opacity: 0.9;
@@ -314,25 +300,23 @@ button {
 
 
 /* ======================================================
-   BRAND SUBTITLE
+   SUBTITLE
 ====================================================== */
 
 .brand-subtitle {
-  margin: 5px 0 0;
+  margin: 4px 0 0;
 
   color: var(--text-secondary);
 
-  font-size: 0.72rem;
+  font-size: 0.55rem;
   font-weight: 600;
 
-  letter-spacing: 0.035em;
+  letter-spacing: 0.025em;
 
   line-height: 1.2;
 
   white-space: nowrap;
 }
-
-
 /* ======================================================
    MAIN LAYOUT
 ====================================================== */
