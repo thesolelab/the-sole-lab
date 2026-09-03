@@ -55,6 +55,29 @@ const MATERIALS_2K27 = [
   "Twill Weave"
 ];
 
+/* ======================================================
+   2K27 BRANDS
+====================================================== */
+const BRANDS_2K27 = [
+  "Nike",
+  "Jordan",
+  "Converse",
+  "adidas",
+  "Puma",
+  "New Balance",
+  "Reebok",
+  "Under Armour",
+  "Anta",
+  "Li-Ning",
+  "AND 1",
+  "Peak",
+  "Rigorer",
+  "Qiaodan",
+  "361",
+  "Skechers",
+  "741",
+  "2K Brand"
+];
 
 /* ======================================================
    DOM ELEMENTS
