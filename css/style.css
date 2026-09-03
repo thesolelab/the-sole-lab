@@ -6,24 +6,28 @@
 ====================================================== */
 
 :root {
+
+  /* Backgrounds */
   --bg-main: #0e1117;
   --bg-panel: #161b22;
   --bg-panel-secondary: #1f2630;
   --bg-input: #10151c;
 
+  /* Borders */
   --border-primary: #2a3441;
   --border-hover: #3a4758;
 
+  /* Text */
   --text-primary: #f5f7fa;
   --text-secondary: #9ba6b2;
   --text-muted: #6f7b88;
 
+  /* Sole Lab */
   --sole-accent: #8ac73f;
   --sole-accent-hover: #78b333;
 
-  --danger: #ff5a67;
-
-  --content-width: 1200px;
+  /* Layout */
+  --content-width: 1400px;
   --panel-radius: 12px;
 }
 
@@ -47,7 +51,7 @@ body {
   background:
     radial-gradient(
       circle at top left,
-      rgba(138, 199, 63, 0.08),
+      rgba(59, 130, 246, 0.08),
       transparent 28%
     ),
     var(--bg-main);
@@ -124,11 +128,6 @@ button {
    SOLE LAB BRAND WORDMARK
 ====================================================== */
 
-.brand {
-  display: flex;
-  align-items: center;
-}
-
 .brand-lockup {
   display: flex;
   align-items: center;
@@ -141,14 +140,8 @@ button {
   flex-direction: column;
 
   flex: 1 1 auto;
-
   min-width: 220px;
 }
-
-
-/* ======================================================
-   BRAND EYEBROW
-====================================================== */
 
 .brand-eyebrow {
   display: flex;
@@ -193,7 +186,7 @@ button {
 
 
 /* ======================================================
-   BRAND TITLE
+   MAIN TITLE
 ====================================================== */
 
 .brand-title {
@@ -219,7 +212,6 @@ button {
   white-space: nowrap;
 
   padding-right: 8px;
-
   overflow: visible;
 
   filter:
@@ -337,9 +329,9 @@ button {
 
   margin: 0 auto;
 
-  padding: 30px 0 80px;
+  padding-top: 30px;
+  padding-bottom: 40px;
 }
-
 
 /* ======================================================
    PANELS
