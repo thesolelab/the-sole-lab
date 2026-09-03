@@ -6,6 +6,7 @@
   box-sizing: border-box;
 }
 
+
 html {
   font-family:
     Arial,
@@ -13,11 +14,14 @@ html {
     sans-serif;
 }
 
+
 body {
   margin: 0;
+
   background: #0d1117;
   color: #f5f5f5;
 }
+
 
 button,
 input,
@@ -31,9 +35,17 @@ select {
 ====================================================== */
 
 .app-shell {
-  width: min(1200px, calc(100% - 32px));
+  width: min(
+    1200px,
+    calc(100% - 32px)
+  );
+
   margin: 0 auto;
-  padding: 40px 0 80px;
+
+  padding:
+    40px
+    0
+    80px;
 }
 
 
@@ -45,30 +57,38 @@ select {
   margin-bottom: 32px;
 }
 
+
 .brand {
   display: flex;
   align-items: center;
+
   gap: 8px;
 
   font-size: 30px;
   font-weight: 800;
+
   letter-spacing: 1px;
 }
+
 
 .brand-the {
   color: #ffffff;
 }
 
+
 .brand-sole {
   color: #ffffff;
 }
+
 
 .brand-lab {
   color: #b7ef50;
 }
 
+
 .site-subtitle {
   margin: 8px 0 0;
+
   color: #8b949e;
 }
 
@@ -79,84 +99,108 @@ select {
 
 .panel {
   margin-bottom: 24px;
+
   padding: 24px;
 
   background: #161b22;
 
-  border: 1px solid #30363d;
+  border:
+    1px solid
+    #30363d;
+
   border-radius: 12px;
 }
+
 
 .section-heading {
   margin-bottom: 22px;
 }
 
+
 .section-heading h1,
 .section-heading h2 {
-  margin: 0 0 6px;
+  margin:
+    0
+    0
+    6px;
 }
+
 
 .section-heading p {
   margin: 0;
+
   color: #8b949e;
 }
 
+
 .section-heading-row {
   display: flex;
-  justify-content: space-between;
+
+  justify-content:
+    space-between;
+
   align-items: center;
+
   gap: 20px;
 }
 
 
 /* ======================================================
-   FORMS
+   FORM FIELDS
 ====================================================== */
 
-.form-grid,
-.component-grid {
+.shoe-info-grid {
   display: grid;
+
   grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    minmax(0, 2fr)
+    minmax(220px, 1fr)
+    minmax(220px, 1fr);
 
   gap: 18px;
 }
 
+
 .field-group {
   display: flex;
+
   flex-direction: column;
+
   gap: 7px;
 }
 
-.field-full {
-  grid-column: 1 / -1;
-}
 
 .field-group label {
   font-size: 13px;
   font-weight: 700;
+
   color: #c9d1d9;
 }
+
 
 .field-group input,
 .field-group select {
   width: 100%;
 
-  padding: 12px 13px;
+  min-height: 46px;
+
+  padding:
+    11px
+    13px;
 
   background: #0d1117;
+
   color: #ffffff;
 
-  border: 1px solid #30363d;
+  border:
+    1px solid
+    #30363d;
+
   border-radius: 7px;
 
   outline: none;
 }
 
-.component-material {
-  width: 320px !important;
-  max-width: 100%;
-}
 
 .field-group input:focus,
 .field-group select:focus {
@@ -164,42 +208,244 @@ select {
 }
 
 
+.compact-select {
+  width: 320px !important;
+
+  max-width: 100%;
+}
+
+
 /* ======================================================
-   COMPONENTS
+   COMPONENT CARD
 ====================================================== */
 
 .component-card {
-  margin-top: 18px;
-  padding: 20px;
+  margin-top: 20px;
+
+  padding: 22px;
 
   background: #0d1117;
 
-  border: 1px solid #30363d;
-  border-radius: 10px;
+  border:
+    1px solid
+    #30363d;
+
+  border-radius: 12px;
 }
+
 
 .component-card-header {
   display: flex;
-  justify-content: space-between;
+
+  justify-content:
+    space-between;
+
   align-items: center;
 
-  margin-bottom: 18px;
+  padding-bottom: 18px;
+
+  margin-bottom: 20px;
+
+  border-bottom:
+    1px solid
+    #21262d;
 }
+
 
 .component-card-header h3 {
   margin: 0;
-  font-size: 16px;
+
+  font-size: 17px;
 }
+
 
 .remove-component-btn {
   padding: 7px 10px;
 
   background: transparent;
+
   color: #ff7b72;
 
   border: 0;
 
   cursor: pointer;
+}
+
+
+/* ======================================================
+   COMPONENT MAIN FIELDS
+====================================================== */
+
+.component-main-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+}
+
+
+/* ======================================================
+   COMPONENT SECTIONS
+====================================================== */
+
+.component-section {
+  margin-top: 26px;
+}
+
+
+.component-section-title {
+  margin-bottom: 12px;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+
+  color: #8b949e;
+}
+
+
+/* ======================================================
+   PATTERN COLORS
+====================================================== */
+
+.color-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 16px;
+}
+
+
+.color-card {
+  padding: 16px;
+
+  background: #161b22;
+
+  border:
+    1px solid
+    #30363d;
+
+  border-radius: 9px;
+}
+
+
+.color-card-title {
+  margin-bottom: 12px;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  color: #f0f3f6;
+}
+
+
+.rgb-stack {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.rgb-row {
+  display: grid;
+
+  grid-template-columns:
+    32px
+    minmax(0, 1fr);
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+.rgb-label {
+  font-size: 17px;
+  font-weight: 800;
+
+  color: #f5f5f5;
+}
+
+
+.rgb-value {
+  width: 100%;
+
+  min-height: 48px;
+
+  padding:
+    8px
+    12px;
+
+  text-align: center;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  background: #252b35 !important;
+
+  color: #ffffff;
+
+  border:
+    2px solid
+    #454b58 !important;
+
+  border-radius: 5px;
+}
+
+
+.rgb-value:focus {
+  border-color:
+    #b7ef50 !important;
+}
+
+
+/* ======================================================
+   X / Y PATTERN VALUES
+====================================================== */
+
+.position-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 280px)
+    );
+
+  gap: 18px;
+}
+
+
+.field-range {
+  margin-top: 1px;
+
+  font-size: 11px;
+
+  color: #6e7681;
+}
+
+
+/* ======================================================
+   NOTES
+====================================================== */
+
+.component-notes-field {
+  margin-top: 26px;
 }
 
 
@@ -208,9 +454,12 @@ select {
 ====================================================== */
 
 .button {
-  padding: 11px 17px;
+  padding:
+    11px
+    17px;
 
   border: 0;
+
   border-radius: 7px;
 
   font-weight: 700;
@@ -218,27 +467,39 @@ select {
   cursor: pointer;
 }
 
+
 .button-primary {
   background: #b7ef50;
+
   color: #111111;
 }
 
+
 .button-secondary {
   background: #21262d;
+
   color: #ffffff;
 
-  border: 1px solid #30363d;
+  border:
+    1px solid
+    #30363d;
 }
+
 
 .button-danger {
   background: #3a1719;
+
   color: #ff7b72;
 
-  border: 1px solid #6e292e;
+  border:
+    1px solid
+    #6e292e;
 }
+
 
 .action-bar {
   display: flex;
+
   gap: 12px;
 
   margin-bottom: 24px;
@@ -251,16 +512,24 @@ select {
 
 .saved-shoes-grid {
   display: grid;
+
   grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
 
   gap: 16px;
 }
 
+
 .saved-shoe-card {
   display: flex;
+
   flex-direction: column;
-  justify-content: space-between;
+
+  justify-content:
+    space-between;
 
   min-height: 190px;
 
@@ -268,25 +537,41 @@ select {
 
   background: #0d1117;
 
-  border: 1px solid #30363d;
+  border:
+    1px solid
+    #30363d;
+
   border-radius: 10px;
 }
 
+
 .saved-shoe-card h3 {
-  margin: 10px 0 6px;
+  margin:
+    10px
+    0
+    6px;
 }
 
+
 .saved-shoe-card p {
-  margin: 0 0 12px;
+  margin:
+    0
+    0
+    12px;
+
   color: #8b949e;
 }
+
 
 .saved-version {
   display: inline-block;
 
-  padding: 5px 8px;
+  padding:
+    5px
+    8px;
 
   background: #1f2b19;
+
   color: #b7ef50;
 
   border-radius: 999px;
@@ -295,25 +580,34 @@ select {
   font-weight: 700;
 }
 
+
 .component-count {
   font-size: 13px;
+
   color: #8b949e;
 }
 
+
 .saved-shoe-actions {
   display: flex;
+
   gap: 8px;
 
   margin-top: 20px;
 }
 
+
 .empty-state {
   padding: 30px;
 
   text-align: center;
+
   color: #8b949e;
 
-  border: 1px dashed #30363d;
+  border:
+    1px dashed
+    #30363d;
+
   border-radius: 8px;
 }
 
@@ -322,70 +616,42 @@ select {
    RESPONSIVE
 ====================================================== */
 
-@media (max-width: 700px) {
+@media (
+  max-width: 850px
+) {
 
-  .form-grid,
-  .component-grid,
-  .saved-shoes-grid {
-    grid-template-columns: 1fr;
+  .shoe-info-grid,
+  .component-main-grid,
+  .color-grid {
+    grid-template-columns:
+      1fr;
   }
+
+
+  .position-grid {
+    grid-template-columns:
+      1fr;
+  }
+
 
   .section-heading-row {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
   }
 
-}
 
-/* ======================================================
-   RGB COLOR INPUT
-====================================================== */
+  .saved-shoes-grid {
+    grid-template-columns:
+      1fr;
+  }
 
-.color-field-group {
-  width: 100%;
-}
 
-.rgb-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+  .compact-select {
+    width:
+      100% !important;
+  }
 
-.rgb-row {
-  display: grid;
-  grid-template-columns: 34px 1fr;
-  align-items: center;
-  gap: 10px;
-}
-
-.rgb-label {
-  font-size: 18px;
-  font-weight: 800;
-  color: #f5f5f5;
-}
-
-.rgb-value {
-  width: 100%;
-  min-height: 52px;
-
-  padding: 10px 14px;
-
-  text-align: center;
-
-  font-size: 22px;
-  font-weight: 700;
-
-  background: #2a2f3a;
-  color: #ffffff;
-
-  border: 2px solid #454b58;
-  border-radius: 6px;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-.rgb-value:focus {
-  border-color: #b7ef50;
-  outline: none;
 }
