@@ -5,6 +5,58 @@
 
 
 /* ======================================================
+   2K27 MATERIALS
+====================================================== */
+
+const MATERIALS_2K27 = [
+  "Default",
+  "Rubber",
+  "Metal",
+  "Suede",
+  "Leather",
+  "Patent Leather",
+  "Velvet",
+  "Fabric",
+  "Mesh",
+  "Crocodile",
+  "Denim Fabric",
+  "Felt Fabric",
+  "Fleece Fabric",
+  "Knit Fabric",
+  "Engineered Knit Fabric",
+  "Synthetic Fabric",
+  "Velvet Fabric",
+  "Glitter",
+  "Classic Leather",
+  "Patent Leather",
+  "Pebble Leather",
+  "Rugged Leather",
+  "Athletic Mesh",
+  "Brushed Linear Metal",
+  "Checker Metal",
+  "Chrome Metal",
+  "Diamond Metal",
+  "Roundhole Metal",
+  "Microfiber",
+  "Ostrich",
+  "Dull Plastic",
+  "Semi-shiny Plastic",
+  "Shiny Plastic",
+  "Pebble Rubber",
+  "Turing Rubber",
+  "Sequins",
+  "Snake",
+  "Fine Suede",
+  "Basket Weave",
+  "Birdeye Weave",
+  "Honeycomb Weave",
+  "Reversed Honeycomb Weave",
+  "Tabby Weave",
+  "Twill Weave"
+];
+
+
+/* ======================================================
    DOM ELEMENTS
 ====================================================== */
 
@@ -63,14 +115,45 @@ function saveShoesToStorage(shoes) {
 
 
 /* ======================================================
+   MATERIAL OPTIONS
+====================================================== */
+
+function getMaterialOptions(selectedMaterial = "Default") {
+
+  return MATERIALS_2K27
+    .map(material => {
+
+      const selected =
+        material === selectedMaterial
+          ? "selected"
+          : "";
+
+      return `
+        <option
+          value="${material}"
+          ${selected}
+        >
+          ${material}
+        </option>
+      `;
+
+    })
+    .join("");
+
+}
+
+
+/* ======================================================
    COMPONENT CREATION
 ====================================================== */
 
 function createComponentRow(component = {}) {
 
-  const componentCard = document.createElement("div");
+  const componentCard =
+    document.createElement("div");
 
-  componentCard.className = "component-card";
+  componentCard.className =
+    "component-card";
 
 
   componentCard.innerHTML = `
@@ -113,12 +196,13 @@ function createComponentRow(component = {}) {
           Material
         </label>
 
-        <input
-          type="text"
+        <select
           class="component-material"
-          placeholder="Example: Mesh"
-          value="${component.material || ""}"
-        />
+        >
+          ${getMaterialOptions(
+            component.material || "Default"
+          )}
+        </select>
 
       </div>
 
@@ -139,50 +223,62 @@ function createComponentRow(component = {}) {
       </div>
 
 
-      <div class="field-group">
+      <div class="field-group color-field-group">
 
         <label>
-          Hue
+          RGB Color
         </label>
 
-        <input
-          type="number"
-          class="component-hue"
-          placeholder="0"
-          value="${component.hue ?? ""}"
-        />
+        <div class="rgb-inputs">
 
-      </div>
+          <div class="rgb-field">
 
+            <span>R</span>
 
-      <div class="field-group">
+            <input
+              type="number"
+              class="component-red"
+              min="0"
+              max="255"
+              placeholder="0"
+              value="${component.red ?? ""}"
+            />
 
-        <label>
-          Saturation
-        </label>
-
-        <input
-          type="number"
-          class="component-saturation"
-          placeholder="0"
-          value="${component.saturation ?? ""}"
-        />
-
-      </div>
+          </div>
 
 
-      <div class="field-group">
+          <div class="rgb-field">
 
-        <label>
-          Brightness
-        </label>
+            <span>G</span>
 
-        <input
-          type="number"
-          class="component-brightness"
-          placeholder="0"
-          value="${component.brightness ?? ""}"
-        />
+            <input
+              type="number"
+              class="component-green"
+              min="0"
+              max="255"
+              placeholder="0"
+              value="${component.green ?? ""}"
+            />
+
+          </div>
+
+
+          <div class="rgb-field">
+
+            <span>B</span>
+
+            <input
+              type="number"
+              class="component-blue"
+              min="0"
+              max="255"
+              placeholder="0"
+              value="${component.blue ?? ""}"
+            />
+
+          </div>
+
+        </div>
 
       </div>
 
@@ -255,26 +351,26 @@ function getComponentValues() {
         material:
           card.querySelector(
             ".component-material"
-          ).value.trim(),
+          ).value,
 
         pattern:
           card.querySelector(
             ".component-pattern"
           ).value.trim(),
 
-        hue:
+        red:
           card.querySelector(
-            ".component-hue"
+            ".component-red"
           ).value,
 
-        saturation:
+        green:
           card.querySelector(
-            ".component-saturation"
+            ".component-green"
           ).value,
 
-        brightness:
+        blue:
           card.querySelector(
-            ".component-brightness"
+            ".component-blue"
           ).value,
 
         notes:
@@ -533,9 +629,7 @@ function renderSavedShoes() {
     savedShoesContainer.innerHTML = `
 
       <div class="empty-state">
-
         No shoes saved yet.
-
       </div>
 
     `;
