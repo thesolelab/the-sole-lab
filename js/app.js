@@ -1958,7 +1958,7 @@ async function downloadRecipeJPEG() {
 
 
   ctx.fillStyle =
-    "#b7ef50";
+    "#8ac73f";
 
   ctx.fillText(
     "LAB",
