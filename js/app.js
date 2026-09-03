@@ -469,6 +469,10 @@ function saveShoe() {
 
   saveShoesToStorage(shoes);
 
+   if (window.umami) {
+     umami.track("solelab_save_shoe");
+   }
+   
   resetForm();
 
   renderSavedShoes();
