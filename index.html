@@ -18,11 +18,12 @@
 
   <main class="app-shell">
 
-    <!-- ======================================================
+   <!-- ======================================================
          HEADER
     ====================================================== -->
 
     <header class="site-header">
+
       <div class="brand">
         <span class="brand-the">THE</span>
         <span class="brand-sole">SOLE</span>
@@ -32,6 +33,7 @@
       <p class="site-subtitle">
         NBA 2K Shoe Recipe Tracker
       </p>
+
     </header>
 
 
@@ -40,50 +42,70 @@
     ====================================================== -->
 
     <section class="panel">
+
       <div class="section-heading">
+
         <h1>Create Shoe Recipe</h1>
+
         <p>
           Save the exact values used to recreate your NBA 2K shoes.
         </p>
+
       </div>
 
-      <div class="form-grid">
+
+      <div class="shoe-info-grid">
 
         <div class="field-group">
-          <label for="shoeName">Shoe Name</label>
+
+          <label for="shoeName">
+            Shoe Name
+          </label>
+
           <input
             type="text"
             id="shoeName"
-            placeholder="Example: GT Cut 4 Wemby"
+            placeholder="Example: A'One Hyper Volt"
           />
+
         </div>
 
+
         <div class="field-group">
-          <label for="brand">Brand</label>
-          <input
-            type="text"
+
+          <label for="brand">
+            Brand
+          </label>
+
+          <select
             id="brand"
-            placeholder="Example: Nike"
-          />
+            class="compact-select"
+          ></select>
+
         </div>
 
-        <div class="field-group">
-          <label for="model">Model</label>
-          <input
-            type="text"
-            id="model"
-            placeholder="Example: GT Cut 4"
-          />
-        </div>
 
         <div class="field-group">
-          <label for="gameVersion">Game Version</label>
-          <select id="gameVersion">
-            <option value="NBA 2K27">NBA 2K27</option>
+
+          <label for="gameVersion">
+            Game Version
+          </label>
+
+          <select
+            id="gameVersion"
+            class="compact-select"
+          >
+
+            <option value="NBA 2K27">
+              NBA 2K27
+            </option>
+
           </select>
+
         </div>
 
       </div>
+
     </section>
 
 
@@ -94,21 +116,27 @@
     <section class="panel">
 
       <div class="section-heading section-heading-row">
+
         <div>
+
           <h2>Shoe Components</h2>
+
           <p>
-            Add each editable shoe section and record its values.
+            Add each shoe component and record the values shown in NBA 2K27.
           </p>
+
         </div>
 
-       <button
+
+        <button
           type="button"
           id="addComponentBtn"
           class="button button-secondary"
           data-umami-event="solelab_add_component"
-      >
+        >
           + Add Component
-      </button>
+        </button>
+
       </div>
 
 
@@ -131,10 +159,12 @@
         Save Shoe
       </button>
 
+
       <button
         type="button"
         id="clearFormBtn"
         class="button button-secondary"
+        data-umami-event="solelab_clear_form"
       >
         Clear Form
       </button>
@@ -149,11 +179,15 @@
     <section class="panel">
 
       <div class="section-heading">
+
         <h2>Saved Shoes</h2>
+
         <p>
           Recipes are currently stored in this browser.
         </p>
+
       </div>
+
 
       <div
         id="savedShoesContainer"
@@ -162,6 +196,7 @@
 
     </section>
 
+
   </main>
 
 
@@ -169,3 +204,6 @@
 
 </body>
 </html>
+2. js/app.js
+
+Replace the entire file with this.
