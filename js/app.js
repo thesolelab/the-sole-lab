@@ -671,7 +671,7 @@ function createComponentRow(
           <input
             type="number"
             class="component-x"
-            min="0.50"
+            min="0.00"
             max="12.00"
             step="0.01"
             value="${component.x ?? "0.00"}"
@@ -787,7 +787,19 @@ function wireComponentCard(
     componentCard.querySelector(
       ".component-y"
     );
+scaleInput.addEventListener(
+  "focus",
+  function () {
+    scaleInput.select();
+  }
+);
 
+rotationInput.addEventListener(
+  "focus",
+  function () {
+    rotationInput.select();
+  }
+);
 
   /* RGB LIMITS */
 
@@ -990,8 +1002,8 @@ function clampScaleInput(
     );
 
 
-  if (value < 0.50) {
-    value = 0.50;
+  if (value < 0) {
+    value = 0;
   }
 
 
