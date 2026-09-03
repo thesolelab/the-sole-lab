@@ -223,17 +223,10 @@ select {
 }
 
 .component-main-grid input,
+.component-main-grid select,
 .component-main-grid button {
   width: 100% !important;
   max-width: none;
-}
-
-#brand,
-#gameVersion,
-.component-material {
-  width: fit-content !important;
-  min-width: 180px;
-  max-width: 260px;
 }
 
 
