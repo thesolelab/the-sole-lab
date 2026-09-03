@@ -100,6 +100,14 @@ const PATTERNS_2K27 = Array.from(
 
 
 /* ======================================================
+   SOLE LAB LOGO
+====================================================== */
+
+const SOLE_LAB_LOGO =
+  "assets/icons/TSL Logo.png";
+
+
+/* ======================================================
    DOM ELEMENTS
 ====================================================== */
 
@@ -787,19 +795,27 @@ function wireComponentCard(
     componentCard.querySelector(
       ".component-y"
     );
-scaleInput.addEventListener(
-  "focus",
-  function () {
-    scaleInput.select();
-  }
-);
 
-rotationInput.addEventListener(
-  "focus",
-  function () {
-    rotationInput.select();
-  }
-);
+
+  scaleInput.addEventListener(
+    "focus",
+    function () {
+
+      scaleInput.select();
+
+    }
+  );
+
+
+  rotationInput.addEventListener(
+    "focus",
+    function () {
+
+      rotationInput.select();
+
+    }
+  );
+
 
   /* RGB LIMITS */
 
@@ -1734,6 +1750,7 @@ document.addEventListener(
   }
 );
 
+
 /* ======================================================
    JPEG EXPORT
 ====================================================== */
@@ -1750,7 +1767,11 @@ function loadImage(src) {
         () => resolve(image);
 
       image.onerror =
-        reject;
+        () => reject(
+          new Error(
+            `Could not load image: ${src}`
+          )
+        );
 
       image.src =
         src;
@@ -1942,30 +1963,88 @@ async function downloadRecipeJPEG() {
   );
 
 
-  /* HEADER */
+  /* ======================================================
+     EXPORT BRAND HEADER
+  ====================================================== */
 
-  ctx.fillStyle =
-    "#ffffff";
+  let brandTextX =
+    155;
+
+
+  try {
+
+    const logoImage =
+      await loadImage(
+        SOLE_LAB_LOGO
+      );
+
+
+    ctx.drawImage(
+      logoImage,
+      80,
+      36,
+      58,
+      58
+    );
+
+  }
+
+  catch (error) {
+
+    console.warn(
+      "Sole Lab logo could not be loaded.",
+      error
+    );
+
+
+    brandTextX =
+      80;
+
+  }
+
 
   ctx.font =
     "800 34px Arial";
 
+
+  /* THE SOLE */
+
+  ctx.fillStyle =
+    "#ffffff";
+
   ctx.fillText(
     "THE SOLE",
-    80,
+    brandTextX,
     80
   );
 
+
+  /*
+    Measure the exact width of THE SOLE,
+    then add 14px of spacing before LAB.
+  */
+
+  const labX =
+    brandTextX +
+    ctx.measureText(
+      "THE SOLE"
+    ).width +
+    14;
+
+
+  /* LAB */
 
   ctx.fillStyle =
     "#8ac73f";
 
   ctx.fillText(
     "LAB",
-    270,
+    labX,
     80
   );
 
+
+  /* SHOE NAME */
 
   ctx.fillStyle =
     "#ffffff";
@@ -1980,6 +2059,8 @@ async function downloadRecipeJPEG() {
   );
 
 
+  /* BRAND / VERSION */
+
   ctx.fillStyle =
     "#9ba6b2";
 
@@ -1993,6 +2074,8 @@ async function downloadRecipeJPEG() {
   );
 
 
+  /* DIVIDER */
+
   ctx.fillStyle =
     "#2a3441";
 
@@ -2004,7 +2087,9 @@ async function downloadRecipeJPEG() {
   );
 
 
-  /* COMPONENTS */
+  /* ======================================================
+     COMPONENTS
+  ====================================================== */
 
   for (
     let index = 0;
@@ -2181,7 +2266,9 @@ async function downloadRecipeJPEG() {
   }
 
 
-  /* FOOTER */
+  /* ======================================================
+     FOOTER
+  ====================================================== */
 
   ctx.fillStyle =
     "#6e7681";
@@ -2196,7 +2283,9 @@ async function downloadRecipeJPEG() {
   );
 
 
-  /* DOWNLOAD */
+  /* ======================================================
+     DOWNLOAD
+  ====================================================== */
 
   const fileName =
     slugifyFileName(
