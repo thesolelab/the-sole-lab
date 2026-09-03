@@ -448,7 +448,7 @@ function createComponentRow(
             min="0.50"
             max="12.00"
             step="0.01"
-            value="${component.x ?? "1.00"}"
+            value="${component.x ?? "0.00"}"
           />
 
           <span class="field-range">
