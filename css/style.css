@@ -1,3 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&display=swap");
+
+:root {
+  --bg-main: #0e1117;
+  --bg-panel: #161b22;
+  --border-primary: #2a3441;
+
+  --text-primary: #f5f7fa;
+  --text-secondary: #9ba6b2;
+
+  --sole-accent: #b9ef32;
+}
+
 /* ======================================================
    THE SOLE LAB
 ====================================================== */
@@ -12,8 +25,30 @@ html {
 
 body {
   margin: 0;
-  background: #0d1117;
-  color: #f5f5f5;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(185, 239, 50, 0.08),
+      transparent 28%
+    ),
+    var(--bg-main);
+
+  color: var(--text-primary);
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 button,
@@ -22,15 +57,186 @@ select {
   font: inherit;
 }
 
+/* ======================================================
+   SOLE LAB HEADER
+====================================================== */
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  border-bottom: 1px solid var(--border-primary);
+
+  background: rgba(14, 17, 23, 0.94);
+
+  backdrop-filter: blur(12px);
+}
+
+.header-container {
+  width: min(1200px, calc(100% - 40px));
+  min-height: 82px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+}
+
+.brand-wordmark {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 220px;
+}
+
+.brand-eyebrow {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: -2px;
+}
+
+.brand-the {
+  color: #aeb7c2;
+
+  font-family:
+    "Barlow Condensed",
+    sans-serif;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  letter-spacing: 0.34em;
+
+  line-height: 1;
+}
+
+.brand-top-rule {
+  width: 105px;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      to right,
+      rgba(174, 183, 194, 0.75),
+      rgba(174, 183, 194, 0.08)
+    );
+}
+
+.brand-title {
+  display: flex;
+  align-items: baseline;
+
+  gap: 7px;
+
+  font-family:
+    "Barlow Condensed",
+    sans-serif;
+
+  font-size: 2.15rem;
+  font-style: italic;
+  font-weight: 800;
+
+  line-height: 0.98;
+
+  letter-spacing: -0.035em;
+
+  text-transform: uppercase;
+
+  filter:
+    drop-shadow(
+      0 2px 1px rgba(0, 0, 0, 0.35)
+    );
+}
+
+.brand-sole {
+  display: inline-block;
+
+  padding-right: 4px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #ffffff 0%,
+      #f4f4f4 45%,
+      #c8cdd2 100%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  color: transparent;
+}
+
+.brand-lab {
+  display: inline-block;
+
+  padding-right: 8px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #dfff4f 0%,
+      #b9ef32 50%,
+      #86c91f 100%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  color: transparent;
+}
+
+.brand-bottom-rule {
+  width: 145px;
+  height: 2px;
+
+  margin-top: 4px;
+
+  background:
+    linear-gradient(
+      to right,
+      #aeb7c2 0%,
+      #c6cbd0 45%,
+      #b9ef32 100%
+    );
+
+  opacity: 0.9;
+}
+
+.brand-subtitle {
+  margin: 5px 0 0;
+
+  color: var(--text-secondary);
+
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  letter-spacing: 0.035em;
+
+  line-height: 1.2;
+}
 
 /* ======================================================
    LAYOUT
 ====================================================== */
 
 .app-shell {
-  width: min(1200px, calc(100% - 32px));
+  width: min(1200px, calc(100% - 40px));
   margin: 0 auto;
-  padding: 40px 0 80px;
+  padding: 30px 0 80px;
 }
 
 
