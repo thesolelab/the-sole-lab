@@ -79,6 +79,149 @@ const MATERIALS_2K27 = [
 
 
 /* ======================================================
+   NBA 2K27 PATTERN IMAGES
+====================================================== */
+
+const PATTERN_PAGE_1_IMAGE =
+  "assets/patterns/patterns-page-1.jpg";
+
+const PATTERN_PAGE_2_IMAGE =
+  "assets/patterns/patterns-page-2.jpg";
+
+
+/* ======================================================
+   PATTERN DATA
+====================================================== */
+
+function createPatternList() {
+
+  const patterns = [];
+
+  let patternNumber = 1;
+
+
+  /* PAGE 1
+     5 rows x 4 columns = 20 swatches
+  */
+
+  for (let row = 0; row < 5; row++) {
+
+    for (let col = 0; col < 4; col++) {
+
+      patterns.push({
+
+        id:
+          `pattern-${String(patternNumber).padStart(2, "0")}`,
+
+        page:
+          1,
+
+        row:
+          row,
+
+        col:
+          col,
+
+        totalRows:
+          5,
+
+        totalCols:
+          4,
+
+        image:
+          PATTERN_PAGE_1_IMAGE
+
+      });
+
+
+      patternNumber++;
+
+    }
+
+  }
+
+
+  /* PAGE 2
+     First 2 rows = 8 swatches
+  */
+
+  for (let row = 0; row < 2; row++) {
+
+    for (let col = 0; col < 4; col++) {
+
+      patterns.push({
+
+        id:
+          `pattern-${String(patternNumber).padStart(2, "0")}`,
+
+        page:
+          2,
+
+        row:
+          row,
+
+        col:
+          col,
+
+        totalRows:
+          3,
+
+        totalCols:
+          4,
+
+        image:
+          PATTERN_PAGE_2_IMAGE
+
+      });
+
+
+      patternNumber++;
+
+    }
+
+  }
+
+
+  /* PAGE 2
+     Final swatch on row 3
+  */
+
+  patterns.push({
+
+    id:
+      `pattern-${String(patternNumber).padStart(2, "0")}`,
+
+    page:
+      2,
+
+    row:
+      2,
+
+    col:
+      0,
+
+    totalRows:
+      3,
+
+    totalCols:
+      4,
+
+    image:
+      PATTERN_PAGE_2_IMAGE
+
+  });
+
+
+  return patterns;
+
+}
+
+
+const PATTERNS_2K27 =
+  createPatternList();
+
+
+/* ======================================================
    DOM ELEMENTS
 ====================================================== */
 
@@ -113,8 +256,6 @@ const savedShoesContainer =
 
 let editingShoeId = null;
 
-let componentNumber = 0;
-
 
 /* ======================================================
    STORAGE
@@ -147,7 +288,10 @@ function saveShoesToStorage(shoes) {
    UMAMI
 ====================================================== */
 
-function trackEvent(eventName, eventData = {}) {
+function trackEvent(
+  eventName,
+  eventData = {}
+) {
 
   if (window.umami) {
 
@@ -167,25 +311,32 @@ function trackEvent(eventName, eventData = {}) {
 
 function populateBrandOptions() {
 
-  brandSelect.innerHTML = "";
+  brandSelect.innerHTML =
+    "";
 
 
-  BRANDS_2K27.forEach(brand => {
+  BRANDS_2K27.forEach(
+    brand => {
 
-    const option =
-      document.createElement("option");
+      const option =
+        document.createElement(
+          "option"
+        );
 
-    option.value =
-      brand;
 
-    option.textContent =
-      brand;
+      option.value =
+        brand;
 
-    brandSelect.appendChild(
-      option
-    );
+      option.textContent =
+        brand;
 
-  });
+
+      brandSelect.appendChild(
+        option
+      );
+
+    }
+  );
 
 }
 
@@ -199,24 +350,278 @@ function getMaterialOptions(
 ) {
 
   return MATERIALS_2K27
-    .map(material => {
+    .map(
+      material => {
 
-      const selected =
-        material === selectedMaterial
-          ? "selected"
-          : "";
+        const selected =
+          material === selectedMaterial
+            ? "selected"
+            : "";
 
-      return `
-        <option
-          value="${material}"
-          ${selected}
-        >
-          ${material}
-        </option>
-      `;
 
-    })
+        return `
+
+          <option
+            value="${material}"
+            ${selected}
+          >
+            ${material}
+          </option>
+
+        `;
+
+      }
+    )
     .join("");
+
+}
+
+
+/* ======================================================
+   PATTERN HELPERS
+====================================================== */
+
+function getPatternById(
+  patternId
+) {
+
+  return (
+    PATTERNS_2K27.find(
+      pattern =>
+        pattern.id === patternId
+    )
+    ||
+    PATTERNS_2K27[0]
+  );
+
+}
+
+
+function getPatternsByPage(
+  pageNumber
+) {
+
+  return PATTERNS_2K27.filter(
+    pattern =>
+      pattern.page === pageNumber
+  );
+
+}
+
+
+/* ======================================================
+   PATTERN SWATCH IMAGE POSITION
+====================================================== */
+
+function getSwatchStyle(
+  pattern
+) {
+
+  const xPosition =
+    pattern.totalCols === 1
+      ? 0
+      : (
+          pattern.col /
+          (pattern.totalCols - 1)
+        ) * 100;
+
+
+  const yPosition =
+    pattern.totalRows === 1
+      ? 0
+      : (
+          pattern.row /
+          (pattern.totalRows - 1)
+        ) * 100;
+
+
+  return [
+
+    `background-image: url('${pattern.image}')`,
+
+    `background-size: ${pattern.totalCols * 100}% ${pattern.totalRows * 100}%`,
+
+    `background-position: ${xPosition}% ${yPosition}%`,
+
+    "background-repeat: no-repeat"
+
+  ].join("; ");
+
+}
+
+
+/* ======================================================
+   PATTERN PAGE
+====================================================== */
+
+function createPatternPageMarkup(
+  pageNumber,
+  selectedPatternId
+) {
+
+  const patterns =
+    getPatternsByPage(
+      pageNumber
+    );
+
+
+  return `
+
+    <div class="pattern-page-group">
+
+      <div class="pattern-page-title">
+        Page ${pageNumber}
+      </div>
+
+
+      <div class="pattern-grid">
+
+        ${patterns
+          .map(
+            pattern => {
+
+              const isSelected =
+                pattern.id === selectedPatternId
+                  ? "is-selected"
+                  : "";
+
+
+              return `
+
+                <button
+                  type="button"
+                  class="pattern-option ${isSelected}"
+                  data-pattern-id="${pattern.id}"
+                  aria-label="Select pattern swatch"
+                >
+
+                  <span
+                    class="pattern-swatch"
+                    style="${getSwatchStyle(pattern)}"
+                  ></span>
+
+                </button>
+
+              `;
+
+            }
+          )
+          .join("")}
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ======================================================
+   PATTERN PICKER
+====================================================== */
+
+function createPatternPickerMarkup(
+  selectedPatternId = "pattern-01"
+) {
+
+  const selectedPattern =
+    getPatternById(
+      selectedPatternId
+    );
+
+
+  return `
+
+    <div class="field-group pattern-field-group">
+
+      <label>
+        Pattern
+      </label>
+
+
+      <input
+        type="hidden"
+        class="component-pattern-id"
+        value="${selectedPattern.id}"
+      />
+
+
+      <button
+        type="button"
+        class="pattern-picker-trigger"
+      >
+
+        <span
+          class="pattern-trigger-preview pattern-swatch"
+          style="${getSwatchStyle(selectedPattern)}"
+        ></span>
+
+
+        <span class="pattern-trigger-copy">
+
+          <span class="pattern-trigger-title">
+            Selected Swatch
+          </span>
+
+          <span class="pattern-trigger-subtitle">
+            Click to change
+          </span>
+
+        </span>
+
+      </button>
+
+
+      <div class="pattern-picker">
+
+        ${createPatternPageMarkup(
+          1,
+          selectedPattern.id
+        )}
+
+
+        ${createPatternPageMarkup(
+          2,
+          selectedPattern.id
+        )}
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ======================================================
+   CLOSE PATTERN PICKERS
+====================================================== */
+
+function closeAllPatternPickers(
+  exceptCard = null
+) {
+
+  document
+    .querySelectorAll(
+      ".component-card.pattern-picker-open"
+    )
+    .forEach(
+      card => {
+
+        if (
+          card !== exceptCard
+        ) {
+
+          card.classList.remove(
+            "pattern-picker-open"
+          );
+
+        }
+
+      }
+    );
 
 }
 
@@ -310,11 +715,10 @@ function createComponentRow(
   component = {}
 ) {
 
-  componentNumber++;
-
-
   const componentCard =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
 
   componentCard.className =
@@ -366,11 +770,12 @@ function createComponentRow(
         </label>
 
         <select
-          class="component-material compact-select"
+          class="component-material"
         >
 
           ${getMaterialOptions(
-            component.material || "Default"
+            component.material ||
+            "Default"
           )}
 
         </select>
@@ -378,20 +783,10 @@ function createComponentRow(
       </div>
 
 
-      <div class="field-group">
-
-        <label>
-          Pattern
-        </label>
-
-        <input
-          type="text"
-          class="component-pattern"
-          placeholder="Example: 27"
-          value="${component.pattern || ""}"
-        />
-
-      </div>
+      ${createPatternPickerMarkup(
+        component.patternId ||
+        "pattern-01"
+      )}
 
 
     </div>
@@ -445,15 +840,9 @@ function createComponentRow(
           <input
             type="number"
             class="component-x"
-            min="0.50"
-            max="12.00"
             step="0.01"
             value="${component.x ?? "0.00"}"
           />
-
-          <span class="field-range">
-            0.50 – 12.00
-          </span>
 
         </div>
 
@@ -503,17 +892,64 @@ function createComponentRow(
   `;
 
 
+  componentsContainer.appendChild(
+    componentCard
+  );
+
+
+  wireComponentCard(
+    componentCard
+  );
+
+}
+
+
+/* ======================================================
+   COMPONENT EVENTS
+====================================================== */
+
+function wireComponentCard(
+  componentCard
+) {
+
   const removeBtn =
     componentCard.querySelector(
       ".remove-component-btn"
     );
 
 
+  const patternTrigger =
+    componentCard.querySelector(
+      ".pattern-picker-trigger"
+    );
+
+
+  const hiddenPatternInput =
+    componentCard.querySelector(
+      ".component-pattern-id"
+    );
+
+
+  const previewSwatch =
+    componentCard.querySelector(
+      ".pattern-trigger-preview"
+    );
+
+
+  const patternOptions =
+    componentCard.querySelectorAll(
+      ".pattern-option"
+    );
+
+
+  /* REMOVE COMPONENT */
+
   removeBtn.addEventListener(
     "click",
     function () {
 
       componentCard.remove();
+
 
       trackEvent(
         "solelab_remove_component"
@@ -523,8 +959,104 @@ function createComponentRow(
   );
 
 
-  componentsContainer.appendChild(
-    componentCard
+  /* OPEN PATTERN PICKER */
+
+  patternTrigger.addEventListener(
+    "click",
+    function () {
+
+      const isOpen =
+        componentCard.classList.contains(
+          "pattern-picker-open"
+        );
+
+
+      closeAllPatternPickers(
+        componentCard
+      );
+
+
+      componentCard.classList.toggle(
+        "pattern-picker-open",
+        !isOpen
+      );
+
+
+      trackEvent(
+        "solelab_open_pattern_picker"
+      );
+
+    }
+  );
+
+
+  /* SELECT PATTERN */
+
+  patternOptions.forEach(
+    option => {
+
+      option.addEventListener(
+        "click",
+        function () {
+
+          const patternId =
+            option.dataset.patternId;
+
+
+          const selectedPattern =
+            getPatternById(
+              patternId
+            );
+
+
+          hiddenPatternInput.value =
+            selectedPattern.id;
+
+
+          previewSwatch.setAttribute(
+            "style",
+            getSwatchStyle(
+              selectedPattern
+            )
+          );
+
+
+          patternOptions.forEach(
+            item => {
+
+              item.classList.remove(
+                "is-selected"
+              );
+
+            }
+          );
+
+
+          option.classList.add(
+            "is-selected"
+          );
+
+
+          componentCard.classList.remove(
+            "pattern-picker-open"
+          );
+
+
+          trackEvent(
+            "solelab_select_pattern",
+            {
+              patternId:
+                selectedPattern.id,
+
+              page:
+                selectedPattern.page
+            }
+          );
+
+        }
+      );
+
+    }
   );
 
 }
@@ -580,66 +1112,70 @@ function getComponentValues() {
 
 
   return Array
-    .from(componentCards)
-    .map(card => {
+    .from(
+      componentCards
+    )
+    .map(
+      card => {
 
-      return {
+        return {
 
-        name:
-          card.querySelector(
-            ".component-name"
-          ).value.trim(),
-
-        material:
-          card.querySelector(
-            ".component-material"
-          ).value,
-
-        pattern:
-          card.querySelector(
-            ".component-pattern"
-          ).value.trim(),
-
-        color1:
-          getRGBValues(
-            card,
-            1
-          ),
-
-        color2:
-          getRGBValues(
-            card,
-            2
-          ),
-
-        color3:
-          getRGBValues(
-            card,
-            3
-          ),
-
-        x:
-          Number(
+          name:
             card.querySelector(
-              ".component-x"
-            ).value
-          ),
+              ".component-name"
+            ).value.trim(),
 
-        y:
-          Number(
+          material:
             card.querySelector(
-              ".component-y"
-            ).value
-          ),
+              ".component-material"
+            ).value,
 
-        notes:
-          card.querySelector(
-            ".component-notes"
-          ).value.trim()
+          patternId:
+            card.querySelector(
+              ".component-pattern-id"
+            ).value,
 
-      };
+          color1:
+            getRGBValues(
+              card,
+              1
+            ),
 
-    })
+          color2:
+            getRGBValues(
+              card,
+              2
+            ),
+
+          color3:
+            getRGBValues(
+              card,
+              3
+            ),
+
+          x:
+            Number(
+              card.querySelector(
+                ".component-x"
+              ).value
+            ),
+
+          y:
+            Number(
+              card.querySelector(
+                ".component-y"
+              ).value
+            ),
+
+          notes:
+            card.querySelector(
+              ".component-notes"
+            ).value.trim()
+
+        };
+
+      }
+    )
     .filter(
       component =>
         component.name
@@ -662,20 +1198,6 @@ function validateComponents(
   ) {
 
     if (
-      component.x < 0.50 ||
-      component.x > 12.00
-    ) {
-
-      alert(
-        `${component.name}: X / Scale must be between 0.50 and 12.00.`
-      );
-
-      return false;
-
-    }
-
-
-    if (
       component.y < 0 ||
       component.y > 6.28
     ) {
@@ -690,9 +1212,11 @@ function validateComponents(
 
 
     const colors = [
+
       component.color1,
       component.color2,
       component.color3
+
     ];
 
 
@@ -702,9 +1226,11 @@ function validateComponents(
     ) {
 
       const values = [
+
         color.red,
         color.green,
         color.blue
+
       ];
 
 
@@ -788,7 +1314,9 @@ function saveShoe() {
 
 
   const isEditing =
-    Boolean(editingShoeId);
+    Boolean(
+      editingShoeId
+    );
 
 
   const shoe = {
@@ -815,7 +1343,9 @@ function saveShoe() {
   };
 
 
-  if (editingShoeId) {
+  if (
+    editingShoeId
+  ) {
 
     const shoeIndex =
       shoes.findIndex(
@@ -851,10 +1381,13 @@ function saveShoe() {
 
 
   trackEvent(
+
     isEditing
       ? "solelab_update_shoe"
       : "solelab_save_shoe",
+
     {
+
       brand:
         shoe.brand,
 
@@ -863,7 +1396,9 @@ function saveShoe() {
 
       componentCount:
         shoe.components.length
+
     }
+
   );
 
 
@@ -889,7 +1424,8 @@ function editShoe(
   const shoe =
     shoes.find(
       savedShoe =>
-        savedShoe.id === shoeId
+        savedShoe.id ===
+        shoeId
     );
 
 
@@ -943,8 +1479,13 @@ function editShoe(
 
 
   window.scrollTo({
-    top: 0,
-    behavior: "smooth"
+
+    top:
+      0,
+
+    behavior:
+      "smooth"
+
   });
 
 }
@@ -1153,10 +1694,9 @@ function renderSavedShoes() {
         );
 
 
-      savedShoesContainer
-        .appendChild(
-          card
-        );
+      savedShoesContainer.appendChild(
+        card
+      );
 
     }
   );
@@ -1187,6 +1727,26 @@ saveShoeBtn.addEventListener(
 clearFormBtn.addEventListener(
   "click",
   resetForm
+);
+
+
+/* CLOSE PATTERN PICKER WHEN CLICKING ELSEWHERE */
+
+document.addEventListener(
+  "click",
+  function (event) {
+
+    if (
+      !event.target.closest(
+        ".pattern-field-group"
+      )
+    ) {
+
+      closeAllPatternPickers();
+
+    }
+
+  }
 );
 
 
