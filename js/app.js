@@ -2327,24 +2327,86 @@ async function downloadRecipeJPEG() {
     );
 
 
-  const link =
-    document.createElement(
-      "a"
-    );
+  const fileNameWithExtension =
+  `${fileName}-2k27.jpg`;
 
 
-  link.download =
-    `${fileName}-2k27.jpg`;
+canvas.toBlob(
+  async function (blob) {
+
+    const file =
+      new File(
+        [blob],
+        fileNameWithExtension,
+        {
+          type: "image/jpeg"
+        }
+      );
 
 
-  link.href =
-    canvas.toDataURL(
-      "image/jpeg",
-      0.92
-    );
+    if (
+      navigator.share &&
+      navigator.canShare &&
+      navigator.canShare({
+        files: [file]
+      })
+    ) {
+
+      try {
+
+        await navigator.share({
+          files: [file],
+          title: "The Sole Lab",
+          text: `${shoeName} - ${gameVersionSelect.value}`
+        });
+
+      }
+
+      catch (error) {
+
+        if (
+          error.name !== "AbortError"
+        ) {
+
+          console.warn(
+            "Share failed.",
+            error
+          );
+
+        }
+
+      }
+
+    }
+
+    else {
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+      link.download =
+        fileNameWithExtension;
+
+      link.href =
+        URL.createObjectURL(
+          blob
+        );
+
+      link.click();
 
 
-  link.click();
+      URL.revokeObjectURL(
+        link.href
+      );
+
+    }
+
+  },
+  "image/jpeg",
+  0.92
+);
 
 
   trackEvent(
