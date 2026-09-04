@@ -1429,19 +1429,19 @@ function drawRGBColumn(
     "26px Anton";
 
   ctx.fillText(
-    `R  ${color.red}`,
+    `R:  ${color.red}`,
     x,
     y + 42
   );
 
   ctx.fillText(
-    `G  ${color.green}`,
+    `G:  ${color.green}`,
     x,
     y + 80
   );
 
   ctx.fillText(
-    `B  ${color.blue}`,
+    `B:  ${color.blue}`,
     x,
     y + 118
   );
