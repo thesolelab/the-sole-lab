@@ -1776,11 +1776,8 @@ await document.fonts.load(
 
 ctx.save();
 
-ctx.globalAlpha =
-  0.25;
-
 ctx.fillStyle =
-  "#8ac73f";
+  "rgba(138, 199, 63, 0.018)";
 
 ctx.textAlign =
   "center";
@@ -1789,7 +1786,7 @@ ctx.textBaseline =
   "middle";
 
 ctx.font =
-  "180px Anton";
+  '180px "Anton"';
 
 ctx.fillText(
   "THE",
