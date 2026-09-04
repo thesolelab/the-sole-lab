@@ -1265,260 +1265,6 @@ function validateComponents(
 }
 
 
-/* ======================================================
-   SAVE SHOE
-====================================================== */
-
-function saveShoe() {
-
-  const shoeName =
-    shoeNameInput.value.trim();
-
-
-  if (!shoeName) {
-
-    alert(
-      "Enter a shoe name before saving."
-    );
-
-    return;
-
-  }
-
-
-  const components =
-    getComponentValues();
-
-
-  if (
-    components.length === 0
-  ) {
-
-    alert(
-      "Add at least one shoe component."
-    );
-
-    return;
-
-  }
-
-
-  if (
-    !validateComponents(
-      components
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  const shoes =
-    getSavedShoes();
-
-
-  const isEditing =
-    Boolean(
-      editingShoeId
-    );
-
-
-  const shoe = {
-
-    id:
-      editingShoeId ||
-      `shoe-${Date.now()}`,
-
-    name:
-      shoeName,
-
-    brand:
-      brandSelect.value,
-
-    gameVersion:
-      gameVersionSelect.value,
-
-    components:
-      components,
-
-    updatedAt:
-      new Date().toISOString()
-
-  };
-
-
-  if (
-    editingShoeId
-  ) {
-
-    const shoeIndex =
-      shoes.findIndex(
-        savedShoe =>
-          savedShoe.id ===
-          editingShoeId
-      );
-
-
-    if (
-      shoeIndex !== -1
-    ) {
-
-      shoes[shoeIndex] =
-        shoe;
-
-    }
-
-  }
-
-  else {
-
-    shoes.push(
-      shoe
-    );
-
-  }
-
-
-  saveShoesToStorage(
-    shoes
-  );
-
-
-  trackEvent(
-
-    isEditing
-      ? "solelab_update_shoe"
-      : "solelab_save_shoe",
-
-    {
-      brand:
-        shoe.brand,
-
-      gameVersion:
-        shoe.gameVersion,
-
-      componentCount:
-        shoe.components.length
-    }
-
-  );
-
-
-  resetForm();
-
-  renderSavedShoes();
-
-}
-
-
-/* ======================================================
-   EDIT SHOE
-====================================================== */
-
-function editShoe(
-  shoeId
-) {
-
-  const shoes =
-    getSavedShoes();
-
-
-  const shoe =
-    shoes.find(
-      savedShoe =>
-        savedShoe.id ===
-        shoeId
-    );
-
-
-  if (!shoe) {
-    return;
-  }
-
-
-  editingShoeId =
-    shoe.id;
-
-
-  shoeNameInput.value =
-    shoe.name || "";
-
-
-  brandSelect.value =
-    shoe.brand ||
-    BRANDS_2K27[0];
-
-
-  gameVersionSelect.value =
-    shoe.gameVersion ||
-    "NBA 2K27";
-
-
-  componentsContainer.innerHTML =
-    "";
-
-
-  shoe.components.forEach(
-    component => {
-
-      createComponentRow(
-        component
-      );
-
-    }
-  );
-
-
-  saveShoeBtn.textContent =
-    "Update Shoe";
-
-
-  trackEvent(
-    "solelab_edit_shoe"
-  );
-
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-}
-
-
-/* ======================================================
-   DELETE SHOE
-====================================================== */
-
-function deleteShoe(
-  shoeId
-) {
-
-  const shoes =
-    getSavedShoes();
-
-
-  const updatedShoes =
-    shoes.filter(
-      shoe =>
-        shoe.id !== shoeId
-    );
-
-
-  saveShoesToStorage(
-    updatedShoes
-  );
-
-
-  trackEvent(
-    "solelab_delete_shoe"
-  );
-
-
-  renderSavedShoes();
-
-}
 
 
 /* ======================================================
@@ -1719,7 +1465,7 @@ async function downloadRecipeJPEG() {
 
   }
 
-   await document.fonts.load(
+await document.fonts.load(
   '34px "Anton"'
 );
 
@@ -1800,87 +1546,6 @@ async function downloadRecipeJPEG() {
     0,
     canvasWidth,
     canvasHeight
-  );
-
-
-  /* ======================================================
-     EXPORT BRAND HEADER
-  ====================================================== */
-
-  let brandTextX =
-    155;
-
-
-  try {
-
-    const logoImage =
-      await loadImage(
-        SOLE_LAB_LOGO
-      );
-
-
-    ctx.drawImage(
-      logoImage,
-      80,
-      36,
-      58,
-      58
-    );
-
-  }
-
-  catch (error) {
-
-    console.warn(
-      "Sole Lab logo could not be loaded.",
-      error
-    );
-
-
-    brandTextX =
-      80;
-
-  }
-
-
-  ctx.font =
-    "34px Anton";
-
-
-  /* THE SOLE */
-
-  ctx.fillStyle =
-    "#ffffff";
-
-  ctx.fillText(
-    "THE SOLE",
-    brandTextX,
-    80
-  );
-
-
-  /*
-    Measure the exact width of THE SOLE,
-    then add 14px of spacing before LAB.
-  */
-
-  const labX =
-    brandTextX +
-    ctx.measureText(
-      "THE SOLE"
-    ).width +
-    14;
-
-
-  /* LAB */
-
-  ctx.fillStyle =
-    "#8ac73f";
-
-  ctx.fillText(
-    "LAB",
-    labX,
-    80
   );
 
 
@@ -2106,21 +1771,35 @@ async function downloadRecipeJPEG() {
   }
 
 
-  /* ======================================================
-     FOOTER
-  ====================================================== */
+/* ======================================================
+   FOOTER LOGO
+====================================================== */
 
-  ctx.fillStyle =
-    "#6e7681";
+try {
 
-  ctx.font =
-    "18px Anton";
+  const footerLogo =
+    await loadImage(
+      SOLE_LAB_LOGO
+    );
 
-  ctx.fillText(
-    "Created with The Sole Lab",
+  ctx.drawImage(
+    footerLogo,
     80,
-    canvasHeight - 45
+    canvasHeight - 78,
+    48,
+    48
   );
+
+}
+
+catch (error) {
+
+  console.warn(
+    "Footer logo could not be loaded.",
+    error
+  );
+
+}
 
 
   /* ======================================================
