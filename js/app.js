@@ -1791,19 +1791,19 @@ ctx.font =
 ctx.fillText(
   "THE",
   canvasWidth / 2,
-  canvasHeight / 2 - 180
+  canvasHeight / 2 - 90
 );
 
 ctx.fillText(
   "SOLE",
   canvasWidth / 2,
-  canvasHeight / 2 + 10
+  canvasHeight / 2 + 5
 );
 
 ctx.fillText(
   "LAB",
   canvasWidth / 2,
-  canvasHeight / 2 + 200
+  canvasHeight / 2 + 100
 );
 
 ctx.restore();
