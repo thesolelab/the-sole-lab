@@ -2150,13 +2150,20 @@ canvas.toBlob(
       );
 
 
-    if (
-      navigator.share &&
-      navigator.canShare &&
-      navigator.canShare({
-        files: [file]
-      })
-    ) {
+    const isMobile =
+  /iPhone|iPad|iPod|Android/i.test(
+    navigator.userAgent
+  );
+
+
+if (
+  isMobile &&
+  navigator.share &&
+  navigator.canShare &&
+  navigator.canShare({
+    files: [file]
+  })
+) {
 
       try {
 
