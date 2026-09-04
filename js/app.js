@@ -1667,7 +1667,7 @@ function drawRGBColumn(
     "#9ba6b2";
 
   ctx.font =
-    "700 22px Arial";
+    "22px Anton";
 
   ctx.fillText(
     title,
@@ -1680,7 +1680,7 @@ function drawRGBColumn(
     "#ffffff";
 
   ctx.font =
-    "700 26px Arial";
+    "26px Anton";
 
   ctx.fillText(
     `R  ${color.red}`,
@@ -1719,6 +1719,9 @@ async function downloadRecipeJPEG() {
 
   }
 
+   await document.fonts.load(
+  '34px "Anton"'
+);
 
   const components =
     getComponentValues();
@@ -1841,7 +1844,7 @@ async function downloadRecipeJPEG() {
 
 
   ctx.font =
-    "800 34px Arial";
+    "34px Anton";
 
 
   /* THE SOLE */
@@ -1887,7 +1890,7 @@ async function downloadRecipeJPEG() {
     "#ffffff";
 
   ctx.font =
-    "800 52px Arial";
+    "52px Anton";
 
   ctx.fillText(
     shoeName,
@@ -1902,7 +1905,7 @@ async function downloadRecipeJPEG() {
     "#9ba6b2";
 
   ctx.font =
-    "600 26px Arial";
+    "26px Anton";
 
   ctx.fillText(
     `${brandSelect.value}  •  ${gameVersionSelect.value}`,
@@ -1966,7 +1969,7 @@ async function downloadRecipeJPEG() {
       "#ffffff";
 
     ctx.font =
-      "800 32px Arial";
+      "32px Anton";
 
     ctx.fillText(
       component.name,
@@ -1981,7 +1984,7 @@ async function downloadRecipeJPEG() {
       "#9ba6b2";
 
     ctx.font =
-      "600 21px Arial";
+      "21px Anton";
 
     ctx.fillText(
       `Material: ${component.material}`,
@@ -2061,7 +2064,7 @@ async function downloadRecipeJPEG() {
       "#9ba6b2";
 
     ctx.font =
-      "700 20px Arial";
+      "20px Anton";
 
     ctx.fillText(
       "X — SCALE",
@@ -2081,7 +2084,7 @@ async function downloadRecipeJPEG() {
       "#ffffff";
 
     ctx.font =
-      "800 28px Arial";
+      "28px Anton";
 
     ctx.fillText(
       Number(
@@ -2111,7 +2114,7 @@ async function downloadRecipeJPEG() {
     "#6e7681";
 
   ctx.font =
-    "600 18px Arial";
+    "18px Anton";
 
   ctx.fillText(
     "Created with The Sole Lab",
