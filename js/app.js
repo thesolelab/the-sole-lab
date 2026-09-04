@@ -1582,7 +1582,7 @@ await document.fonts.load(
   /* DIVIDER */
 
   ctx.fillStyle =
-    "#2a3441";
+    "#8ac73f";
 
   ctx.fillRect(
     80,
@@ -1770,6 +1770,47 @@ await document.fonts.load(
 
   }
 
+/* ======================================================
+   WATERMARK
+====================================================== */
+
+ctx.save();
+
+ctx.globalAlpha =
+  0.25;
+
+ctx.fillStyle =
+  "#8ac73f";
+
+ctx.textAlign =
+  "center";
+
+ctx.textBaseline =
+  "middle";
+
+ctx.font =
+  "180px Anton";
+
+ctx.fillText(
+  "THE",
+  canvasWidth / 2,
+  canvasHeight / 2 - 180
+);
+
+ctx.fillText(
+  "SOLE",
+  canvasWidth / 2,
+  canvasHeight / 2 + 10
+);
+
+ctx.fillText(
+  "LAB",
+  canvasWidth / 2,
+  canvasHeight / 2 + 200
+);
+
+ctx.restore();
+   
 
 /* ======================================================
    FOOTER LOGO
