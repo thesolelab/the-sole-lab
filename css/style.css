@@ -1104,3 +1104,219 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
 }
+/* ======================================================
+   QUICK SHARE — TOOL NAVIGATION
+====================================================== */
+
+.tool-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.tool-tab {
+  min-height: 44px;
+  padding: 10px 19px;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  background: var(--bg-panel);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 700;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.tool-tab:hover {
+  border-color: var(--sole-accent-border);
+  color: var(--text-primary);
+}
+
+.tool-tab.active,
+.tool-tab[aria-selected="true"] {
+  background: var(--sole-accent-soft);
+  border-color: var(--sole-accent);
+  color: var(--sole-accent);
+}
+
+.tool-tab:focus-visible {
+  outline: 2px solid var(--sole-accent);
+  outline-offset: 3px;
+}
+
+/* Hidden tab content must remain hidden, regardless of other display rules. */
+.tool-content[hidden] {
+  display: none !important;
+}
+
+/* ======================================================
+   QUICK SHARE — LAYER EDITOR
+   Intended for layer cards created dynamically by app.js
+====================================================== */
+
+.spec-layers-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.spec-layer-card {
+  padding: 20px;
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  background: var(--bg-input);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.spec-layer-card:focus-within {
+  border-color: var(--sole-accent-border);
+  box-shadow: 0 0 0 1px var(--sole-accent-soft);
+}
+
+.spec-layer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.spec-layer-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.spec-layer-number {
+  color: var(--sole-accent);
+  font-weight: 800;
+  margin-right: 7px;
+}
+
+.spec-layer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.spec-layer-actions .button {
+  padding: 7px 11px;
+  font-size: 13px;
+}
+
+.spec-remove-layer-btn {
+  color: #ff7b72;
+}
+
+.spec-layer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 16px;
+  align-items: start;
+}
+
+/* The optional RGB-group layout displays 3 numeric inputs and a live swatch. */
+.spec-rgb-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 44px;
+  gap: 8px;
+  align-items: end;
+}
+
+.spec-rgb-fields .field-group {
+  min-width: 0;
+}
+
+.spec-rgb-fields .field-group label {
+  font-size: 12px;
+}
+
+.spec-rgb-fields input {
+  min-width: 0;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.spec-color-preview {
+  display: block;
+  width: 44px;
+  height: 46px;
+  border: 1px solid #48515b;
+  border-radius: 7px;
+  background: rgb(255, 255, 255);
+}
+
+.spec-layer-card .field-group select {
+  width: 100%;
+  max-width: 100%;
+}
+
+.spec-empty-state {
+  padding: 28px 18px;
+  border: 1px dashed var(--border-primary);
+  border-radius: 10px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ======================================================
+   QUICK SHARE — RESPONSIVE LAYOUT
+====================================================== */
+
+@media (max-width: 950px) {
+  .spec-layer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .tool-selector {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .tool-tab {
+    width: 100%;
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .spec-layer-card {
+    padding: 15px;
+  }
+
+  .spec-layer-header {
+    align-items: flex-start;
+  }
+
+  .spec-layer-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .spec-layer-actions .button {
+    width: auto;
+  }
+}
+
+@media (max-width: 400px) {
+  .spec-layer-header {
+    flex-direction: column;
+  }
+
+  .spec-rgb-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 38px;
+    gap: 5px;
+  }
+
+  .spec-color-preview {
+    width: 38px;
+  }
+}
