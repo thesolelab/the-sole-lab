@@ -1776,15 +1776,17 @@ function drawSpecCard(
   ctx.fillStyle = "#8ac73f";
   ctx.fillRect(65, 386, 950, 3);
 
-  /* COLUMN HEADERS */
 
-  ctx.fillStyle = "#9da7b2";
-  ctx.font = "700 20px Arial, sans-serif";
+/* COLUMN HEADERS */
 
-  ctx.fillText("#", 84, 428);
-  ctx.fillText("LAYER", 135, 428);
-  ctx.fillText("RGB", 590, 428);
-  ctx.fillText("MATERIAL", 790, 428);
+ctx.fillStyle = "#9da7b2";
+ctx.font = "700 20px Arial, sans-serif";
+
+ctx.fillText("#", 84, 428);
+ctx.fillText("LAYER", 135, 428);
+ctx.fillText("MATERIAL", 535, 428);
+ctx.fillText("RGB", 790, 428);
+
 
   /* LAYER ROWS */
 
@@ -1821,43 +1823,44 @@ function drawSpecCard(
       y + 44
     );
 
-    /* COLOR SWATCH */
 
-    ctx.fillStyle =
-      `rgb(${layer.red},${layer.green},${layer.blue})`;
+/* MATERIAL */
 
-    ctx.fillRect(535, y + 21, 30, 30);
+ctx.fillStyle = "#c9d1d9";
 
-    ctx.strokeStyle = "#68737e";
-    ctx.strokeRect(535, y + 21, 30, 30);
+ctx.fillText(
+  specFitText(
+    ctx,
+    layer.material,
+    225,
+    19,
+    16
+  ),
+  535,
+  y + 44
+);
 
-    /* RGB VALUES */
+/* COLOR SWATCH */
 
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "700 20px Arial, sans-serif";
+ctx.fillStyle =
+  `rgb(${layer.red},${layer.green},${layer.blue})`;
 
-    ctx.fillText(
-      `${layer.red}, ${layer.green}, ${layer.blue}`,
-      585,
-      y + 44
-    );
+ctx.fillRect(790, y + 21, 30, 30);
 
-    /* MATERIAL */
+ctx.strokeStyle = "#68737e";
+ctx.strokeRect(790, y + 21, 30, 30);
 
-    ctx.fillStyle = "#c9d1d9";
+/* RGB VALUES */
 
-    ctx.fillText(
-      specFitText(
-        ctx,
-        layer.material,
-        206,
-        19,
-        16
-      ),
-      790,
-      y + 44
-    );
-  });
+ctx.fillStyle = "#ffffff";
+ctx.font = "700 20px Arial, sans-serif";
+
+ctx.fillText(
+  `${layer.red}, ${layer.green}, ${layer.blue}`,
+  835,
+  y + 44
+);
+
 
   /* FOOTER */
 
