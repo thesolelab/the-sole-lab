@@ -1312,6 +1312,90 @@ function updateSpecColorPreview(card) {
    CREATE LAYER
 ====================================================== */
 
+
+/* ======================================================
+   QUICK SHARE
+   COLOR CLIPBOARD
+====================================================== */
+
+let specColorClipboard = null;
+
+function copySpecColor(card) {
+  const layer = readSpecLayer(card);
+
+  specColorClipboard = {
+    red: layer.red,
+    green: layer.green,
+    blue: layer.blue
+  };
+
+  // Update buttons on all layers.
+  updateSpecPasteButtons();
+
+  const copyBtn = card.querySelector(
+    ".spec-copy-color-btn"
+  );
+
+  copyBtn.textContent = "✓ Copied!";
+
+  setTimeout(() => {
+    if (copyBtn.isConnected) {
+      copyBtn.textContent = "Copy Color";
+    }
+  }, 1500);
+
+  trackEvent("solelab_copy_color");
+}
+
+function pasteSpecColor(card) {
+  if (!specColorClipboard) {
+    return;
+  }
+
+  card.querySelector(".spec-red").value =
+    specColorClipboard.red;
+
+  card.querySelector(".spec-green").value =
+    specColorClipboard.green;
+
+  card.querySelector(".spec-blue").value =
+    specColorClipboard.blue;
+
+  // Update the existing live color swatch.
+  updateSpecColorPreview(card);
+
+  const pasteBtn = card.querySelector(
+    ".spec-paste-color-btn"
+  );
+
+  pasteBtn.textContent = "✓ Pasted!";
+
+  setTimeout(() => {
+    if (pasteBtn.isConnected) {
+      pasteBtn.textContent = "Paste Color";
+    }
+  }, 1500);
+
+  trackEvent("solelab_paste_color");
+}
+
+function updateSpecPasteButtons() {
+  const pasteButtons =
+    specLayersContainer.querySelectorAll(
+      ".spec-paste-color-btn"
+    );
+
+  pasteButtons.forEach(button => {
+    button.disabled = !specColorClipboard;
+  });
+}
+
+
+/* ======================================================
+   QUICK SHARE
+   CREATE LAYER
+====================================================== */
+
 function addSpecLayer(layer = {}) {
   const card = document.createElement("div");
 
@@ -1347,6 +1431,8 @@ function addSpecLayer(layer = {}) {
 
     <div class="spec-layer-grid">
 
+      <!-- LAYER NAME -->
+
       <div class="field-group">
 
         <label>Layer Name</label>
@@ -1360,6 +1446,8 @@ function addSpecLayer(layer = {}) {
         />
 
       </div>
+
+      <!-- MATERIAL -->
 
       <div class="field-group">
 
@@ -1375,55 +1463,84 @@ function addSpecLayer(layer = {}) {
 
       </div>
 
-      <div class="spec-rgb-fields">
+      <!-- RGB VALUES -->
 
-        <div class="field-group">
-          <label>R</label>
+      <div class="spec-color-section">
 
-          <input
-            type="number"
-            inputmode="numeric"
-            class="spec-red"
-            min="0"
-            max="255"
-            step="1"
-            value="${validSpecChannel(layer.red ?? 0)}"
-          />
+        <div class="spec-rgb-fields">
+
+          <div class="field-group">
+            <label>R</label>
+
+            <input
+              type="number"
+              inputmode="numeric"
+              class="spec-red"
+              min="0"
+              max="255"
+              step="1"
+              value="${validSpecChannel(layer.red ?? 0)}"
+            />
+          </div>
+
+          <div class="field-group">
+            <label>G</label>
+
+            <input
+              type="number"
+              inputmode="numeric"
+              class="spec-green"
+              min="0"
+              max="255"
+              step="1"
+              value="${validSpecChannel(layer.green ?? 0)}"
+            />
+          </div>
+
+          <div class="field-group">
+            <label>B</label>
+
+            <input
+              type="number"
+              inputmode="numeric"
+              class="spec-blue"
+              min="0"
+              max="255"
+              step="1"
+              value="${validSpecChannel(layer.blue ?? 0)}"
+            />
+          </div>
+
+          <!-- LIVE COLOR PREVIEW -->
+
+          <span
+            class="spec-color-preview"
+            role="img"
+            aria-label="Color preview"
+          ></span>
+
         </div>
 
-        <div class="field-group">
-          <label>G</label>
+        <!-- COLOR ACTIONS -->
 
-          <input
-            type="number"
-            inputmode="numeric"
-            class="spec-green"
-            min="0"
-            max="255"
-            step="1"
-            value="${validSpecChannel(layer.green ?? 0)}"
-          />
+        <div class="spec-color-actions">
+
+          <button
+            type="button"
+            class="button button-secondary spec-copy-color-btn"
+          >
+            Copy Color
+          </button>
+
+          <button
+            type="button"
+            class="button button-secondary spec-paste-color-btn"
+            ${specColorClipboard ? "" : "disabled"}
+          >
+            Paste Color
+          </button>
+
         </div>
-
-        <div class="field-group">
-          <label>B</label>
-
-          <input
-            type="number"
-            inputmode="numeric"
-            class="spec-blue"
-            min="0"
-            max="255"
-            step="1"
-            value="${validSpecChannel(layer.blue ?? 0)}"
-          />
-        </div>
-
-        <span
-          class="spec-color-preview"
-          role="img"
-          aria-label="Color preview"
-        ></span>
 
       </div>
 
@@ -1440,6 +1557,7 @@ function addSpecLayer(layer = {}) {
   card.querySelector(
     ".spec-remove-layer-btn"
   ).addEventListener("click", () => {
+
     card.remove();
 
     refreshSpecLayerNumbers();
@@ -1452,6 +1570,7 @@ function addSpecLayer(layer = {}) {
   card.querySelector(
     ".spec-duplicate-layer-btn"
   ).addEventListener("click", () => {
+
     const values = readSpecLayer(card);
 
     const duplicate = addSpecLayer(values);
@@ -1463,6 +1582,22 @@ function addSpecLayer(layer = {}) {
     trackEvent("solelab_duplicate_spec_layer");
   });
 
+  /* COPY COLOR */
+
+  card.querySelector(
+    ".spec-copy-color-btn"
+  ).addEventListener("click", () => {
+    copySpecColor(card);
+  });
+
+  /* PASTE COLOR */
+
+  card.querySelector(
+    ".spec-paste-color-btn"
+  ).addEventListener("click", () => {
+    pasteSpecColor(card);
+  });
+
   /* RGB INPUTS */
 
   const inputs = card.querySelectorAll(
@@ -1470,6 +1605,7 @@ function addSpecLayer(layer = {}) {
   );
 
   inputs.forEach(input => {
+
     input.addEventListener("focus", () => {
       if (input.value === "0") {
         input.value = "";
@@ -1485,6 +1621,7 @@ function addSpecLayer(layer = {}) {
 
       updateSpecColorPreview(card);
     });
+
   });
 
   return card;
