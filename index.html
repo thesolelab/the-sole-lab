@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +9,7 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>The Sole Lab | NBA 2K Shoe Pattern Manager</title>
+  <title>The Sole Lab | NBA 2K Shoe Creator Tools</title>
 
   <script
     defer
@@ -22,71 +23,45 @@
   />
 </head>
 
-
 <body>
-
 
   <!-- ========================================
        APP HEADER
   ========================================= -->
 
   <header class="app-header">
-
     <div class="container">
-
       <div class="brand">
-
         <div class="brand-lockup">
-
           <div class="brand-wordmark">
 
             <div class="brand-eyebrow">
-
-              <span class="brand-the">
-                THE
-              </span>
-
+              <span class="brand-the">THE</span>
               <span
                 class="brand-top-rule"
                 aria-hidden="true"
               ></span>
-
             </div>
-
 
             <div class="brand-title">
-
-              <span class="brand-player">
-                SOLE
-              </span>
-
-              <span class="brand-lab">
-                LAB
-              </span>
-
+              <span class="brand-player">SOLE</span>
+              <span class="brand-lab">LAB</span>
             </div>
-
 
             <div
               class="brand-bottom-rule"
               aria-hidden="true"
             ></div>
 
-
             <p class="brand-subtitle">
-              NBA 2K Shoe Creator Pattern Manager
+              NBA 2K Shoe Creator Tools
             </p>
 
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   </header>
-
 
   <!-- ========================================
        MAIN CONTENT
@@ -94,150 +69,325 @@
 
   <main class="container">
 
+    <!-- ========================================
+         TOOL SELECTOR
+    ========================================= -->
 
-    <!-- ======================================================
-         SHOE INFORMATION
-    ====================================================== -->
+    <nav
+      class="tool-selector"
+      aria-label="Shoe Creator Tools"
+    >
 
-    <section class="panel">
+      <button
+        type="button"
+        id="patternToolBtn"
+        class="tool-tab active"
+        aria-controls="patternTool"
+        aria-selected="true"
+        role="tab"
+        data-umami-event="solelab_pattern_tool"
+      >
+        Pattern Manager
+      </button>
 
-      <div class="section-heading">
+      <button
+        type="button"
+        id="specToolBtn"
+        class="tool-tab"
+        aria-controls="specTool"
+        aria-selected="false"
+        role="tab"
+        data-umami-event="solelab_spec_tool"
+      >
+        Quick Share
+      </button>
 
-        <h1>
-          Create a Shoe Pattern
-        </h1>
+    </nav>
 
-        <p>
-          Record the materials, colors, pattern swatches, scale, and rotation values used in NBA 2K.
-        </p>
+    <!-- ========================================
+         PATTERN MANAGER
+         Existing functionality
+    ========================================= -->
 
-      </div>
+    <div
+      id="patternTool"
+      class="tool-content active"
+      role="tabpanel"
+      aria-labelledby="patternToolBtn"
+    >
 
+      <!-- SHOE INFORMATION -->
 
-      <div class="shoe-info-grid">
+      <section class="panel">
 
+        <div class="section-heading">
 
-        <div class="field-group">
-
-          <label for="shoeName">
-            Shoe Name
-          </label>
-
-          <input
-            type="text"
-            id="shoeName"
-            placeholder="Example: A'One Hyper Volt"
-          />
-
-        </div>
-
-
-        <div class="field-group">
-
-          <label for="brand">
-            Brand
-          </label>
-
-          <select
-            id="brand"
-            class="compact-select"
-          ></select>
-
-        </div>
-
-
-        <div class="field-group">
-
-          <label for="gameVersion">
-            Game Version
-          </label>
-
-          <select
-            id="gameVersion"
-            class="compact-select"
-          >
-
-            <option value="NBA 2K27">
-              NBA 2K27
-            </option>
-
-          </select>
-
-        </div>
-
-
-      </div>
-
-    </section>
-
-
-    <!-- ======================================================
-         SHOE COMPONENTS
-    ====================================================== -->
-
-    <section class="panel">
-
-      <div class="section-heading section-heading-row">
-
-        <div>
-
-          <h2>
-            Shoe Components
-          </h2>
+          <h1>
+            Create a Shoe Pattern
+          </h1>
 
           <p>
-            Add each shoe component and record the values shown in NBA 2K27.
+            Record the materials, colors, pattern swatches,
+            scale, and rotation values used in NBA 2K.
           </p>
 
         </div>
 
+        <div class="shoe-info-grid">
+
+          <div class="field-group">
+
+            <label for="shoeName">
+              Shoe Name
+            </label>
+
+            <input
+              type="text"
+              id="shoeName"
+              placeholder="Example: A'One Hyper Volt"
+            />
+
+          </div>
+
+          <div class="field-group">
+
+            <label for="brand">
+              Brand
+            </label>
+
+            <select
+              id="brand"
+              class="compact-select"
+            ></select>
+
+          </div>
+
+          <div class="field-group">
+
+            <label for="gameVersion">
+              Game Version
+            </label>
+
+            <select
+              id="gameVersion"
+              class="compact-select"
+            >
+              <option value="NBA 2K27">
+                NBA 2K27
+              </option>
+            </select>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- SHOE COMPONENTS -->
+
+      <section class="panel">
+
+        <div class="section-heading section-heading-row">
+
+          <div>
+
+            <h2>
+              Shoe Components
+            </h2>
+
+            <p>
+              Add each shoe component and record
+              the values shown in NBA 2K27.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            id="addComponentBtn"
+            class="button button-secondary"
+            data-umami-event="solelab_add_component"
+          >
+            + Add Component
+          </button>
+
+        </div>
+
+        <div id="componentsContainer"></div>
+
+      </section>
+
+      <!-- PATTERN MANAGER ACTIONS -->
+
+      <section class="action-bar">
 
         <button
           type="button"
-          id="addComponentBtn"
-          class="button button-secondary"
-          data-umami-event="solelab_add_component"
+          id="downloadRecipeBtn"
+          class="button button-primary"
         >
-          + Add Component
+          Download JPEG
         </button>
 
-      </div>
+        <button
+          type="button"
+          id="clearFormBtn"
+          class="button button-secondary"
+        >
+          Clear Form
+        </button>
 
+      </section>
 
-      <div id="componentsContainer"></div>
+    </div>
 
-    </section>
+    <!-- ========================================
+         QUICK SHARE SPEC MANAGER
+    ========================================= -->
 
+    <div
+      id="specTool"
+      class="tool-content"
+      role="tabpanel"
+      aria-labelledby="specToolBtn"
+      hidden
+    >
 
-    <!-- ======================================================
-         ACTIONS
-    ====================================================== -->
+      <!-- SPEC CARD INFORMATION -->
 
-    <section class="action-bar">
+      <section class="panel">
 
-  <button
-    type="button"
-    id="downloadRecipeBtn"
-    class="button button-primary"
-  >
-    Download JPEG
-  </button>
+        <div class="section-heading">
 
-  <button
-    type="button"
-    id="clearFormBtn"
-    class="button button-secondary"
-  >
-    Clear Form
-  </button>
+          <h1>
+            Create a Shoe Spec Card
+          </h1>
 
-</section>
+          <p>
+            Record your shoe's colors and materials,
+            then download a shareable spec card
+            for other NBA 2K creators.
+          </p>
+
+        </div>
+
+        <div class="shoe-info-grid">
+
+          <div class="field-group">
+
+            <label for="specShoeName">
+              Shoe Name
+            </label>
+
+            <input
+              type="text"
+              id="specShoeName"
+              placeholder="Example: A'One Hyper Volt"
+              maxlength="100"
+            />
+
+          </div>
+
+          <div class="field-group">
+
+            <label for="specBrand">
+              Brand
+            </label>
+
+            <select
+              id="specBrand"
+              class="compact-select"
+            ></select>
+
+          </div>
+
+          <div class="field-group">
+
+            <label for="specGameVersion">
+              Game Version
+            </label>
+
+            <select
+              id="specGameVersion"
+              class="compact-select"
+            >
+              <option value="NBA 2K27">
+                NBA 2K27
+              </option>
+            </select>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- SPEC CARD LAYERS -->
+
+      <section class="panel">
+
+        <div class="section-heading section-heading-row">
+
+          <div>
+
+            <h2>
+              Shoe Layers
+            </h2>
+
+            <p>
+              Add layers in the same order they appear
+              in NBA 2K Shoe Creator. Enter each layer's
+              RGB color and material.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            id="addSpecLayerBtn"
+            class="button button-secondary"
+            data-umami-event="solelab_add_spec_layer"
+          >
+            + Add Layer
+          </button>
+
+        </div>
+
+        <div
+          id="specLayersContainer"
+          class="spec-layers-container"
+        ></div>
+
+      </section>
+
+      <!-- SPEC CARD ACTIONS -->
+
+      <section class="action-bar">
+
+        <button
+          type="button"
+          id="downloadSpecCardBtn"
+          class="button button-primary"
+          data-umami-event="solelab_download_spec_card"
+        >
+          Download Spec Card
+        </button>
+
+        <button
+          type="button"
+          id="clearSpecFormBtn"
+          class="button button-secondary"
+        >
+          Clear Form
+        </button>
+
+      </section>
+
+    </div>
 
   </main>
 
-
   <script src="js/app.js"></script>
-
 
 </body>
 
