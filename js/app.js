@@ -1861,6 +1861,8 @@ ctx.fillText(
   y + 44
 );
 
+  }); // End of layers.forEach
+
 
   /* FOOTER */
 
