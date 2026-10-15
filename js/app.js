@@ -1,186 +1,96 @@
 
-/* ======================================================
-   THE SOLE LAB
-   NBA 2K27 SHOE CREATOR TOOLS
-
-   PATTERN MANAGER + QUICK SHARE
-====================================================== */
-
-
-/* ======================================================
-   NBA 2K27 DATA
-====================================================== */
+/* THE SOLE LAB — NBA 2K27: PATTERN MANAGER + QUICK SHARE */
 
 const BRANDS_2K27 = [
-  "Nike",
-  "Jordan",
-  "Converse",
-  "adidas",
-  "Puma",
-  "New Balance",
-  "Reebok",
-  "Under Armour",
-  "Anta",
-  "Li-Ning",
-  "AND 1",
-  "Peak",
-  "Rigorer",
-  "Qiaodan",
-  "361",
-  "Skechers",
-  "741",
-  "2K Brand"
+  "Nike", "Jordan", "Converse", "adidas", "Puma",
+  "New Balance", "Reebok", "Under Armour", "Anta",
+  "Li-Ning", "AND 1", "Peak", "Rigorer", "Qiaodan",
+  "361", "Skechers", "741", "2K Brand"
 ];
 
 const MATERIALS_2K27 = [
-  "Default",
-  "Rubber",
-  "Metal",
-  "Suede",
-  "Leather",
-  "Patent Leather",
-  "Velvet",
-  "Fabric",
-  "Mesh",
-  "Crocodile",
-  "Denim Fabric",
-  "Felt Fabric",
-  "Fleece Fabric",
-  "Knit Fabric",
-  "Engineered Knit Fabric",
-  "Synthetic Fabric",
-  "Velvet Fabric",
-  "Glitter",
-  "Classic Leather",
-  "Pebble Leather",
-  "Rugged Leather",
-  "Athletic Mesh",
-  "Brushed Linear Metal",
-  "Checker Metal",
-  "Chrome Metal",
-  "Diamond Metal",
-  "Roundhole Metal",
-  "Microfiber",
-  "Ostrich",
-  "Dull Plastic",
-  "Semi-shiny Plastic",
-  "Shiny Plastic",
-  "Pebble Rubber",
-  "Turing Rubber",
-  "Sequins",
-  "Snake",
-  "Fine Suede",
-  "Basket Weave",
-  "Birdeye Weave",
-  "Honeycomb Weave",
-  "Reversed Honeycomb Weave",
-  "Tabby Weave",
+  "Default", "Rubber", "Metal", "Suede", "Leather",
+  "Patent Leather", "Velvet", "Fabric", "Mesh",
+  "Crocodile", "Denim Fabric", "Felt Fabric",
+  "Fleece Fabric", "Knit Fabric",
+  "Engineered Knit Fabric", "Synthetic Fabric",
+  "Velvet Fabric", "Glitter", "Classic Leather",
+  "Pebble Leather", "Rugged Leather", "Athletic Mesh",
+  "Brushed Linear Metal", "Checker Metal",
+  "Chrome Metal", "Diamond Metal", "Roundhole Metal",
+  "Microfiber", "Ostrich", "Dull Plastic",
+  "Semi-shiny Plastic", "Shiny Plastic",
+  "Pebble Rubber", "Turing Rubber", "Sequins",
+  "Snake", "Fine Suede", "Basket Weave",
+  "Birdeye Weave", "Honeycomb Weave",
+  "Reversed Honeycomb Weave", "Tabby Weave",
   "Twill Weave"
 ];
 
 const PATTERNS_2K27 = Array.from(
   { length: 29 },
-  (_, index) => {
-    const number = String(index + 1).padStart(2, "0");
-
-    return {
-      id: `pattern-${number}`,
-      image: `assets/patterns/pattern-${number}.jpg`,
-      page: index < 20 ? 1 : 2
-    };
-  }
+  (_, i) => ({
+    id: `pattern-${String(i + 1).padStart(2, "0")}`,
+    image: `assets/patterns/pattern-${String(i + 1).padStart(2, "0")}.jpg`,
+    page: i < 20 ? 1 : 2
+  })
 );
 
 const SOLE_LAB_LOGO = "assets/icons/TSL Logo.png";
 
+const $ = id => document.getElementById(id);
 
-/* ======================================================
-   DOM ELEMENTS
-====================================================== */
+const shoeNameInput = $("shoeName");
+const brandSelect = $("brand");
+const gameVersionSelect = $("gameVersion");
+const componentsContainer = $("componentsContainer");
+const addComponentBtn = $("addComponentBtn");
+const clearFormBtn = $("clearFormBtn");
+const downloadRecipeBtn = $("downloadRecipeBtn");
 
-const shoeNameInput =
-  document.getElementById("shoeName");
+const patternToolBtn = $("patternToolBtn");
+const specToolBtn = $("specToolBtn");
+const patternTool = $("patternTool");
+const specTool = $("specTool");
 
-const brandSelect =
-  document.getElementById("brand");
+const specShoeName = $("specShoeName");
+const specBrand = $("specBrand");
+const specGameVersion = $("specGameVersion");
+const specLayersContainer = $("specLayersContainer");
 
-const gameVersionSelect =
-  document.getElementById("gameVersion");
+const addSpecLayerBtn = $("addSpecLayerBtn");
+const downloadSpecCardBtn = $("downloadSpecCardBtn");
+const clearSpecFormBtn = $("clearSpecFormBtn");
 
-const componentsContainer =
-  document.getElementById("componentsContainer");
-
-const addComponentBtn =
-  document.getElementById("addComponentBtn");
-
-const clearFormBtn =
-  document.getElementById("clearFormBtn");
-
-const downloadRecipeBtn =
-  document.getElementById("downloadRecipeBtn");
-
-
-/* QUICK SHARE ELEMENTS */
-
-const patternToolBtn =
-  document.getElementById("patternToolBtn");
-
-const specToolBtn =
-  document.getElementById("specToolBtn");
-
-const patternTool =
-  document.getElementById("patternTool");
-
-const specTool =
-  document.getElementById("specTool");
-
-const specShoeName =
-  document.getElementById("specShoeName");
-
-const specBrand =
-  document.getElementById("specBrand");
-
-const specGameVersion =
-  document.getElementById("specGameVersion");
-
-const specLayersContainer =
-  document.getElementById("specLayersContainer");
-
-const addSpecLayerBtn =
-  document.getElementById("addSpecLayerBtn");
-
-const downloadSpecCardBtn =
-  document.getElementById("downloadSpecCardBtn");
-
-const clearSpecFormBtn =
-  document.getElementById("clearSpecFormBtn");
+let specColorClipboard = null;
+let patternColorClipboard = null;
 
 
 /* ======================================================
    GENERAL HELPERS
 ====================================================== */
 
-function trackEvent(eventName, eventData = {}) {
-  if (window.umami) {
-    window.umami.track(eventName, eventData);
+function trackEvent(name, data = {}) {
+  if (window.umami?.track) {
+    window.umami.track(name, data);
   }
 }
 
 function escapeHTML(value) {
   return String(value).replace(
     /[&<>"']/g,
-    character => ({
+    c => ({
       "&": "&amp;",
       "<": "&lt;",
       ">": "&gt;",
       '"': "&quot;",
       "'": "&#39;"
-    })[character]
+    })[c]
   );
 }
 
-function slugifyFileName(text) {
-  return text
+function slugifyFileName(value) {
+  return value
     .toLowerCase()
     .trim()
     .replace(/['’]/g, "")
@@ -188,126 +98,152 @@ function slugifyFileName(text) {
     .replace(/^-+|-+$/g, "");
 }
 
-function populateBrandSelect(select) {
-  select.replaceChildren();
-
-  BRANDS_2K27.forEach(brand => {
-    const option = document.createElement("option");
-    option.value = brand;
-    option.textContent = brand;
-    select.appendChild(option);
-  });
-}
-
-function getMaterialOptions(selectedMaterial = "Default") {
-  return MATERIALS_2K27.map(material => {
-    const selected =
-      material === selectedMaterial ? "selected" : "";
-
-    return `
-      <option value="${escapeHTML(material)}" ${selected}>
-        ${escapeHTML(material)}
+function populateBrands(select) {
+  select.innerHTML = BRANDS_2K27
+    .map(v => `
+      <option value="${escapeHTML(v)}">
+        ${escapeHTML(v)}
       </option>
-    `;
-  }).join("");
+    `)
+    .join("");
 }
 
-function clampNumber(value, minimum, maximum, fallback) {
-  const number = Number(value);
+function materialOptions(selected = "Default") {
+  return MATERIALS_2K27
+    .map(v => `
+      <option
+        value="${escapeHTML(v)}"
+        ${v === selected ? "selected" : ""}
+      >
+        ${escapeHTML(v)}
+      </option>
+    `)
+    .join("");
+}
 
-  if (!Number.isFinite(number)) {
-    return fallback;
+function clamp(value, min, max, fallback = min) {
+  const n = Number(value);
+
+  return Number.isFinite(n)
+    ? Math.min(max, Math.max(min, n))
+    : fallback;
+}
+
+function channel(value) {
+  return Math.round(clamp(value, 0, 255));
+}
+
+function patternById(id) {
+  return PATTERNS_2K27.find(
+    p => p.id === id
+  ) || PATTERNS_2K27[0];
+}
+
+function patternStyle(pattern) {
+  return `
+    background-image:url('${pattern.image}');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+  `;
+}
+
+function rgbCSS(color) {
+  return `rgb(${color.red},${color.green},${color.blue})`;
+}
+
+
+/* ======================================================
+   CANVAS FONT HELPERS — ANTON
+====================================================== */
+
+function drawText(
+  ctx,
+  text,
+  x,
+  y,
+  maxWidth,
+  size = 24,
+  minimum = 15
+) {
+  text = String(text);
+
+  let s = size;
+
+  while (s > minimum) {
+    ctx.font = `${s}px "Anton", sans-serif`;
+
+    if (ctx.measureText(text).width <= maxWidth) {
+      break;
+    }
+
+    s--;
   }
 
-  return Math.max(minimum, Math.min(maximum, number));
-}
+  ctx.font = `${s}px "Anton", sans-serif`;
 
-function clampRGBInput(input) {
-  if (input.value === "") {
-    return;
+  while (
+    text.length &&
+    ctx.measureText(text).width > maxWidth
+  ) {
+    text = text.slice(0, -1);
   }
 
-  input.value = Math.round(
-    clampNumber(input.value, 0, 255, 0)
-  );
+  ctx.fillText(text, x, y);
 }
 
-function clampScaleInput(input) {
-  input.value = clampNumber(
-    input.value, 0.5, 12, 0.5
-  ).toFixed(2);
+async function loadExportFonts() {
+  try {
+    await document.fonts.load('32px "Anton"');
+    await document.fonts.ready;
+  } catch (e) {
+    console.warn(
+      "Anton could not be loaded; browser fallback will be used.",
+      e
+    );
+  }
 }
 
-function clampRotationInput(input) {
-  input.value = clampNumber(
-    input.value, 0, 6.28, 0
-  ).toFixed(2);
-}
+
+/* ======================================================
+   IMAGE / FILE HELPERS
+====================================================== */
 
 function loadImage(src) {
   return new Promise((resolve, reject) => {
-    const image = new Image();
+    const img = new Image();
 
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(
-      new Error(`Could not load image: ${src}`)
+    img.onload = () => resolve(img);
+
+    img.onerror = () => reject(
+      new Error(`Could not load ${src}`)
     );
 
-    image.src = src;
+    img.src = src;
   });
 }
 
-function drawRoundedRect(
-  ctx, x, y, width, height, radius
+function canvasToBlob(
+  canvas,
+  type = "image/png",
+  quality = 0.93
 ) {
-  ctx.beginPath();
-
-  if (typeof ctx.roundRect === "function") {
-    ctx.roundRect(x, y, width, height, radius);
-  } else {
-    ctx.rect(x, y, width, height);
-  }
-
-  ctx.fill();
-}
-
-function canvasToBlob(canvas, type, quality) {
   return new Promise((resolve, reject) => {
-    canvas.toBlob(blob => {
-      if (blob) {
-        resolve(blob);
-      } else {
-        reject(new Error("Could not generate image."));
-      }
-    }, type, quality);
+    canvas.toBlob(
+      b => b
+        ? resolve(b)
+        : reject(new Error("Export failed")),
+      type,
+      quality
+    );
   });
 }
 
-function downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = filename;
-
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  setTimeout(() => {
-    URL.revokeObjectURL(url);
-  }, 30000);
-}
-
-async function shareOrDownloadFiles(files, title, text) {
-  const mobile =
-    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
+async function shareOrDownload(files, title, text) {
   if (
-    mobile &&
+    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) &&
     navigator.share &&
-    navigator.canShare &&
-    navigator.canShare({ files })
+    navigator.canShare?.({ files })
   ) {
     try {
       await navigator.share({
@@ -317,17 +253,29 @@ async function shareOrDownloadFiles(files, title, text) {
       });
 
       return "shared";
-    } catch (error) {
-      if (error.name === "AbortError") {
+    } catch (e) {
+      if (e.name === "AbortError") {
         return "cancelled";
       }
 
-      console.warn("Native share failed:", error);
+      console.warn("Share failed", e);
     }
   }
 
   files.forEach(file => {
-    downloadBlob(file, file.name);
+    const url = URL.createObjectURL(file);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = file.name;
+
+    document.body.append(a);
+    a.click();
+    a.remove();
+
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+    }, 30000);
   });
 
   return "downloaded";
@@ -338,109 +286,36 @@ async function shareOrDownloadFiles(files, title, text) {
    TOOL NAVIGATION
 ====================================================== */
 
-function switchTool(toolName) {
-  const showSpec = toolName === "spec";
+function switchTool(name) {
+  const spec = name === "spec";
 
-  patternTool.hidden = showSpec;
-  specTool.hidden = !showSpec;
+  patternTool.hidden = spec;
+  specTool.hidden = !spec;
 
-  patternTool.classList.toggle("active", !showSpec);
-  specTool.classList.toggle("active", showSpec);
+  patternTool.classList.toggle("active", !spec);
+  specTool.classList.toggle("active", spec);
 
-  patternToolBtn.classList.toggle("active", !showSpec);
-  specToolBtn.classList.toggle("active", showSpec);
+  patternToolBtn.classList.toggle("active", !spec);
+  specToolBtn.classList.toggle("active", spec);
 
   patternToolBtn.setAttribute(
-    "aria-selected", String(!showSpec)
+    "aria-selected",
+    String(!spec)
   );
 
   specToolBtn.setAttribute(
-    "aria-selected", String(showSpec)
+    "aria-selected",
+    String(spec)
   );
 }
-
-patternToolBtn.addEventListener("click", () => {
-  switchTool("pattern");
-});
-
-specToolBtn.addEventListener("click", () => {
-  switchTool("spec");
-});
 
 
 /* ======================================================
-   PATTERN MANAGER
-   PATTERN HELPERS
+   PATTERN MANAGER — PATTERN PICKER
 ====================================================== */
 
-function getPatternById(patternId) {
-  return PATTERNS_2K27.find(
-    pattern => pattern.id === patternId
-  ) || PATTERNS_2K27[0];
-}
-
-function getPatternsByPage(pageNumber) {
-  return PATTERNS_2K27.filter(
-    pattern => pattern.page === pageNumber
-  );
-}
-
-function getSwatchStyle(pattern) {
-  return [
-    `background-image: url('${pattern.image}')`,
-    "background-size: cover",
-    "background-position: center",
-    "background-repeat: no-repeat"
-  ].join("; ");
-}
-
-function createPatternPageMarkup(
-  pageNumber,
-  selectedPatternId
-) {
-  const patterns = getPatternsByPage(pageNumber);
-
-  return `
-    <div class="pattern-page-group">
-
-      <div class="pattern-page-title">
-        Page ${pageNumber}
-      </div>
-
-      <div class="pattern-grid">
-
-        ${patterns.map(pattern => {
-          const isSelected =
-            pattern.id === selectedPatternId
-              ? "is-selected"
-              : "";
-
-          return `
-            <button
-              type="button"
-              class="pattern-option ${isSelected}"
-              data-pattern-id="${pattern.id}"
-              aria-label="Select pattern ${pattern.id}"
-            >
-              <span
-                class="pattern-swatch"
-                style="${getSwatchStyle(pattern)}"
-              ></span>
-            </button>
-          `;
-        }).join("")}
-
-      </div>
-
-    </div>
-  `;
-}
-
-function createPatternPickerMarkup(
-  selectedPatternId = "pattern-01"
-) {
-  const selectedPattern =
-    getPatternById(selectedPatternId);
+function pickerMarkup(selected = "pattern-01") {
+  const pattern = patternById(selected);
 
   return `
     <div class="field-group pattern-field-group">
@@ -450,8 +325,8 @@ function createPatternPickerMarkup(
       <input
         type="hidden"
         class="component-pattern-id"
-        value="${selectedPattern.id}"
-      />
+        value="${pattern.id}"
+      >
 
       <button
         type="button"
@@ -459,7 +334,7 @@ function createPatternPickerMarkup(
       >
         <span
           class="pattern-trigger-preview pattern-swatch"
-          style="${getSwatchStyle(selectedPattern)}"
+          style="${patternStyle(pattern)}"
         ></span>
 
         <span class="pattern-trigger-copy">
@@ -474,51 +349,61 @@ function createPatternPickerMarkup(
       </button>
 
       <div class="pattern-picker">
-        ${createPatternPageMarkup(
-          1, selectedPattern.id
-        )}
+        ${[1, 2].map(page => `
+          <div class="pattern-page-group">
 
-        ${createPatternPageMarkup(
-          2, selectedPattern.id
-        )}
+            <div class="pattern-page-title">
+              Page ${page}
+            </div>
+
+            <div class="pattern-grid">
+              ${PATTERNS_2K27
+                .filter(p => p.page === page)
+                .map(p => `
+                  <button
+                    type="button"
+                    class="pattern-option ${p.id === pattern.id ? "is-selected" : ""}"
+                    data-pattern-id="${p.id}"
+                    aria-label="Select pattern ${p.id}"
+                  >
+                    <span
+                      class="pattern-swatch"
+                      style="${patternStyle(p)}"
+                    ></span>
+                  </button>
+                `)
+                .join("")}
+            </div>
+
+          </div>
+        `).join("")}
       </div>
 
     </div>
   `;
 }
 
-function closeAllPatternPickers(exceptCard = null) {
-  document.querySelectorAll(
-    ".component-card.pattern-picker-open"
-  ).forEach(card => {
-    if (card !== exceptCard) {
-      card.classList.remove("pattern-picker-open");
-    }
-  });
-}
-
 
 /* ======================================================
-   PATTERN MANAGER
-   RGB FIELDS
+   PATTERN MANAGER — RGB INPUTS
 ====================================================== */
 
-function createRGBGroup(colorNumber, color = {}) {
+function colorGroup(n, color = {}) {
   return `
     <div class="color-card">
 
       <div class="color-card-title">
-        Color ${colorNumber}
+        Color ${n}
       </div>
 
       <div class="rgb-stack">
-
         ${[
-          ["red", "R", color.red ?? 0],
-          ["green", "G", color.green ?? 0],
-          ["blue", "B", color.blue ?? 0]
-        ].map(([channel, label, value]) => `
+          ["red", "R"],
+          ["green", "G"],
+          ["blue", "B"]
+        ].map(([key, label]) => `
           <div class="rgb-row">
+
             <span class="rgb-label">
               ${label}:
             </span>
@@ -526,302 +411,36 @@ function createRGBGroup(colorNumber, color = {}) {
             <input
               type="number"
               inputmode="numeric"
-              class="color-${colorNumber}-${channel} rgb-value"
               min="0"
               max="255"
               step="1"
-              value="${value}"
-            />
+              class="color-${n}-${key} rgb-value"
+              value="${channel(color[key] ?? 0)}"
+            >
+
           </div>
         `).join("")}
-
       </div>
 
     </div>
   `;
 }
 
-
-/* ======================================================
-   PATTERN MANAGER
-   COMPONENT CREATION
-====================================================== */
-
-function createComponentRow(component = {}) {
-  const card = document.createElement("div");
-  card.className = "component-card";
-
-  card.innerHTML = `
-    <div class="component-card-header">
-
-      <h3>Shoe Component</h3>
-
-      <button
-        type="button"
-        class="remove-component-btn"
-      >
-        Remove
-      </button>
-
-    </div>
-
-    <div class="component-main-grid">
-
-      <div class="field-group">
-        <label>Component Name</label>
-
-        <input
-          type="text"
-          class="component-name"
-          placeholder="Example: Base"
-          value="${escapeHTML(component.name || "")}"
-        />
-      </div>
-
-      <div class="field-group">
-        <label>Material</label>
-
-        <select class="component-material">
-          ${getMaterialOptions(
-            component.material || "Default"
-          )}
-        </select>
-      </div>
-
-      ${createPatternPickerMarkup(
-        component.patternId || "pattern-01"
-      )}
-
-    </div>
-
-    <div class="component-section">
-
-      <div class="component-section-title">
-        Pattern Colors
-      </div>
-
-      <div class="color-grid">
-
-        ${createRGBGroup(1, component.color1)}
-
-        ${createRGBGroup(2, component.color2)}
-
-        ${createRGBGroup(3, component.color3)}
-
-      </div>
-
-    </div>
-
-    <div class="component-section">
-
-      <div class="component-section-title">
-        Pattern Position
-      </div>
-
-      <div class="position-grid">
-
-        <div class="field-group">
-          <label>X — Scale</label>
-
-          <input
-            type="number"
-            inputmode="decimal"
-            class="component-x"
-            min="0.50"
-            max="12.00"
-            step="0.01"
-            value="${component.x ?? "0.50"}"
-          />
-
-          <span class="field-range">
-            0.50 – 12.00
-          </span>
-        </div>
-
-        <div class="field-group">
-          <label>Y — Rotation</label>
-
-          <input
-            type="number"
-            inputmode="decimal"
-            class="component-y"
-            min="0.00"
-            max="6.28"
-            step="0.01"
-            value="${component.y ?? "0.00"}"
-          />
-
-          <span class="field-range">
-            0.00 – 6.28
-          </span>
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="field-group component-notes-field">
-      <label>Notes</label>
-
-      <input
-        type="text"
-        class="component-notes"
-        placeholder="Optional notes"
-        value="${escapeHTML(component.notes || "")}"
-      />
-    </div>
-  `;
-
-  componentsContainer.appendChild(card);
-  wireComponentCard(card);
-
-  return card;
+function rgbFromCard(card, n) {
+  return Object.fromEntries(
+    ["red", "green", "blue"].map(k => [
+      k,
+      channel(
+        card.querySelector(
+          `.color-${n}-${k}`
+        ).value
+      )
+    ])
+  );
 }
 
-
-/* ======================================================
-   PATTERN MANAGER
-   COMPONENT EVENTS
-====================================================== */
-
-function wireComponentCard(card) {
-  const removeBtn =
-    card.querySelector(".remove-component-btn");
-
-  const patternTrigger =
-    card.querySelector(".pattern-picker-trigger");
-
-  const hiddenPatternInput =
-    card.querySelector(".component-pattern-id");
-
-  const previewSwatch =
-    card.querySelector(".pattern-trigger-preview");
-
-  const patternOptions =
-    card.querySelectorAll(".pattern-option");
-
-  const rgbInputs =
-    card.querySelectorAll(".rgb-value");
-
-  const scaleInput =
-    card.querySelector(".component-x");
-
-  const rotationInput =
-    card.querySelector(".component-y");
-
-  rgbInputs.forEach(input => {
-    input.addEventListener("focus", () => {
-      if (input.value === "0") {
-        input.value = "";
-      }
-    });
-
-    input.addEventListener("input", () => {
-      clampRGBInput(input);
-    });
-  });
-
-  scaleInput.addEventListener("focus", () => {
-    if (scaleInput.value === "0.50") {
-      scaleInput.value = "";
-    }
-  });
-
-  rotationInput.addEventListener("focus", () => {
-    if (rotationInput.value === "0.00") {
-      rotationInput.value = "";
-    }
-  });
-
-  scaleInput.addEventListener("change", () => {
-    clampScaleInput(scaleInput);
-  });
-
-  rotationInput.addEventListener("change", () => {
-    clampRotationInput(rotationInput);
-  });
-
-  removeBtn.addEventListener("click", () => {
-    card.remove();
-    trackEvent("solelab_remove_component");
-  });
-
-  patternTrigger.addEventListener("click", () => {
-    const isOpen =
-      card.classList.contains("pattern-picker-open");
-
-    closeAllPatternPickers(card);
-
-    card.classList.toggle(
-      "pattern-picker-open",
-      !isOpen
-    );
-
-    trackEvent("solelab_open_pattern_picker");
-  });
-
-  patternOptions.forEach(option => {
-    option.addEventListener("click", () => {
-      const pattern =
-        getPatternById(option.dataset.patternId);
-
-      hiddenPatternInput.value = pattern.id;
-
-      previewSwatch.setAttribute(
-        "style",
-        getSwatchStyle(pattern)
-      );
-
-      patternOptions.forEach(item => {
-        item.classList.remove("is-selected");
-      });
-
-      option.classList.add("is-selected");
-
-      card.classList.remove("pattern-picker-open");
-
-      trackEvent("solelab_select_pattern", {
-        patternId: pattern.id,
-        page: pattern.page
-      });
-    });
-  });
-}
-
-
-/* ======================================================
-   PATTERN MANAGER
-   READ COMPONENT VALUES
-====================================================== */
-
-function getRGBValues(card, colorNumber) {
+function componentValues(card) {
   return {
-    red: Number(
-      card.querySelector(
-        `.color-${colorNumber}-red`
-      ).value
-    ),
-
-    green: Number(
-      card.querySelector(
-        `.color-${colorNumber}-green`
-      ).value
-    ),
-
-    blue: Number(
-      card.querySelector(
-        `.color-${colorNumber}-blue`
-      ).value
-    )
-  };
-}
-
-function getComponentValues() {
-  return Array.from(
-    componentsContainer.querySelectorAll(
-      ".component-card"
-    )
-  ).map(card => ({
     name: card.querySelector(
       ".component-name"
     ).value.trim(),
@@ -834,9 +453,9 @@ function getComponentValues() {
       ".component-pattern-id"
     ).value,
 
-    color1: getRGBValues(card, 1),
-    color2: getRGBValues(card, 2),
-    color3: getRGBValues(card, 3),
+    color1: rgbFromCard(card, 1),
+    color2: rgbFromCard(card, 2),
+    color3: rgbFromCard(card, 3),
 
     x: Number(
       card.querySelector(".component-x").value
@@ -849,51 +468,537 @@ function getComponentValues() {
     notes: card.querySelector(
       ".component-notes"
     ).value.trim()
-  })).filter(component => component.name);
+  };
 }
 
-function validateComponents(components) {
-  for (const component of components) {
-    if (
-      !Number.isFinite(component.x) ||
-      component.x < 0.5 ||
-      component.x > 12
-    ) {
+
+/* ======================================================
+   PATTERN MANAGER — CARD HELPERS
+====================================================== */
+
+function updateComponentNumbers() {
+  componentsContainer
+    .querySelectorAll(".component-card")
+    .forEach((card, i) => {
+      card.querySelector(
+        ".pattern-component-number"
+      ).textContent =
+        String(i + 1).padStart(2, "0");
+
+      const summary = card.querySelector(
+        ".pattern-component-summary"
+      );
+
+      summary.textContent =
+        `${card.querySelector(".component-name").value.trim() || "Untitled component"} · ${card.querySelector(".component-material").value}`;
+    });
+}
+
+function updatePatternColors(card) {
+  for (let i = 1; i <= 3; i++) {
+    card.querySelector(
+      `.pattern-live-swatch[data-color="${i}"]`
+    ).style.background =
+      rgbCSS(rgbFromCard(card, i));
+  }
+}
+
+function closeAllPatternPickers(except = null) {
+  componentsContainer
+    .querySelectorAll(".pattern-picker-open")
+    .forEach(card => {
+      if (card !== except) {
+        card.classList.remove("pattern-picker-open");
+      }
+    });
+}
+
+
+/* ======================================================
+   PATTERN MANAGER — CREATE COMPONENT
+====================================================== */
+
+function createComponentRow(data = {}) {
+  const card = document.createElement("div");
+
+  card.className =
+    "component-card pattern-compact-card";
+
+  card.innerHTML = `
+    <div class="component-card-header">
+
+      <h3>
+        <span class="pattern-component-number"></span>
+        · Shoe Component
+      </h3>
+
+      <div class="pattern-header-actions">
+
+        <button
+          type="button"
+          class="pattern-collapse-toggle"
+          aria-expanded="true"
+        >
+          Collapse ▴
+        </button>
+
+        <button
+          type="button"
+          class="button button-secondary pattern-duplicate-btn"
+        >
+          Duplicate
+        </button>
+
+        <button
+          type="button"
+          class="remove-component-btn"
+        >
+          Remove
+        </button>
+
+      </div>
+
+      <div
+        class="pattern-component-summary"
+        hidden
+      ></div>
+
+    </div>
+
+    <div class="pattern-component-body">
+
+      <div class="component-main-grid">
+
+        <div class="field-group">
+          <label>Component Name</label>
+
+          <input
+            type="text"
+            class="component-name"
+            placeholder="Example: Base"
+            value="${escapeHTML(data.name || "")}"
+          >
+        </div>
+
+        <div class="field-group">
+          <label>Material</label>
+
+          <select class="component-material">
+            ${materialOptions(data.material || "Default")}
+          </select>
+        </div>
+
+        ${pickerMarkup(data.patternId)}
+
+      </div>
+
+      <div class="component-section">
+
+        <div class="component-section-title">
+          Pattern Colors
+        </div>
+
+        <div class="color-grid">
+          ${colorGroup(1, data.color1)}
+          ${colorGroup(2, data.color2)}
+          ${colorGroup(3, data.color3)}
+        </div>
+
+      </div>
+
+      <div class="component-section">
+
+        <div class="component-section-title">
+          Pattern Position
+        </div>
+
+        <div class="position-grid">
+
+          <div class="field-group">
+            <label>X — Scale</label>
+
+            <input
+              type="number"
+              inputmode="decimal"
+              class="component-x"
+              min="0.50"
+              max="12.00"
+              step="0.01"
+              value="${clamp(data.x ?? 0.5, 0.5, 12).toFixed(2)}"
+            >
+
+            <span class="field-range">
+              0.50 – 12.00
+            </span>
+          </div>
+
+          <div class="field-group">
+            <label>Y — Rotation</label>
+
+            <input
+              type="number"
+              inputmode="decimal"
+              class="component-y"
+              min="0"
+              max="6.28"
+              step="0.01"
+              value="${clamp(data.y ?? 0, 0, 6.28).toFixed(2)}"
+            >
+
+            <span class="field-range">
+              0.00 – 6.28
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="field-group component-notes-field">
+        <label>Notes</label>
+
+        <input
+          type="text"
+          class="component-notes"
+          placeholder="Optional notes"
+          value="${escapeHTML(data.notes || "")}"
+        >
+      </div>
+
+    </div>
+  `;
+
+  componentsContainer.append(card);
+
+  const body = card.querySelector(
+    ".pattern-component-body"
+  );
+
+  const summary = card.querySelector(
+    ".pattern-component-summary"
+  );
+
+  const toggle = card.querySelector(
+    ".pattern-collapse-toggle"
+  );
+
+  /* COLLAPSE / EXPAND */
+
+  toggle.addEventListener("click", () => {
+    const collapsed =
+      !card.classList.contains("is-collapsed");
+
+    card.classList.toggle(
+      "is-collapsed",
+      collapsed
+    );
+
+    body.hidden = collapsed;
+    summary.hidden = !collapsed;
+
+    toggle.textContent =
+      collapsed ? "Expand ▾" : "Collapse ▴";
+
+    toggle.setAttribute(
+      "aria-expanded",
+      String(!collapsed)
+    );
+
+    updateComponentNumbers();
+  });
+
+  /* REMOVE */
+
+  card.querySelector(
+    ".remove-component-btn"
+  ).addEventListener("click", () => {
+    card.remove();
+
+    updateComponentNumbers();
+
+    trackEvent("solelab_remove_component");
+  });
+
+  /* DUPLICATE */
+
+  card.querySelector(
+    ".pattern-duplicate-btn"
+  ).addEventListener("click", () => {
+    const copy = createComponentRow(
+      componentValues(card)
+    );
+
+    card.after(copy);
+
+    updateComponentNumbers();
+
+    trackEvent(
+      "solelab_duplicate_pattern_component"
+    );
+  });
+
+  /* UPDATE SUMMARY */
+
+  card.querySelector(
+    ".component-name"
+  ).addEventListener(
+    "input",
+    updateComponentNumbers
+  );
+
+  card.querySelector(
+    ".component-material"
+  ).addEventListener(
+    "change",
+    updateComponentNumbers
+  );
+
+  /* PATTERN PICKER */
+
+  const trigger = card.querySelector(
+    ".pattern-picker-trigger"
+  );
+
+  trigger.addEventListener("click", () => {
+    const wasOpen =
+      card.classList.contains("pattern-picker-open");
+
+    closeAllPatternPickers(card);
+
+    card.classList.toggle(
+      "pattern-picker-open",
+      !wasOpen
+    );
+
+    trackEvent("solelab_open_pattern_picker");
+  });
+
+  card.querySelectorAll(
+    ".pattern-option"
+  ).forEach(option => {
+    option.addEventListener("click", () => {
+      const p = patternById(
+        option.dataset.patternId
+      );
+
+      card.querySelector(
+        ".component-pattern-id"
+      ).value = p.id;
+
+      card.querySelector(
+        ".pattern-trigger-preview"
+      ).setAttribute(
+        "style",
+        patternStyle(p)
+      );
+
+      card.querySelectorAll(
+        ".pattern-option"
+      ).forEach(button => {
+        button.classList.toggle(
+          "is-selected",
+          button === option
+        );
+      });
+
+      card.classList.remove(
+        "pattern-picker-open"
+      );
+
+      trackEvent(
+        "solelab_select_pattern",
+        {
+          patternId: p.id,
+          page: p.page
+        }
+      );
+    });
+  });
+
+  /* COLOR PREVIEWS AND COPY / PASTE */
+
+  card.querySelectorAll(
+    ".color-card"
+  ).forEach((colorCard, i) => {
+    const n = i + 1;
+
+    const swatch = document.createElement("span");
+
+    swatch.className = "pattern-live-swatch";
+    swatch.dataset.color = n;
+
+    swatch.setAttribute("role", "img");
+
+    swatch.setAttribute(
+      "aria-label",
+      `Color ${n} preview`
+    );
+
+    const actions = document.createElement("div");
+
+    actions.className = "pattern-color-actions";
+
+    const copy = document.createElement("button");
+    const paste = document.createElement("button");
+
+    for (const button of [copy, paste]) {
+      button.type = "button";
+      button.className = "button button-secondary";
+    }
+
+    copy.textContent = "Copy";
+    paste.textContent = "Paste";
+
+    actions.append(copy, paste);
+    colorCard.append(swatch, actions);
+
+    copy.addEventListener("click", () => {
+      patternColorClipboard =
+        rgbFromCard(card, n);
+
+      copy.textContent = "Copied!";
+
+      setTimeout(() => {
+        if (copy.isConnected) {
+          copy.textContent = "Copy";
+        }
+      }, 1200);
+
+      trackEvent("solelab_copy_pattern_color");
+    });
+
+    paste.addEventListener("click", () => {
+      if (!patternColorClipboard) {
+        return;
+      }
+
+      for (
+        const [key, value] of
+        Object.entries(patternColorClipboard)
+      ) {
+        card.querySelector(
+          `.color-${n}-${key}`
+        ).value = value;
+      }
+
+      updatePatternColors(card);
+
+      paste.textContent = "Pasted!";
+
+      setTimeout(() => {
+        if (paste.isConnected) {
+          paste.textContent = "Paste";
+        }
+      }, 1200);
+
+      trackEvent("solelab_paste_pattern_color");
+    });
+  });
+
+  /* RGB VALIDATION AND LIVE SWATCHES */
+
+  card.querySelectorAll(
+    ".rgb-value"
+  ).forEach(input => {
+    input.addEventListener("focus", () => {
+      if (input.value === "0") {
+        input.value = "";
+      }
+    });
+
+    input.addEventListener("input", () => {
+      if (input.value !== "") {
+        input.value = channel(input.value);
+      }
+
+      updatePatternColors(card);
+    });
+
+    input.addEventListener("change", () => {
+      input.value = channel(input.value);
+      updatePatternColors(card);
+    });
+  });
+
+  /* SCALE AND ROTATION */
+
+  for (const [selector, min, max] of [
+    [".component-x", 0.5, 12],
+    [".component-y", 0, 6.28]
+  ]) {
+    const field = card.querySelector(selector);
+
+    field.addEventListener("focus", () => {
+      if (
+        field.value ===
+        (selector === ".component-x" ? "0.50" : "0.00")
+      ) {
+        field.value = "";
+      }
+    });
+
+    field.addEventListener("change", () => {
+      field.value =
+        clamp(field.value, min, max).toFixed(2);
+    });
+  }
+
+  updatePatternColors(card);
+  updateComponentNumbers();
+
+  return card;
+}
+
+
+/* ======================================================
+   PATTERN MANAGER — RESET AND VALIDATION
+====================================================== */
+
+function resetForm() {
+  shoeNameInput.value = "";
+  brandSelect.value = BRANDS_2K27[0];
+  gameVersionSelect.value = "NBA 2K27";
+
+  componentsContainer.replaceChildren();
+
+  patternColorClipboard = null;
+
+  createComponentRow();
+}
+
+function validateComponents(items) {
+  for (const p of items) {
+    if (!(p.x >= 0.5 && p.x <= 12)) {
       alert(
-        `${component.name}: X / Scale must be between 0.50 and 12.00.`
+        `${p.name}: Scale must be 0.50–12.00`
       );
 
       return false;
     }
 
-    if (
-      !Number.isFinite(component.y) ||
-      component.y < 0 ||
-      component.y > 6.28
-    ) {
+    if (!(p.y >= 0 && p.y <= 6.28)) {
       alert(
-        `${component.name}: Y / Rotation must be between 0.00 and 6.28.`
+        `${p.name}: Rotation must be 0.00–6.28`
       );
 
       return false;
     }
 
     for (const color of [
-      component.color1,
-      component.color2,
-      component.color3
+      p.color1,
+      p.color2,
+      p.color3
     ]) {
-      if ([
-        color.red,
-        color.green,
-        color.blue
-      ].some(value =>
-        !Number.isInteger(value) ||
-        value < 0 ||
-        value > 255
-      )) {
+      if (
+        Object.values(color).some(
+          v =>
+            !Number.isInteger(v) ||
+            v < 0 ||
+            v > 255
+        )
+      ) {
         alert(
-          `${component.name}: RGB values must be whole numbers from 0 to 255.`
+          `${p.name}: RGB must be 0–255`
         );
 
         return false;
@@ -904,322 +1009,369 @@ function validateComponents(components) {
   return true;
 }
 
-function resetForm() {
-  shoeNameInput.value = "";
-  brandSelect.value = BRANDS_2K27[0];
-  gameVersionSelect.value = "NBA 2K27";
-
-  componentsContainer.replaceChildren();
-  createComponentRow();
-}
-
 
 /* ======================================================
-   PATTERN MANAGER
-   JPEG EXPORT HELPERS
+   PATTERN MANAGER — JPEG DRAWING
 ====================================================== */
 
-function drawRGBColumn(ctx, title, color, x, y) {
-  ctx.fillStyle = "#9ba6b2";
-  ctx.font = "22px Anton";
-  ctx.fillText(title, x, y);
+function drawPatternColor(ctx, label, color, x, y) {
+  ctx.fillStyle = "#9da7b2";
+
+  drawText(
+    ctx, label, x, y, 175, 16
+  );
+
+  ctx.fillStyle = rgbCSS(color);
+  ctx.fillRect(x, y + 10, 28, 28);
+
+  ctx.strokeStyle = "#65717c";
+  ctx.strokeRect(x, y + 10, 28, 28);
 
   ctx.fillStyle = "#ffffff";
-  ctx.font = "26px Anton";
 
-  ctx.fillText(`R:  ${color.red}`, x, y + 42);
-  ctx.fillText(`G:  ${color.green}`, x, y + 80);
-  ctx.fillText(`B:  ${color.blue}`, x, y + 118);
+  drawText(
+    ctx,
+    `${color.red}, ${color.green}, ${color.blue}`,
+    x + 38,
+    y + 33,
+    185,
+    19,
+    15
+  );
+}
+
+async function renderPatternPage(
+  shoe,
+  brand,
+  version,
+  items,
+  page,
+  total
+) {
+  const canvas = document.createElement("canvas");
+
+  canvas.width = 1080;
+  canvas.height = 1350;
+
+  const ctx = canvas.getContext("2d");
+
+  /* BACKGROUND */
+
+  ctx.fillStyle = "#0d1014";
+  ctx.fillRect(0, 0, 1080, 1350);
+
+  /* HEADER */
+
+  ctx.fillStyle = "#8ac73f";
+  ctx.fillRect(65, 58, 8, 87);
+
+  ctx.fillStyle = "#ffffff";
+
+  drawText(
+    ctx,
+    "THE SOLE LAB",
+    95,
+    103,
+    860,
+    48
+  );
+
+  ctx.fillStyle = "#8ac73f";
+
+  drawText(
+    ctx,
+    "PATTERN MANAGER / SHOE SPECS",
+    96,
+    142,
+    850,
+    22
+  );
+
+  /* SHOE INFORMATION */
+
+  ctx.fillStyle = "#191f26";
+  ctx.fillRect(65, 175, 950, 130);
+
+  ctx.fillStyle = "#ffffff";
+
+  drawText(
+    ctx,
+    shoe,
+    90,
+    225,
+    885,
+    37,
+    22
+  );
+
+  ctx.fillStyle = "#9da7b2";
+
+  drawText(
+    ctx,
+    `${brand}  •  ${version}  •  Card ${page + 1} of ${total}`,
+    90,
+    274,
+    885,
+    23,
+    17
+  );
+
+  /* COMPONENTS */
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    const y = 325 + i * 181;
+
+    ctx.fillStyle = "#191f26";
+    ctx.fillRect(65, y, 950, 170);
+
+    /* COMPONENT NUMBER */
+
+    ctx.fillStyle = "#8ac73f";
+
+    drawText(
+      ctx,
+      String(page * 5 + i + 1).padStart(2, "0"),
+      82,
+      y + 31,
+      38,
+      23
+    );
+
+    /* COMPONENT NAME */
+
+    ctx.fillStyle = "#ffffff";
+
+    drawText(
+      ctx,
+      item.name,
+      125,
+      y + 31,
+      465,
+      26,
+      18
+    );
+
+    /* MATERIAL */
+
+    ctx.fillStyle = "#c9d1d9";
+
+    drawText(
+      ctx,
+      item.material,
+      625,
+      y + 30,
+      365,
+      20
+    );
+
+    /* ACTUAL PATTERN IMAGE */
+
+    const pattern = patternById(
+      item.patternId
+    );
+
+    try {
+      ctx.drawImage(
+        await loadImage(pattern.image),
+        84,
+        y + 54,
+        88,
+        88
+      );
+    } catch (e) {
+      ctx.fillStyle = "#30363d";
+
+      ctx.fillRect(
+        84,
+        y + 54,
+        88,
+        88
+      );
+    }
+
+    ctx.fillStyle = "#9da7b2";
+
+    drawText(
+      ctx,
+      `Pattern ${pattern.id.slice(-2)}`,
+      84,
+      y + 160,
+      90,
+      15
+    );
+
+    /* PATTERN COLORS */
+
+    drawPatternColor(
+      ctx,
+      "COLOR 1",
+      item.color1,
+      192,
+      y + 67
+    );
+
+    drawPatternColor(
+      ctx,
+      "COLOR 2",
+      item.color2,
+      463,
+      y + 67
+    );
+
+    drawPatternColor(
+      ctx,
+      "COLOR 3",
+      item.color3,
+      734,
+      y + 67
+    );
+
+    /* SCALE AND ROTATION */
+
+    ctx.fillStyle = "#aeb7c2";
+
+    drawText(
+      ctx,
+      `X Scale: ${item.x.toFixed(2)}     Y Rotation: ${item.y.toFixed(2)}`,
+      192,
+      y + 148,
+      345,
+      16
+    );
+
+    /* OPTIONAL NOTES */
+
+    if (item.notes) {
+      drawText(
+        ctx,
+        `Notes: ${item.notes}`,
+        548,
+        y + 148,
+        455,
+        16,
+        14
+      );
+    }
+  }
+
+  /* FOOTER */
+
+  ctx.fillStyle = "#30363d";
+  ctx.fillRect(65, 1259, 950, 2);
+
+  ctx.fillStyle = "#9da7b2";
+
+  drawText(
+    ctx,
+    "NBA 2K Shoe Creator Pattern Manager",
+    65,
+    1300,
+    670,
+    18
+  );
+
+  ctx.fillStyle = "#8ac73f";
+
+  drawText(
+    ctx,
+    "THE SOLE LAB",
+    866,
+    1300,
+    149,
+    18
+  );
+
+  return canvas;
 }
 
 
 /* ======================================================
-   PATTERN MANAGER
-   JPEG EXPORT
+   PATTERN MANAGER — JPEG DOWNLOAD
 ====================================================== */
 
 async function downloadRecipeJPEG() {
-  const shoeName = shoeNameInput.value.trim();
+  const shoe = shoeNameInput.value.trim();
 
-  if (!shoeName) {
+  if (!shoe) {
     alert("Enter a shoe name before downloading.");
     shoeNameInput.focus();
     return;
   }
 
-  const components = getComponentValues();
+  const cards = [
+    ...componentsContainer.querySelectorAll(
+      ".component-card"
+    )
+  ];
 
-  if (components.length === 0) {
-    alert(
-      "Add at least one shoe component before downloading."
-    );
+  const items = cards
+    .filter(card =>
+      card.querySelector(
+        ".component-name"
+      ).value.trim()
+    )
+    .map(componentValues);
+
+  if (!items.length) {
+    alert("Add at least one named component.");
     return;
   }
 
-  if (!validateComponents(components)) {
+  if (!validateComponents(items)) {
     return;
   }
 
   downloadRecipeBtn.disabled = true;
 
   try {
-    await document.fonts.load('34px "Anton"');
+    await loadExportFonts();
 
-    const canvasWidth = 1400;
-    const headerHeight = 300;
-    const componentHeight = 390;
-    const footerHeight = 100;
+    const files = [];
+    const total = Math.ceil(items.length / 5);
 
-    const canvasHeight =
-      headerHeight +
-      components.length * componentHeight +
-      footerHeight;
-
-    const canvas = document.createElement("canvas");
-
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
-
-    const ctx = canvas.getContext("2d");
-
-    /* BACKGROUND */
-
-    ctx.fillStyle = "#0e1117";
-    ctx.fillRect(
-      0, 0, canvasWidth, canvasHeight
-    );
-
-    /* SHOE NAME */
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "52px Anton";
-    ctx.fillText(shoeName, 80, 155);
-
-    /* BRAND AND VERSION */
-
-    ctx.fillStyle = "#9ba6b2";
-    ctx.font = "26px Anton";
-
-    ctx.fillText(
-      `${brandSelect.value}  •  ${gameVersionSelect.value}`,
-      80,
-      205
-    );
-
-    /* DIVIDER */
-
-    ctx.fillStyle = "#8ac73f";
-    ctx.fillRect(80, 245, 1240, 2);
-
-    /* COMPONENT CARDS */
-
-    for (
-      let index = 0;
-      index < components.length;
-      index++
-    ) {
-      const component = components[index];
-
-      const startY =
-        headerHeight + index * componentHeight;
-
-      ctx.fillStyle = "#161b22";
-
-      drawRoundedRect(
-        ctx, 80, startY, 1240, 340, 18
+    for (let page = 0; page < total; page++) {
+      const canvas = await renderPatternPage(
+        shoe,
+        brandSelect.value,
+        gameVersionSelect.value,
+        items.slice(page * 5, (page + 1) * 5),
+        page,
+        total
       );
 
-      /* NAME */
-
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "32px Anton";
-
-      ctx.fillText(
-        component.name,
-        120,
-        startY + 55
+      const blob = await canvasToBlob(
+        canvas,
+        "image/jpeg",
+        0.93
       );
 
-      /* MATERIAL */
-
-      ctx.fillStyle = "#9ba6b2";
-      ctx.font = "21px Anton";
-
-      ctx.fillText(
-        `Material: ${component.material}`,
-        120,
-        startY + 95
-      );
-
-      /* PATTERN IMAGE */
-
-      const pattern =
-        getPatternById(component.patternId);
-
-      try {
-        const patternImage =
-          await loadImage(pattern.image);
-
-        ctx.drawImage(
-          patternImage,
-          1060,
-          startY + 35,
-          200,
-          200
-        );
-      } catch (error) {
-        console.warn(
-          "Pattern image could not be loaded.",
-          error
-        );
-      }
-
-      /* RGB VALUES */
-
-      drawRGBColumn(
-        ctx,
-        "COLOR 1",
-        component.color1,
-        120,
-        startY + 155
-      );
-
-      drawRGBColumn(
-        ctx,
-        "COLOR 2",
-        component.color2,
-        370,
-        startY + 155
-      );
-
-      drawRGBColumn(
-        ctx,
-        "COLOR 3",
-        component.color3,
-        620,
-        startY + 155
-      );
-
-      /* SCALE / ROTATION */
-
-      ctx.fillStyle = "#9ba6b2";
-      ctx.font = "20px Anton";
-
-      ctx.fillText(
-        "X — SCALE",
-        860,
-        startY + 275
-      );
-
-      ctx.fillText(
-        "Y — ROTATION",
-        1060,
-        startY + 275
-      );
-
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "28px Anton";
-
-      ctx.fillText(
-        component.x.toFixed(2),
-        860,
-        startY + 315
-      );
-
-      ctx.fillText(
-        component.y.toFixed(2),
-        1060,
-        startY + 315
+      files.push(
+        new File(
+          [blob],
+          `${slugifyFileName(shoe) || "shoe"}-pattern-${page + 1}.jpg`,
+          { type: "image/jpeg" }
+        )
       );
     }
 
-    /* WATERMARK */
-
-    ctx.save();
-
-    ctx.fillStyle =
-      "rgba(255, 255, 255, 0.006)";
-
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = '90px "Anton"';
-
-    ctx.fillText(
-      "THE",
-      canvasWidth / 2,
-      canvasHeight / 2 - 90
-    );
-
-    ctx.fillText(
-      "SOLE",
-      canvasWidth / 2,
-      canvasHeight / 2 + 5
-    );
-
-    ctx.fillText(
-      "LAB",
-      canvasWidth / 2,
-      canvasHeight / 2 + 100
-    );
-
-    ctx.restore();
-
-    /* FOOTER LOGO */
-
-    try {
-      const footerLogo =
-        await loadImage(SOLE_LAB_LOGO);
-
-      ctx.drawImage(
-        footerLogo,
-        80,
-        canvasHeight - 78,
-        48,
-        48
-      );
-    } catch (error) {
-      console.warn(
-        "Footer logo could not be loaded.",
-        error
-      );
-    }
-
-    /* EXPORT */
-
-    const blob = await canvasToBlob(
-      canvas,
-      "image/jpeg",
-      0.92
-    );
-
-    const filename =
-      `${slugifyFileName(shoeName) || "shoe"}-2k27.jpg`;
-
-    const file = new File(
-      [blob],
-      filename,
-      { type: "image/jpeg" }
-    );
-
-    const result = await shareOrDownloadFiles(
-      [file],
-      "The Sole Lab",
-      `${shoeName} - ${gameVersionSelect.value}`
+    const result = await shareOrDownload(
+      files,
+      "The Sole Lab — Pattern Specs",
+      `${shoe} - ${gameVersionSelect.value}`
     );
 
     if (result !== "cancelled") {
       trackEvent("solelab_download_jpeg", {
         brand: brandSelect.value,
-        componentCount: components.length
+        componentCount: items.length,
+        cardCount: total
       });
     }
+  } catch (e) {
+    console.error("Pattern export failed", e);
 
-  } catch (error) {
-    console.error("JPEG export failed:", error);
-
-    alert(
-      "Unable to create the JPEG. Please try again."
-    );
+    alert("Could not export the pattern cards.");
   } finally {
     downloadRecipeBtn.disabled = false;
   }
@@ -1227,49 +1379,18 @@ async function downloadRecipeJPEG() {
 
 
 /* ======================================================
-   PATTERN MANAGER
-   EVENTS
-====================================================== */
-
-addComponentBtn.addEventListener("click", () => {
-  createComponentRow();
-});
-
-clearFormBtn.addEventListener("click", resetForm);
-
-downloadRecipeBtn.addEventListener(
-  "click",
-  downloadRecipeJPEG
-);
-
-document.addEventListener("click", event => {
-  if (!event.target.closest(".pattern-field-group")) {
-    closeAllPatternPickers();
-  }
-});
-
-
-/* ======================================================
-   QUICK SHARE
-   LAYER MANAGER
+   QUICK SHARE — LAYER HELPERS
 ====================================================== */
 
 function refreshSpecLayerNumbers() {
-  const cards = specLayersContainer.querySelectorAll(
-    ".spec-layer-card"
-  );
-
-  cards.forEach((card, index) => {
-    card.querySelector(
-      ".spec-layer-number"
-    ).textContent = String(index + 1).padStart(2, "0");
-  });
-}
-
-function validSpecChannel(value) {
-  return Math.round(
-    clampNumber(value, 0, 255, 0)
-  );
+  specLayersContainer
+    .querySelectorAll(".spec-layer-card")
+    .forEach((card, i) => {
+      card.querySelector(
+        ".spec-layer-number"
+      ).textContent =
+        String(i + 1).padStart(2, "0");
+    });
 }
 
 function readSpecLayer(card) {
@@ -1282,121 +1403,42 @@ function readSpecLayer(card) {
       ".spec-layer-material"
     ).value,
 
-    red: validSpecChannel(
+    red: channel(
       card.querySelector(".spec-red").value
     ),
 
-    green: validSpecChannel(
+    green: channel(
       card.querySelector(".spec-green").value
     ),
 
-    blue: validSpecChannel(
+    blue: channel(
       card.querySelector(".spec-blue").value
     )
   };
 }
 
 function updateSpecColorPreview(card) {
-  const layer = readSpecLayer(card);
+  const p = readSpecLayer(card);
 
-  const preview =
-    card.querySelector(".spec-color-preview");
-
-  preview.style.backgroundColor =
-    `rgb(${layer.red}, ${layer.green}, ${layer.blue})`;
-}
-
-
-/* ======================================================
-   QUICK SHARE
-   CREATE LAYER
-====================================================== */
-
-
-/* ======================================================
-   QUICK SHARE
-   COLOR CLIPBOARD
-====================================================== */
-
-let specColorClipboard = null;
-
-function copySpecColor(card) {
-  const layer = readSpecLayer(card);
-
-  specColorClipboard = {
-    red: layer.red,
-    green: layer.green,
-    blue: layer.blue
-  };
-
-  // Update buttons on all layers.
-  updateSpecPasteButtons();
-
-  const copyBtn = card.querySelector(
-    ".spec-copy-color-btn"
-  );
-
-  copyBtn.textContent = "✓ Copied!";
-
-  setTimeout(() => {
-    if (copyBtn.isConnected) {
-      copyBtn.textContent = "Copy Color";
-    }
-  }, 1500);
-
-  trackEvent("solelab_copy_color");
-}
-
-function pasteSpecColor(card) {
-  if (!specColorClipboard) {
-    return;
-  }
-
-  card.querySelector(".spec-red").value =
-    specColorClipboard.red;
-
-  card.querySelector(".spec-green").value =
-    specColorClipboard.green;
-
-  card.querySelector(".spec-blue").value =
-    specColorClipboard.blue;
-
-  // Update the existing live color swatch.
-  updateSpecColorPreview(card);
-
-  const pasteBtn = card.querySelector(
-    ".spec-paste-color-btn"
-  );
-
-  pasteBtn.textContent = "✓ Pasted!";
-
-  setTimeout(() => {
-    if (pasteBtn.isConnected) {
-      pasteBtn.textContent = "Paste Color";
-    }
-  }, 1500);
-
-  trackEvent("solelab_paste_color");
+  card.querySelector(
+    ".spec-color-preview"
+  ).style.backgroundColor = rgbCSS(p);
 }
 
 function updateSpecPasteButtons() {
-  const pasteButtons =
-    specLayersContainer.querySelectorAll(
-      ".spec-paste-color-btn"
-    );
-
-  pasteButtons.forEach(button => {
-    button.disabled = !specColorClipboard;
-  });
+  specLayersContainer
+    .querySelectorAll(".spec-paste-color-btn")
+    .forEach(btn => {
+      btn.disabled = !specColorClipboard;
+    });
 }
 
 
 /* ======================================================
-   QUICK SHARE
-   CREATE LAYER
+   QUICK SHARE — CREATE LAYER
 ====================================================== */
 
-function addSpecLayer(layer = {}) {
+function addSpecLayer(data = {}) {
   const card = document.createElement("div");
 
   card.className = "spec-layer-card";
@@ -1431,10 +1473,7 @@ function addSpecLayer(layer = {}) {
 
     <div class="spec-layer-grid">
 
-      <!-- LAYER NAME -->
-
       <div class="field-group">
-
         <label>Layer Name</label>
 
         <input
@@ -1442,86 +1481,49 @@ function addSpecLayer(layer = {}) {
           class="spec-layer-name"
           maxlength="70"
           placeholder="Example: Toe / Base"
-          value="${escapeHTML(layer.name || "")}"
-        />
-
+          value="${escapeHTML(data.name || "")}"
+        >
       </div>
-
-      <!-- MATERIAL -->
 
       <div class="field-group">
-
         <label>Material</label>
 
-        <select
-          class="spec-layer-material compact-select"
-        >
-          ${getMaterialOptions(
-            layer.material || "Default"
-          )}
+        <select class="spec-layer-material compact-select">
+          ${materialOptions(data.material || "Default")}
         </select>
-
       </div>
-
-      <!-- RGB VALUES -->
 
       <div class="spec-color-section">
 
         <div class="spec-rgb-fields">
+          ${[
+            ["red", "R"],
+            ["green", "G"],
+            ["blue", "B"]
+          ].map(([key, label]) => `
+            <div class="field-group">
 
-          <div class="field-group">
-            <label>R</label>
+              <label>${label}</label>
 
-            <input
-              type="number"
-              inputmode="numeric"
-              class="spec-red"
-              min="0"
-              max="255"
-              step="1"
-              value="${validSpecChannel(layer.red ?? 0)}"
-            />
-          </div>
+              <input
+                type="number"
+                inputmode="numeric"
+                class="spec-${key}"
+                min="0"
+                max="255"
+                step="1"
+                value="${channel(data[key] ?? 0)}"
+              >
 
-          <div class="field-group">
-            <label>G</label>
-
-            <input
-              type="number"
-              inputmode="numeric"
-              class="spec-green"
-              min="0"
-              max="255"
-              step="1"
-              value="${validSpecChannel(layer.green ?? 0)}"
-            />
-          </div>
-
-          <div class="field-group">
-            <label>B</label>
-
-            <input
-              type="number"
-              inputmode="numeric"
-              class="spec-blue"
-              min="0"
-              max="255"
-              step="1"
-              value="${validSpecChannel(layer.blue ?? 0)}"
-            />
-          </div>
-
-          <!-- LIVE COLOR PREVIEW -->
+            </div>
+          `).join("")}
 
           <span
             class="spec-color-preview"
             role="img"
             aria-label="Color preview"
           ></span>
-
         </div>
-
-        <!-- COLOR ACTIONS -->
 
         <div class="spec-color-actions">
 
@@ -1547,17 +1549,16 @@ function addSpecLayer(layer = {}) {
     </div>
   `;
 
-  specLayersContainer.appendChild(card);
+  specLayersContainer.append(card);
 
   refreshSpecLayerNumbers();
   updateSpecColorPreview(card);
 
-  /* REMOVE LAYER */
+  /* REMOVE */
 
   card.querySelector(
     ".spec-remove-layer-btn"
   ).addEventListener("click", () => {
-
     card.remove();
 
     refreshSpecLayerNumbers();
@@ -1565,47 +1566,86 @@ function addSpecLayer(layer = {}) {
     trackEvent("solelab_remove_spec_layer");
   });
 
-  /* DUPLICATE LAYER */
+  /* DUPLICATE */
 
   card.querySelector(
     ".spec-duplicate-layer-btn"
   ).addEventListener("click", () => {
+    const copy = addSpecLayer(
+      readSpecLayer(card)
+    );
 
-    const values = readSpecLayer(card);
-
-    const duplicate = addSpecLayer(values);
-
-    card.after(duplicate);
+    card.after(copy);
 
     refreshSpecLayerNumbers();
 
     trackEvent("solelab_duplicate_spec_layer");
   });
 
-  /* COPY COLOR */
+  /* COPY / PASTE COLOR */
 
-  card.querySelector(
+  const copyBtn = card.querySelector(
     ".spec-copy-color-btn"
-  ).addEventListener("click", () => {
-    copySpecColor(card);
-  });
-
-  /* PASTE COLOR */
-
-  card.querySelector(
-    ".spec-paste-color-btn"
-  ).addEventListener("click", () => {
-    pasteSpecColor(card);
-  });
-
-  /* RGB INPUTS */
-
-  const inputs = card.querySelectorAll(
-    ".spec-red, .spec-green, .spec-blue"
   );
 
-  inputs.forEach(input => {
+  const pasteBtn = card.querySelector(
+    ".spec-paste-color-btn"
+  );
 
+  copyBtn.addEventListener("click", () => {
+    const p = readSpecLayer(card);
+
+    specColorClipboard = {
+      red: p.red,
+      green: p.green,
+      blue: p.blue
+    };
+
+    updateSpecPasteButtons();
+
+    copyBtn.textContent = "✓ Copied!";
+
+    setTimeout(() => {
+      if (copyBtn.isConnected) {
+        copyBtn.textContent = "Copy Color";
+      }
+    }, 1200);
+
+    trackEvent("solelab_copy_color");
+  });
+
+  pasteBtn.addEventListener("click", () => {
+    if (!specColorClipboard) {
+      return;
+    }
+
+    for (
+      const [key, value] of
+      Object.entries(specColorClipboard)
+    ) {
+      card.querySelector(
+        `.spec-${key}`
+      ).value = value;
+    }
+
+    updateSpecColorPreview(card);
+
+    pasteBtn.textContent = "✓ Pasted!";
+
+    setTimeout(() => {
+      if (pasteBtn.isConnected) {
+        pasteBtn.textContent = "Paste Color";
+      }
+    }, 1200);
+
+    trackEvent("solelab_paste_color");
+  });
+
+  /* RGB EVENTS */
+
+  card.querySelectorAll(
+    ".spec-red,.spec-green,.spec-blue"
+  ).forEach(input => {
     input.addEventListener("focus", () => {
       if (input.value === "0") {
         input.value = "";
@@ -1617,11 +1657,9 @@ function addSpecLayer(layer = {}) {
     });
 
     input.addEventListener("change", () => {
-      input.value = validSpecChannel(input.value);
-
+      input.value = channel(input.value);
       updateSpecColorPreview(card);
     });
-
   });
 
   return card;
@@ -1629,8 +1667,7 @@ function addSpecLayer(layer = {}) {
 
 
 /* ======================================================
-   QUICK SHARE
-   RESET FORM
+   QUICK SHARE — RESET / VALIDATION
 ====================================================== */
 
 function resetSpecForm() {
@@ -1640,304 +1677,44 @@ function resetSpecForm() {
 
   specLayersContainer.replaceChildren();
 
+  specColorClipboard = null;
+
   addSpecLayer();
 }
 
-
-/* ======================================================
-   QUICK SHARE
-   CANVAS TEXT HELPER
-====================================================== */
-
-function specFitText(
-  ctx,
-  text,
-  maxWidth,
-  initialSize,
-  minSize = 16
-) {
-  let size = initialSize;
-
-  while (size > minSize) {
-    ctx.font = `700 ${size}px Arial, sans-serif`;
-
-    if (ctx.measureText(text).width <= maxWidth) {
-      break;
-    }
-
-    size--;
-  }
-
-  ctx.font = `700 ${size}px Arial, sans-serif`;
-
-  if (ctx.measureText(text).width <= maxWidth) {
-    return text;
-  }
-
-  let shortened = text;
-
-  while (
-    shortened.length > 0 &&
-    ctx.measureText(shortened + "…").width > maxWidth
-  ) {
-    shortened = shortened.slice(0, -1);
-  }
-
-  return shortened + "…";
-}
-
-
-/* ======================================================
-   QUICK SHARE
-   DRAW SPEC CARD
-
-   Size: 1080 x 1350
-   Maximum: 10 layers per card
-====================================================== */
-
-function drawSpecCard(
-  shoeName,
-  brand,
-  gameVersion,
-  layers,
-  pageIndex,
-  pageCount
-) {
-  const width = 1080;
-  const height = 1350;
-
-  const canvas = document.createElement("canvas");
-
-  canvas.width = width;
-  canvas.height = height;
-
-  const ctx = canvas.getContext("2d");
-
-  /* BACKGROUND */
-
-  ctx.fillStyle = "#0d1014";
-  ctx.fillRect(0, 0, width, height);
-
-  /* HEADER GREEN ACCENT */
-
-  ctx.fillStyle = "#8ac73f";
-  ctx.fillRect(65, 67, 8, 85);
-
-  /* LOGO TEXT */
-
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "800 56px Arial, sans-serif";
-  ctx.fillText("THE SOLE LAB", 98, 114);
-
-  ctx.fillStyle = "#8ac73f";
-  ctx.font = "700 24px Arial, sans-serif";
-
-  ctx.fillText(
-    "QUICK SHARE  /  SHOE SPECS",
-    99,
-    151
-  );
-
-  /* SHOE DETAILS PANEL */
-
-  ctx.fillStyle = "#14191f";
-  ctx.fillRect(65, 185, 950, 174);
-
-  ctx.fillStyle = "#ffffff";
-
-  ctx.fillText(
-    specFitText(ctx, shoeName, 865, 41, 22),
-    96,
-    246
-  );
-
-  ctx.fillStyle = "#9da7b2";
-  ctx.font = "25px Arial, sans-serif";
-
-  ctx.fillText(
-    `${brand}   •   ${gameVersion}`,
-    96,
-    293
-  );
-
-  ctx.font = "19px Arial, sans-serif";
-
-  const startLayer = pageIndex * 10 + 1;
-  const endLayer = pageIndex * 10 + layers.length;
-
-  ctx.fillText(
-    `LAYERS ${startLayer}–${endLayer}   •   CARD ${pageIndex + 1} OF ${pageCount}`,
-    96,
-    332
-  );
-
-  /* TABLE DIVIDER */
-
-  ctx.fillStyle = "#8ac73f";
-  ctx.fillRect(65, 386, 950, 3);
-
-
-/* COLUMN HEADERS */
-
-ctx.fillStyle = "#9da7b2";
-ctx.font = "700 20px Arial, sans-serif";
-
-ctx.fillText("#", 84, 428);
-ctx.fillText("LAYER", 135, 428);
-ctx.fillText("MATERIAL", 535, 428);
-ctx.fillText("RGB", 790, 428);
-
-
-  /* LAYER ROWS */
-
-  layers.forEach((layer, index) => {
-    const y = 446 + index * 76;
-
-    ctx.fillStyle =
-      index % 2 === 0
-        ? "#191f26"
-        : "#14191f";
-
-    ctx.fillRect(65, y, 950, 72);
-
-    /* LAYER NUMBER */
-
-    ctx.fillStyle = "#8ac73f";
-    ctx.font = "700 21px Arial, sans-serif";
-
-    ctx.fillText(
-      String(
-        pageIndex * 10 + index + 1
-      ).padStart(2, "0"),
-      84,
-      y + 44
-    );
-
-    /* LAYER NAME */
-
-    ctx.fillStyle = "#ffffff";
-
-    ctx.fillText(
-      specFitText(ctx, layer.name, 390, 23, 17),
-      135,
-      y + 44
-    );
-
-
-/* MATERIAL */
-
-ctx.fillStyle = "#c9d1d9";
-
-ctx.fillText(
-  specFitText(
-    ctx,
-    layer.material,
-    225,
-    19,
-    16
-  ),
-  535,
-  y + 44
-);
-
-/* COLOR SWATCH */
-
-ctx.fillStyle =
-  `rgb(${layer.red},${layer.green},${layer.blue})`;
-
-ctx.fillRect(790, y + 21, 30, 30);
-
-ctx.strokeStyle = "#68737e";
-ctx.strokeRect(790, y + 21, 30, 30);
-
-/* RGB VALUES */
-
-ctx.fillStyle = "#ffffff";
-ctx.font = "700 20px Arial, sans-serif";
-
-ctx.fillText(
-  `${layer.red}, ${layer.green}, ${layer.blue}`,
-  835,
-  y + 44
-);
-
-  }); // End of layers.forEach
-
-
-  /* FOOTER */
-
-  ctx.fillStyle = "#283039";
-  ctx.fillRect(65, 1254, 950, 2);
-
-  ctx.fillStyle = "#9da7b2";
-  ctx.font = "20px Arial, sans-serif";
-
-  ctx.fillText(
-    "NBA 2K Shoe Creator • RGB values 0–255",
-    65,
-    1299
-  );
-
-  ctx.fillStyle = "#8ac73f";
-  ctx.font = "700 20px Arial, sans-serif";
-
-  ctx.textAlign = "right";
-
-  ctx.fillText(
-    "THE SOLE LAB",
-    1015,
-    1299
-  );
-
-  ctx.textAlign = "left";
-
-  return canvas;
-}
-
-
-/* ======================================================
-   QUICK SHARE
-   VALIDATION
-====================================================== */
-
-function getValidatedSpecLayers() {
-  const cards = Array.from(
-    specLayersContainer.querySelectorAll(
+function validSpecLayers() {
+  const cards = [
+    ...specLayersContainer.querySelectorAll(
       ".spec-layer-card"
     )
-  );
-
-  const namedCards = cards.filter(card =>
-    card.querySelector(
+  ].filter(c =>
+    c.querySelector(
       ".spec-layer-name"
     ).value.trim()
   );
 
-  if (namedCards.length === 0) {
-    alert("Enter a name for at least one shoe layer.");
+  if (!cards.length) {
+    alert("Enter at least one shoe layer name.");
     return null;
   }
 
-  for (const card of namedCards) {
-    const layerName = card.querySelector(
-      ".spec-layer-name"
-    ).value.trim();
-
-    const inputs = card.querySelectorAll(
-      ".spec-red, .spec-green, .spec-blue"
-    );
-
-    for (const input of inputs) {
-      const value = Number(input.value);
+  for (const c of cards) {
+    for (
+      const input of
+      c.querySelectorAll(
+        ".spec-red,.spec-green,.spec-blue"
+      )
+    ) {
+      const n = Number(input.value);
 
       if (
         input.value.trim() === "" ||
-        !Number.isInteger(value) ||
-        value < 0 ||
-        value > 255
+        !Number.isInteger(n) ||
+        n < 0 ||
+        n > 255
       ) {
         alert(
-          `${layerName}: RGB values must be whole numbers between 0 and 255.`
+          `${c.querySelector(".spec-layer-name").value}: RGB values must be 0–255.`
         );
 
         input.focus();
@@ -1947,125 +1724,357 @@ function getValidatedSpecLayers() {
     }
   }
 
-  return namedCards.map(readSpecLayer);
+  return cards.map(readSpecLayer);
 }
 
 
 /* ======================================================
-   QUICK SHARE
-   PNG EXPORT
+   QUICK SHARE — PNG CARD
+====================================================== */
+
+function drawSpecCard(
+  shoe,
+  brand,
+  version,
+  layers,
+  page,
+  total
+) {
+  const canvas = document.createElement("canvas");
+
+  canvas.width = 1080;
+  canvas.height = 1350;
+
+  const ctx = canvas.getContext("2d");
+
+  /* BACKGROUND */
+
+  ctx.fillStyle = "#0d1014";
+  ctx.fillRect(0, 0, 1080, 1350);
+
+  /* HEADER */
+
+  ctx.fillStyle = "#8ac73f";
+  ctx.fillRect(65, 67, 8, 85);
+
+  ctx.fillStyle = "#ffffff";
+
+  drawText(
+    ctx,
+    "THE SOLE LAB",
+    98,
+    114,
+    870,
+    56
+  );
+
+  ctx.fillStyle = "#8ac73f";
+
+  drawText(
+    ctx,
+    "QUICK SHARE / SHOE SPECS",
+    99,
+    151,
+    830,
+    24
+  );
+
+  /* SHOE INFORMATION */
+
+  ctx.fillStyle = "#14191f";
+  ctx.fillRect(65, 185, 950, 174);
+
+  ctx.fillStyle = "#ffffff";
+
+  drawText(
+    ctx,
+    shoe,
+    96,
+    246,
+    865,
+    41,
+    22
+  );
+
+  ctx.fillStyle = "#9da7b2";
+
+  drawText(
+    ctx,
+    `${brand}   •   ${version}`,
+    96,
+    293,
+    870,
+    25
+  );
+
+  drawText(
+    ctx,
+    `LAYERS ${page * 10 + 1}–${page * 10 + layers.length}  •  CARD ${page + 1} OF ${total}`,
+    96,
+    332,
+    870,
+    19
+  );
+
+  /* COLUMN HEADERS */
+
+  ctx.fillStyle = "#8ac73f";
+  ctx.fillRect(65, 386, 950, 3);
+
+  ctx.fillStyle = "#9da7b2";
+
+  for (const [text, x] of [
+    ["#", 84],
+    ["LAYER", 135],
+    ["MATERIAL", 535],
+    ["RGB", 790]
+  ]) {
+    drawText(
+      ctx,
+      text,
+      x,
+      428,
+      210,
+      20
+    );
+  }
+
+  /* LAYER ROWS */
+
+  layers.forEach((p, i) => {
+    const y = 446 + i * 76;
+
+    ctx.fillStyle =
+      i % 2 === 0
+        ? "#191f26"
+        : "#14191f";
+
+    ctx.fillRect(65, y, 950, 72);
+
+    ctx.fillStyle = "#8ac73f";
+
+    drawText(
+      ctx,
+      String(page * 10 + i + 1).padStart(2, "0"),
+      84,
+      y + 44,
+      43,
+      21
+    );
+
+    /* LAYER */
+
+    ctx.fillStyle = "#ffffff";
+
+    drawText(
+      ctx,
+      p.name,
+      135,
+      y + 44,
+      380,
+      23,
+      17
+    );
+
+    /* MATERIAL */
+
+    ctx.fillStyle = "#c9d1d9";
+
+    drawText(
+      ctx,
+      p.material,
+      535,
+      y + 44,
+      235,
+      19,
+      16
+    );
+
+    /* RGB SWATCH */
+
+    ctx.fillStyle = rgbCSS(p);
+    ctx.fillRect(790, y + 21, 30, 30);
+
+    ctx.strokeStyle = "#68737e";
+    ctx.strokeRect(790, y + 21, 30, 30);
+
+    /* RGB NUMBERS */
+
+    ctx.fillStyle = "#ffffff";
+
+    drawText(
+      ctx,
+      `${p.red}, ${p.green}, ${p.blue}`,
+      835,
+      y + 44,
+      170,
+      20,
+      16
+    );
+  });
+
+  /* FOOTER */
+
+  ctx.fillStyle = "#283039";
+  ctx.fillRect(65, 1254, 950, 2);
+
+  ctx.fillStyle = "#9da7b2";
+
+  drawText(
+    ctx,
+    "NBA 2K Shoe Creator • RGB values 0–255",
+    65,
+    1299,
+    750,
+    20
+  );
+
+  ctx.fillStyle = "#8ac73f";
+
+  drawText(
+    ctx,
+    "THE SOLE LAB",
+    881,
+    1299,
+    134,
+    20
+  );
+
+  return canvas;
+}
+
+
+/* ======================================================
+   QUICK SHARE — PNG DOWNLOAD
 ====================================================== */
 
 async function downloadQuickShareSpec() {
-  const shoeName = specShoeName.value.trim();
+  const shoe = specShoeName.value.trim();
 
-  if (!shoeName) {
+  if (!shoe) {
     alert("Enter a shoe name before downloading.");
     specShoeName.focus();
     return;
   }
 
-  const layers = getValidatedSpecLayers();
+  const layers = validSpecLayers();
 
   if (!layers) {
     return;
   }
 
-  /* SPLIT INTO GROUPS OF 10 */
-
-  const pages = [];
-
-  for (
-    let index = 0;
-    index < layers.length;
-    index += 10
-  ) {
-    pages.push(layers.slice(index, index + 10));
-  }
-
-  const fileSlug =
-    slugifyFileName(shoeName) || "shoe";
-
-  const originalButtonText =
-    downloadSpecCardBtn.textContent;
+  const count = Math.ceil(layers.length / 10);
+  const original = downloadSpecCardBtn.textContent;
 
   downloadSpecCardBtn.disabled = true;
+
   downloadSpecCardBtn.textContent =
     "Preparing Spec Cards...";
 
   try {
+    await loadExportFonts();
+
     const files = [];
 
-    for (
-      let pageIndex = 0;
-      pageIndex < pages.length;
-      pageIndex++
-    ) {
+    for (let page = 0; page < count; page++) {
       const canvas = drawSpecCard(
-        shoeName,
+        shoe,
         specBrand.value,
         specGameVersion.value,
-        pages[pageIndex],
-        pageIndex,
-        pages.length
+        layers.slice(
+          page * 10,
+          (page + 1) * 10
+        ),
+        page,
+        count
       );
 
-      const blob = await canvasToBlob(
-        canvas,
-        "image/png"
+      const blob = await canvasToBlob(canvas);
+
+      files.push(
+        new File(
+          [blob],
+          `${slugifyFileName(shoe) || "shoe"}-spec-card-${page + 1}.png`,
+          { type: "image/png" }
+        )
       );
-
-      const filename =
-        `${fileSlug}-spec-card-${pageIndex + 1}.png`;
-
-      const file = new File(
-        [blob],
-        filename,
-        { type: "image/png" }
-      );
-
-      files.push(file);
     }
 
-    const result = await shareOrDownloadFiles(
+    const result = await shareOrDownload(
       files,
       "The Sole Lab — Shoe Specs",
-      `${shoeName} - ${specGameVersion.value}`
+      `${shoe} - ${specGameVersion.value}`
     );
 
     if (result !== "cancelled") {
-      trackEvent("solelab_download_spec_card", {
-        brand: specBrand.value,
-        layerCount: layers.length,
-        cardCount: pages.length
-      });
+      trackEvent(
+        "solelab_download_spec_card",
+        {
+          brand: specBrand.value,
+          layerCount: layers.length,
+          cardCount: count
+        }
+      );
     }
+  } catch (e) {
+    console.error("Spec export failed", e);
 
-  } catch (error) {
-    console.error(
-      "Spec card export failed:",
-      error
-    );
-
-    alert(
-      "Could not create your spec card. Please try again."
-    );
+    alert("Could not create your spec card.");
   } finally {
     downloadSpecCardBtn.disabled = false;
-
-    downloadSpecCardBtn.textContent =
-      originalButtonText;
+    downloadSpecCardBtn.textContent = original;
   }
 }
 
 
 /* ======================================================
-   QUICK SHARE
-   EVENTS
+   INITIALIZE THE SOLE LAB
 ====================================================== */
+
+function initializeSoleLab() {
+  populateBrands(brandSelect);
+  populateBrands(specBrand);
+
+  resetForm();
+  resetSpecForm();
+
+  switchTool("pattern");
+}
+
+/* NAVIGATION */
+
+patternToolBtn.addEventListener(
+  "click",
+  () => switchTool("pattern")
+);
+
+specToolBtn.addEventListener(
+  "click",
+  () => switchTool("spec")
+);
+
+/* PATTERN MANAGER */
+
+addComponentBtn.addEventListener("click", () => {
+  createComponentRow();
+  trackEvent("solelab_add_component");
+});
+
+clearFormBtn.addEventListener(
+  "click",
+  resetForm
+);
+
+downloadRecipeBtn.addEventListener(
+  "click",
+  downloadRecipeJPEG
+);
+
+/* QUICK SHARE */
 
 addSpecLayerBtn.addEventListener("click", () => {
   addSpecLayer();
+  trackEvent("solelab_add_spec_layer");
 });
 
 clearSpecFormBtn.addEventListener(
@@ -2078,28 +2087,14 @@ downloadSpecCardBtn.addEventListener(
   downloadQuickShareSpec
 );
 
+/* CLOSE PATTERN PICKER */
 
-/* ======================================================
-   INITIALIZE THE SOLE LAB
-====================================================== */
+document.addEventListener("click", e => {
+  if (!e.target.closest(".pattern-field-group")) {
+    closeAllPatternPickers();
+  }
+});
 
-function initializeSoleLab() {
-  /* POPULATE BOTH BRAND LISTS */
-
-  populateBrandSelect(brandSelect);
-  populateBrandSelect(specBrand);
-
-  /* INITIALIZE PATTERN MANAGER */
-
-  resetForm();
-
-  /* INITIALIZE QUICK SHARE */
-
-  resetSpecForm();
-
-  /* DEFAULT TO PATTERN MANAGER */
-
-  switchTool("pattern");
-}
+/* START */
 
 initializeSoleLab();
