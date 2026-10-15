@@ -1375,3 +1375,189 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 
+
+/* ======================================================
+   PATTERN MANAGER — COMPACT COLLAPSIBLE CARDS
+====================================================== */
+
+.pattern-compact-card {
+  padding: 16px;
+}
+
+.pattern-compact-card .component-card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0;
+  padding-bottom: 12px;
+}
+
+.pattern-compact-card .component-card-header h3 {
+  margin-right: auto;
+}
+
+.pattern-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: center;
+}
+
+.pattern-header-actions .button,
+.pattern-collapse-toggle {
+  font-size: 12px;
+  padding: 7px 10px;
+  min-height: 35px;
+  width: auto;
+}
+
+.pattern-collapse-toggle {
+  color: var(--sole-accent);
+  border: 1px solid var(--border-primary);
+  border-radius: 7px;
+  background: var(--bg-panel-secondary);
+}
+
+.pattern-component-summary {
+  color: var(--text-secondary);
+  width: 100%;
+  font-size: 13px;
+}
+
+.pattern-component-summary[hidden],
+.pattern-component-body[hidden] {
+  display: none !important;
+}
+
+.pattern-component-body {
+  padding-top: 16px;
+}
+
+.pattern-compact-card .component-main-grid {
+  gap: 12px;
+}
+
+.pattern-compact-card .component-section {
+  margin-top: 16px;
+}
+
+.pattern-compact-card .component-section-title {
+  margin-bottom: 10px;
+}
+
+/* THREE COMPACT COLOR ROWS */
+
+.pattern-compact-card .color-grid {
+  grid-template-columns: 1fr;
+  gap: 9px;
+}
+
+.pattern-compact-card .color-card {
+  display: grid;
+  grid-template-columns:
+    75px minmax(0, 1fr) 33px 115px;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+}
+
+.pattern-compact-card .color-card-title {
+  margin: 0;
+  font-size: 13px;
+}
+
+.pattern-compact-card .rgb-stack {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pattern-compact-card .rgb-row {
+  grid-template-columns:
+    15px minmax(0, 1fr);
+  gap: 5px;
+}
+
+.pattern-compact-card .rgb-label {
+  font-size: 13px;
+}
+
+.pattern-compact-card .rgb-value {
+  min-height: 40px;
+  font-size: 15px;
+  padding: 6px;
+}
+
+/* LIVE COLOR SWATCH */
+
+.pattern-live-swatch {
+  width: 33px;
+  height: 33px;
+  border: 1px solid #68737e;
+  border-radius: 6px;
+}
+
+/* COLOR COPY / PASTE */
+
+.pattern-color-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.pattern-color-actions .button {
+  padding: 6px;
+  min-height: 33px;
+  font-size: 11px;
+  width: auto;
+}
+
+/* COMPACT POSITION / NOTES */
+
+.pattern-compact-card .position-grid {
+  gap: 12px;
+}
+
+.pattern-compact-card .component-notes-field {
+  margin-top: 16px;
+}
+
+/* MOBILE LAYOUT */
+
+@media (max-width: 700px) {
+
+  .pattern-compact-card .color-card {
+    grid-template-columns: 1fr 33px;
+  }
+
+  .pattern-compact-card .color-card-title {
+    grid-column: 1 / -1;
+  }
+
+  .pattern-compact-card .rgb-stack {
+    grid-column: 1;
+  }
+
+  .pattern-compact-card .pattern-live-swatch {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .pattern-color-actions {
+    grid-column: 1 / -1;
+  }
+
+  .pattern-color-actions .button {
+    flex: 1;
+  }
+
+  .pattern-header-actions {
+    width: 100%;
+  }
+
+  .pattern-header-actions .button,
+  .pattern-collapse-toggle {
+    flex: 1;
+  }
+}
