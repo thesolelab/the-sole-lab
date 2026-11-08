@@ -17,6 +17,9 @@
     data-website-id="5127b925-7c51-4251-848c-05372b45e340"
   ></script>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link
     rel="stylesheet"
     href="css/style.css"
@@ -75,6 +78,7 @@
 
     <nav
       class="tool-selector"
+      role="tablist"
       aria-label="Shoe Creator Tools"
     >
 
@@ -85,7 +89,6 @@
         aria-controls="patternTool"
         aria-selected="true"
         role="tab"
-        data-umami-event="solelab_pattern_tool"
       >
         Pattern Manager
       </button>
@@ -96,8 +99,8 @@
         class="tool-tab"
         aria-controls="specTool"
         aria-selected="false"
+        tabindex="-1"
         role="tab"
-        data-umami-event="solelab_spec_tool"
       >
         Quick Share
       </button>
@@ -144,6 +147,7 @@
             <input
               type="text"
               id="shoeName"
+              maxlength="100"
               placeholder="Example: A'One Hyper Volt"
             />
 
@@ -205,8 +209,7 @@
           <button
             type="button"
             id="addComponentBtn"
-            class="button button-secondary"
-            data-umami-event="solelab_add_component"
+            class="button button-primary"
           >
             + Add Component
           </button>
@@ -345,8 +348,7 @@
           <button
             type="button"
             id="addSpecLayerBtn"
-            class="button button-secondary"
-            data-umami-event="solelab_add_spec_layer"
+            class="button button-primary"
           >
             + Add Layer
           </button>
@@ -368,7 +370,6 @@
           type="button"
           id="downloadSpecCardBtn"
           class="button button-primary"
-          data-umami-event="solelab_download_spec_card"
         >
           Download Spec Card
         </button>
@@ -387,7 +388,19 @@
 
   </main>
 
-  <script src="js/app.js"></script>
+  <section class="draft-toolbar container" aria-label="Save and restore designs">
+    <div>
+      <h2>Your workspace</h2>
+      <p id="draftStatus" role="status" aria-live="polite">Drafts are saved on this device.</p>
+    </div>
+    <div class="draft-actions">
+      <button type="button" id="exportDraftBtn" class="button button-secondary">Save editable JSON</button>
+      <button type="button" id="importDraftBtn" class="button button-secondary">Open JSON</button>
+      <input type="file" id="importDraftInput" accept=".json,application/json" hidden />
+    </div>
+  </section>
+  <footer class="site-footer container"><span>The Sole Lab</span><span>Built for the details.</span></footer>
+  <script type="module" src="js/app.js"></script>
 
 </body>
 
