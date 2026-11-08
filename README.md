@@ -14,7 +14,7 @@ Open http://localhost:8000. Any static hosting service can serve the same files.
 
 ## Use the tools
 
-- **Pattern Manager:** Record named components, materials, one of 29 pattern swatches, three RGB colors, scale (0.50–12.00), rotation (0.00–6.28), and notes. Duplicate, remove, or collapse components and copy colors between them.
+- **Pattern Manager:** Record named components, materials, one of 29 pattern swatches, three RGB colors, scale (0.50–12.00), rotation (0.00–6.28), and notes. Use Move Up/Move Down to reorder components; duplicate, remove, or collapse them and copy colors between them. Drafts and image exports follow the displayed order.
 - **Quick Share:** Record named layers in game order, materials, and RGB colors. Duplicate or remove layers and copy colors between them.
 - **Image cards:** Export 1080 × 1350 JPEGs (five components per card) or PNGs (ten layers per card). All rows must have names and valid numbers; invalid entries are focused for correction. RGB values must be whole numbers from 0 to 255. Scale and rotation use hundredths. The selected swatch is a reference image, not a simulated shoe texture.
 - **Sharing:** Compatible browsers can open a native share sheet. If sharing is unavailable or fails, a single image downloads directly; multiple images download in one ZIP. Cancelling sharing does not start a download. Native sharing requires HTTPS or localhost and may fall back to a download if the browser expires the user gesture during image preparation.

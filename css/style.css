@@ -59,6 +59,7 @@ button:disabled { cursor: not-allowed; opacity: 0.45; }
 button, input, select { transition: border-color 140ms, color 140ms, background-color 140ms; }
 :where(button, input, select):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 [hidden] { display: none !important; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .container { width: min(calc(100% - 64px), 1240px); margin-inline: auto; }
 
 /* Preserve the original wordmark, including its condensed italic type. */
@@ -182,7 +183,7 @@ input[hidden] { display: none; }
   .component-card, .spec-layer-card { padding: 14px; }
   .component-card-header, .spec-layer-header { align-items: flex-start; }
   .pattern-header-actions { width: 100%; }
-  .pattern-header-actions > * { flex: 1; }
+  .pattern-header-actions > * { flex: 1 1 80px; }
   .color-card { grid-template-columns: minmax(0, 1fr) 34px; gap: 10px; padding: 10px; }
   .color-card-title { grid-column: 1 / -1; }
   .rgb-stack { gap: 8px; grid-column: 1; }
