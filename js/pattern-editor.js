@@ -158,6 +158,8 @@ function updateComponentNumbers() {
       ).textContent =
         String(i + 1).padStart(2, "0");
 
+      card.querySelector(".pattern-move-up-btn").disabled = i === 0;
+      card.querySelector(".pattern-move-down-btn").disabled = !card.nextElementSibling;
       updateComponentSummary(card);
     });
 }
@@ -208,6 +210,14 @@ export function createComponentRow(data = {}) {
           aria-expanded="true"
         >
           Collapse ▴
+        </button>
+
+        <button type="button" class="button button-secondary pattern-move-up-btn">
+          Move Up
+        </button>
+
+        <button type="button" class="button button-secondary pattern-move-down-btn">
+          Move Down
         </button>
 
         <button
@@ -377,6 +387,29 @@ export function createComponentRow(data = {}) {
 
     updateComponentNumbers();
   });
+
+  /* REORDER: move the existing card so edits, swatches and collapse state survive. */
+
+  for (const direction of ["up", "down"]) {
+    const button = card.querySelector(`.pattern-move-${direction}-btn`);
+    button.addEventListener("click", () => {
+      const neighbor = direction === "up" ? card.previousElementSibling : card.nextElementSibling;
+      if (!neighbor) return;
+      if (direction === "up") neighbor.before(card);
+      else neighbor.after(card);
+      updateComponentNumbers();
+      // Keep keyboard focus on this card, even when the move reaches an edge.
+      const focusTarget = button.disabled
+        ? card.querySelector(`.pattern-move-${direction === "up" ? "down" : "up"}-btn`)
+        : button;
+      focusTarget.focus({ preventScroll: true });
+      card.querySelector(".component-card-header").scrollIntoView({ block: "nearest" });
+      const position = [...componentsContainer.children].indexOf(card) + 1;
+      $("componentOrderStatus").textContent =
+        `${card.querySelector(".component-name").value.trim() || "Component"} moved to position ${position}.`;
+      trackEvent("solelab_move_component", { direction });
+    });
+  }
 
   /* REMOVE */
 

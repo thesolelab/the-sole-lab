@@ -347,3 +347,64 @@ test('ZIP records preserve UTF-8 filenames, file bytes and checksums', async () 
     offset += 46 + Buffer.byteLength(entry.name);
   }
 });
+
+test('component reordering preserves data and collapse state, saves order, and exports in that order', async t => {
+  const page = await newPage(t);
+  await page.fill('#shoeName', 'Ordered Shoe');
+  await page.fill('.component-name', 'Base');
+  assert.equal(await page.locator('.pattern-move-up-btn').isDisabled(), true);
+  assert.equal(await page.locator('.pattern-move-down-btn').isDisabled(), true);
+  await page.fill('.color-1-red', '123');
+  await page.fill('.component-notes', 'Keep this note');
+  await page.click('#addComponentBtn');
+  await page.locator('.component-name').nth(1).fill('Heel');
+  await page.click('#addComponentBtn');
+  await page.locator('.component-name').nth(2).fill('Tongue');
+  await page.locator('.pattern-collapse-toggle').first().click();
+  await page.locator('.pattern-move-down-btn').first().click();
+  const names = () => page.locator('.component-name').evaluateAll(inputs => inputs.map(input => input.value));
+  assert.deepEqual(await names(), ['Heel', 'Base', 'Tongue']);
+  const moved = page.locator('.component-card').nth(1);
+  assert.equal(await moved.locator('.pattern-component-body').isVisible(), false);
+  assert.equal(await moved.locator('.color-1-red').inputValue(), '123');
+  assert.equal(await moved.locator('.component-notes').inputValue(), 'Keep this note');
+  await moved.locator('.pattern-move-down-btn').focus();
+  await page.keyboard.press('Enter');
+  assert.deepEqual(await names(), ['Heel', 'Tongue', 'Base']);
+  assert.equal(await page.locator('.pattern-move-down-btn').last().isDisabled(), true);
+  assert.equal(await page.locator('.pattern-move-up-btn').last().evaluate(button => button === document.activeElement), true);
+  await page.keyboard.press('Enter');
+  assert.deepEqual(await names(), ['Heel', 'Base', 'Tongue']);
+  await page.locator('.pattern-move-up-btn').nth(1).click();
+  assert.deepEqual(await names(), ['Base', 'Heel', 'Tongue']);
+  assert.equal(await page.locator('.pattern-move-up-btn').first().isDisabled(), true);
+  assert.deepEqual(await page.locator('.pattern-component-number').allTextContents(), ['01', '02', '03']);
+  // Reorder again before checking persistence and the actual canvas drawing order.
+  await page.locator('.pattern-move-down-btn').first().click();
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('sole-lab-workspace-v1') || '{}').pattern?.entries[0]?.name === 'Heel');
+  await page.reload();
+  await page.waitForSelector('.component-card');
+  assert.deepEqual(await names(), ['Heel', 'Base', 'Tongue']);
+  assert.equal(await page.locator('.component-card').nth(1).locator('.pattern-component-body').isVisible(), false);
+  const json = JSON.parse((await exportDownload(page, '#exportDraftBtn')).buffer.toString());
+  assert.deepEqual(json.pattern.entries.map(entry => entry.name), ['Heel', 'Base', 'Tongue']);
+  await page.evaluate(() => {
+    window.exportOrder = [];
+    const original = CanvasRenderingContext2D.prototype.fillText;
+    CanvasRenderingContext2D.prototype.fillText = function(text, ...args) {
+      if (['Base', 'Heel', 'Tongue'].includes(text)) exportOrder.push(text);
+      return original.call(this, text, ...args);
+    };
+  });
+  await exportDownload(page, '#downloadRecipeBtn');
+  assert.deepEqual(await page.evaluate(() => exportOrder), ['Heel', 'Base', 'Tongue']);
+  await page.locator('.pattern-duplicate-btn').first().click();
+  assert.deepEqual(await names(), ['Heel', 'Heel', 'Base', 'Tongue']);
+  assert.equal(await page.locator('.pattern-move-down-btn').last().isDisabled(), true);
+  await page.locator('.remove-component-btn').last().click();
+  assert.equal(await page.locator('.pattern-move-down-btn').last().isDisabled(), true);
+  for (const width of [320, 390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  }
+});
