@@ -23,35 +23,21 @@ function setPickerOpen(card, open) {
 
 function patternGridMarkup(selected) {
   const pattern = patternById(selected);
-  return `${[1, 2].map(page => `
-          <div class="pattern-page-group">
-
-            <div class="pattern-page-title">
-              Page ${page}
-            </div>
-
-            <div class="pattern-grid">
-              ${PATTERNS_2K27
-                .filter(p => p.page === page)
-                .map(p => `
-                  <button
-                    type="button"
-                    class="pattern-option ${p.id === pattern.id ? "is-selected" : ""}"
-                    data-pattern-id="${p.id}"
-                    aria-label="Select pattern ${p.id}"
-                    aria-pressed="${p.id === pattern.id}"
-                  >
-                    <span
-                      class="pattern-swatch"
-                      style="${patternStyle(p)}"
-                    ></span>
-                  </button>
-                `)
-                .join("")}
-            </div>
-
-          </div>
-        `).join("")}`;
+  return `
+    <div class="pattern-grid">
+      ${PATTERNS_2K27.map(p => `
+        <button
+          type="button"
+          class="pattern-option ${p.id === pattern.id ? "is-selected" : ""}"
+          data-pattern-id="${p.id}"
+          aria-label="Select pattern ${p.id}"
+          aria-pressed="${p.id === pattern.id}"
+        >
+          <span class="pattern-swatch" style="${patternStyle(p)}"></span>
+        </button>
+      `).join("")}
+    </div>
+  `;
 }
 
 function updateComponentSummary(card) {

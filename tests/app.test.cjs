@@ -82,6 +82,8 @@ test('pattern editing, lazy swatches, collapse, duplicate and color clipboard', 
   assert.equal(await card.locator('.color-2-red').inputValue(), '123');
   await card.locator('.pattern-picker-trigger').click();
   assert.equal(await card.locator('.pattern-option').count(), 29);
+  assert.equal(await card.locator('.pattern-grid').count(), 1);
+  assert.equal(await card.locator('.pattern-page-title').count(), 0);
   await card.locator('[data-pattern-id="pattern-23"]').click();
   assert.equal(await card.locator('.component-pattern-id').inputValue(), 'pattern-23');
   assert.equal(await card.locator('.pattern-picker-trigger').getAttribute('aria-expanded'), 'false');
