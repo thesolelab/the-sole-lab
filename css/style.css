@@ -22,7 +22,13 @@
 body {
   margin: 0;
   min-width: 280px;
-  background: radial-gradient(ellipse at top left, var(--accent-glow), transparent 55%), var(--bg);
+  background:
+    radial-gradient(ellipse 60vw 55vh at top left, var(--accent-glow), transparent),
+    radial-gradient(ellipse 60vw 55vh at top right, var(--accent-glow), transparent),
+    radial-gradient(ellipse 60vw 55vh at bottom left, var(--accent-glow), transparent),
+    radial-gradient(ellipse 60vw 55vh at bottom right, var(--accent-glow), transparent),
+    var(--bg);
+  background-attachment: fixed;
   color: var(--text);
   font: 400 16px/1.5 var(--font-body);
   color-scheme: dark;
