@@ -9,7 +9,7 @@
   --accent: #8ac73f;
   --accent-hover: #9ed653;
   --accent-tint: rgba(138, 199, 63, 0.08);
-  --accent-glow: rgba(138, 199, 63, 0.05);
+  --accent-glow: rgba(138, 199, 63, 0.24);
   --on-accent: #090a09;
   --danger: #ef4444;
   --text: #f2f2f2;
@@ -22,16 +22,24 @@
 body {
   margin: 0;
   min-width: 280px;
-  background:
-    radial-gradient(ellipse 60vw 55vh at top left, var(--accent-glow), transparent),
-    radial-gradient(ellipse 60vw 55vh at top right, var(--accent-glow), transparent),
-    radial-gradient(ellipse 60vw 55vh at bottom left, var(--accent-glow), transparent),
-    radial-gradient(ellipse 60vw 55vh at bottom right, var(--accent-glow), transparent),
-    var(--bg);
-  background-attachment: fixed;
+  background: var(--bg);
+  isolation: isolate;
   color: var(--text);
   font: 400 16px/1.5 var(--font-body);
   color-scheme: dark;
+}
+/* Fixed behind the content: visible in every viewport without tinting swatches. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 65vw 55vh at top left, var(--accent-glow), transparent),
+    radial-gradient(ellipse 65vw 55vh at top right, var(--accent-glow), transparent),
+    radial-gradient(ellipse 65vw 55vh at bottom left, var(--accent-glow), transparent),
+    radial-gradient(ellipse 65vw 55vh at bottom right, var(--accent-glow), transparent);
 }
 body::before {
   content: "";
@@ -54,7 +62,7 @@ button, input, select { transition: border-color 140ms, color 140ms, background-
 .container { width: min(calc(100% - 64px), 1240px); margin-inline: auto; }
 
 /* Preserve the original wordmark, including its condensed italic type. */
-.app-header { position: relative; background: var(--bg-elevated); border-bottom: 1px solid var(--border); }
+.app-header { position: relative; background: var(--surface); border-bottom: 1px solid var(--border); }
 .app-header::after { content: ""; position: absolute; bottom: -1px; left: 0; width: 96px; height: 2px; background: var(--accent); }
 .app-header .container { min-height: 116px; display: flex; align-items: center; padding-block: 20px; }
 .brand-lockup { display: flex; align-items: center; }

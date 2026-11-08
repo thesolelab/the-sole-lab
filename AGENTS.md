@@ -59,7 +59,7 @@ in components). Set --accent to the green already used on the site
   --accent: /* existing site green */;
   --accent-hover: /* slightly lighter accent */;
   --accent-tint: /* accent at ~8% opacity */;
-  --accent-glow: /* accent at ~5% opacity */;
+  --accent-glow: /* accent at ~24% opacity for visible corner glows */;
   --on-accent: #090a09;
 
   --danger: #ef4444;
@@ -73,8 +73,9 @@ in components). Set --accent to the green already used on the site
 
 ## Step 2: Global look
 - Page background: var(--bg) with a very subtle repeating "+" grid
-  pattern (~3-5% opacity) and four faint radial glows (--accent-glow),
-  one in each viewport corner. Keep them fixed while scrolling and barely noticeable.
+  pattern (~3-5% opacity) and four visible, soft radial glows (--accent-glow),
+  one in each viewport corner. Keep them fixed behind the content while scrolling. They must be clearly visible
+  without tinting color swatches or obscuring text. Let the header reveal the top glows.
 - Font: load Outfit from Google Fonts, used site-wide.
 - Small labels (field labels like "Shoe Name", "Brand", "Material",
   "R/G/B", "PATTERN COLORS", the tagline): 11-13px, uppercase, bold,
