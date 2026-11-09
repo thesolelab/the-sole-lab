@@ -72,7 +72,7 @@ button, input, select { transition: border-color 140ms, color 140ms, background-
 .brand-mark-corners { stroke: var(--accent); stroke-width: 2; }
 .brand-mark-shoe { fill: var(--text); }
 .brand-mark-laces { stroke: var(--surface-inset); stroke-width: 2; }
-.brand-mark-sole { stroke: var(--accent); stroke-width: 3; }
+.brand-mark-sole { stroke: var(--accent); stroke-width: 2; }
 .brand-wordmark { display: flex; flex-direction: column; min-width: 0; }
 .brand-eyebrow { display: flex; align-items: center; gap: 9px; margin-bottom: 5px; }
 .brand-the { color: var(--text-muted); font-size: 10px; font-weight: 700; letter-spacing: 0.28em; line-height: 1; }
