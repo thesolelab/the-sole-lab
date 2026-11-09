@@ -164,3 +164,12 @@ Pattern colors rows (Color 1, Color 2, ...)
 3. Apply to the component cards and color rows.
 4. Final polish: spacing, alignment, hover/focus states.
 5. Verify all functionality still works unchanged.
+
+
+## Header logo update (November 9, 2026)
+
+The owner requested a refreshed Sole Lab header logo. This supersedes the earlier
+"Keep the logo as is" instruction. Use the angular sneaker emblem, Outfit
+wordmark, existing green accent, and segmented rule. Keep the Minimal Gaming HUD
+palette and the NBA 2K Shoe Creator Tools tagline; the Player Lab's Mech Hangar
+design brief does not apply to this website.

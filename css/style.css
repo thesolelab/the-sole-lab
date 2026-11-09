@@ -62,20 +62,25 @@ button, input, select { transition: border-color 140ms, color 140ms, background-
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .container { width: min(calc(100% - 64px), 1240px); margin-inline: auto; }
 
-/* Preserve the original wordmark, including its condensed italic type. */
+/* Angular sneaker emblem and wordmark share the Minimal Gaming HUD palette. */
 .app-header { position: relative; background: var(--surface); border-bottom: 1px solid var(--border); }
 .app-header::after { content: ""; position: absolute; bottom: -1px; left: 0; width: 96px; height: 2px; background: var(--accent); }
 .app-header .container { min-height: 116px; display: flex; align-items: center; padding-block: 20px; }
-.brand-lockup { display: flex; align-items: center; }
-.brand-wordmark { display: flex; flex-direction: column; min-width: 220px; }
-.brand-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: -2px; }
-.brand-the { color: var(--text-muted); font: 700 0.72rem/1 "Barlow Condensed", var(--font-body); letter-spacing: 0.34em; }
-.brand-top-rule { flex: 0 0 76px; height: 1px; background: var(--border-strong); }
-.brand-title { display: flex; align-items: baseline; gap: 7px; font: italic 800 2.15rem/0.98 "Barlow Condensed", var(--font-body); letter-spacing: -0.035em; text-transform: uppercase; white-space: nowrap; }
-.brand-player { padding-right: 4px; }
-.brand-lab { color: var(--accent); padding-right: 8px; }
-.brand-bottom-rule { width: 112px; height: 2px; margin-top: 4px; background: var(--accent); }
-.brand-subtitle { margin: 8px 0 0; color: var(--text-muted); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.brand-lockup { display: flex; align-items: center; gap: 16px; }
+.brand-mark { flex: 0 0 auto; display: block; }
+.brand-mark-frame { stroke: var(--border-strong); stroke-width: 1; }
+.brand-mark-corners { stroke: var(--accent); stroke-width: 2; }
+.brand-mark-shoe { fill: var(--text); }
+.brand-mark-laces { stroke: var(--surface-inset); stroke-width: 2; }
+.brand-mark-sole { stroke: var(--accent); stroke-width: 3; }
+.brand-wordmark { display: flex; flex-direction: column; min-width: 0; }
+.brand-eyebrow { display: flex; align-items: center; gap: 9px; margin-bottom: 5px; }
+.brand-the { color: var(--text-muted); font-size: 10px; font-weight: 700; letter-spacing: 0.28em; line-height: 1; }
+.brand-top-rule { flex: 0 0 38px; height: 1px; background: var(--accent); }
+.brand-title { display: flex; align-items: baseline; gap: 7px; font: 800 32px/1 var(--font-body); letter-spacing: -0.045em; text-transform: uppercase; white-space: nowrap; }
+.brand-lab { color: var(--accent); }
+.brand-bottom-rule { width: 100%; height: 2px; margin-top: 7px; background: repeating-linear-gradient(90deg, var(--border-strong) 0 12px, transparent 12px 16px); border-left: 26px solid var(--accent); }
+.brand-subtitle { margin: 7px 0 0; color: var(--text-muted); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
 
 main.container { padding-top: 32px; padding-bottom: 12px; }
 .tool-selector { display: flex; gap: 8px; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 28px; }
@@ -174,6 +179,10 @@ input[hidden] { display: none; }
 @media (max-width: 767px) {
   .container { width: calc(100% - 32px); }
   .app-header .container { min-height: 104px; }
+  .brand-lockup { gap: 12px; }
+  .brand-mark { width: 56px; height: 56px; }
+  .brand-title { font-size: 28px; }
+  .brand-subtitle { font-size: 9px; }
   main.container { padding-top: 24px; }
   .tool-selector { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .tool-tab { padding: 12px 8px; font-size: 10px; }
